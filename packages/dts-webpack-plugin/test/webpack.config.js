@@ -61,6 +61,7 @@ const config = {
             },
         }),
         new DTSWebpackPlugin({
+            name: "@test/ui",
             match: (name) => !name.match(/\.stories$/),
             transform: (statement) => {
                 const match = statement.match(/import ["']([^"']+)["']/);

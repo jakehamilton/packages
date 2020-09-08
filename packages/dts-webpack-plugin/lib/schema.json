@@ -1,0 +1,53 @@
+{
+    "type": "object",
+    "properties": {
+        "root": {
+            "type": "string",
+            "description": "The absolute path to the root directory of your project."
+        },
+        "name": {
+            "type": "string",
+            "description": "The name of your package."
+        },
+        "entry": {
+            "type": "string",
+            "description": "The generated module to use as the type entrypoint."
+        },
+        "bundle": {
+            "type": "boolean",
+            "description": "Whether or not to bundle types into one file."
+        },
+        "output": {
+            "type": "string",
+            "description": "The path (absolute or relative to root) for where to render bundled types."
+        },
+        "tsc": {
+            "type": "string",
+            "description": "Arguments to be passed to the typescript compiler."
+        },
+        "tsconfig": {
+            "type": "string",
+            "description": "The path (absolute or relative to root) to a tsconfig.json file."
+        },
+        "include": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "An array of paths (absolute or relative to root) to type definition files to include in compilation."
+        },
+        "match": {
+            "instanceof": "Function",
+            "description": "A function that determines whether or not to include a module in the compilation."
+        },
+        "transforms": {
+            "type": "object",
+            "properties": {
+                "module": {
+                    "instanceof": "Function",
+                    "description": "A function that transforms import/export from statements"
+                }
+            }
+        }
+    }
+}

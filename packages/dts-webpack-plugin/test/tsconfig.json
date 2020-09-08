@@ -9,6 +9,7 @@
         "strict": true,
         "sourceMap": true,
         "jsx": "react",
+        "declaration": true,
         "baseUrl": "src",
         "outDir": "dist",
         "paths": {
