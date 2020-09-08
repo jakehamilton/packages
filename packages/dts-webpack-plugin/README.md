@@ -11,7 +11,7 @@ npm install --save-dev @jakehamilton/dts-webpack-plugin
 ## Usage
 
 ```js
-const DTSWebpackPlugin = require('@jakehamilton/dts-webpack-plugin');
+const DTSWebpackPlugin = require("@jakehamilton/dts-webpack-plugin");
 
 module.exports = {
     plugins: [
@@ -41,12 +41,12 @@ module.exports = {
 
                     // Example removing css imports
                     // WARNING: this only works if the import was written on one line.
-                    if (identifier.endsWith(".css)) {
+                    if (identifier.endsWith(".css")) {
                         return "";
                     }
-                }
-            }
-        })
-    ]
-}
+                },
+            },
+        }),
+    ],
+};
 ```
