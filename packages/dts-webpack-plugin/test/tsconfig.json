@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "ESNext",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "strict": true,
+        "sourceMap": true,
+        "jsx": "react",
+        "baseUrl": "src",
+        "outDir": "dist",
+        "paths": {
+            "@components/*": ["components/*"]
+        },
+        "typeRoots": ["types"]
+    },
+    "include": ["src"]
+}

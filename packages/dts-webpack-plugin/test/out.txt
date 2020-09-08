@@ -1,0 +1,4 @@
+
+> test@1.0.0 build /Users/JHAMILTON/work/@jakehamilton/packages/dts-webpack-plugin/test
+> webpack
+
