@@ -27,10 +27,8 @@ jobs:
           node-version: "12.x"
       - name: Configure NPM
         run: |
-          cat <<EOF > ~/.npmrc
-          //https://registry.npmjs.org/:_authToken=\${NPM_TOKEN}
-          EOF
-          cat ~/.npmrc
+          npm config set registry https://registry.npmjs.org/
+          npm config set //registry.npmjs.org/:_authToken=\${NPM_TOKEN}
       - name: Check Authentication with Registry
         run: npm whoami
       - name: Checkout and pull branch
