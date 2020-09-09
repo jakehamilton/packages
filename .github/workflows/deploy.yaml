@@ -8,6 +8,11 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -16,8 +21,6 @@ jobs:
           git config --global user.name '@jakehamilton'
           git config --global user.email 'jakehamilton@users.noreply.github.com'
           git remote set-url origin https://$GITHUB_ACTOR:$GH_TOKEN@github.com/jakehamilton/packages
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: Configure Node
         uses: actions/setup-node@v1
         with:
@@ -37,19 +40,7 @@ jobs:
         run: npm run ci:build:changed
       - name: Check Authentication with Registry
         run: npm whoami
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Version
         run: npm run ci:version
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish
         run: npm run ci:publish
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
