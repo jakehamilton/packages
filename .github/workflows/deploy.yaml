@@ -27,7 +27,7 @@ jobs:
           node-version: "12.x"
       - name: Configure NPM
         run: |
-          cat <<EOF > .npmrc
+          cat <<EOF > ~/.npmrc
           //https://registry.npmjs.org/:_authToken \${NPM_TOKEN}
           EOF
       - name: Checkout and pull branch
