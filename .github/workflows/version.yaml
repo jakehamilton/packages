@@ -6,7 +6,7 @@ on:
       - "master"
 
 jobs:
-  deploy:
+  version:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}

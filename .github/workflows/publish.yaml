@@ -6,7 +6,7 @@ on:
       - "*"
 
 jobs:
-  deploy:
+  publish:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
