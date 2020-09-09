@@ -21,7 +21,7 @@
         ]
     },
     "lint-staged": {
-        "*.{md,ts,tsx,js,jsx}": "prettier --write"
+        "*.{md,json,ts,tsx,js,jsx}": "prettier --write"
     },
     "devDependencies": {
         "@commitlint/cli": "^9.1.2",
