@@ -1,9 +1,9 @@
-name: Deploy
+name: Publish
 
 on:
   push:
-    branches:
-      - "master"
+    tags:
+      - "*"
 
 jobs:
   deploy:
@@ -39,11 +39,5 @@ jobs:
           npm run chore:bootstrap
       - name: Build Packages
         run: npm run ci:build:changed
-      - name: Version Packages
-        run: npm run ci:version
       - name: Publish Packages
         run: npm run ci:publish
-      - name: Push New Version
-        run: |
-          git push
-          git push --tags

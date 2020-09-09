@@ -1,0 +1,41 @@
+name: Version
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Configure Git
+        run: |
+          git config --global user.name '@jakehamilton'
+          git config --global user.email 'jakehamilton@users.noreply.github.com'
+          git remote set-url origin https://$GITHUB_ACTOR:$GH_TOKEN@github.com/jakehamilton/packages
+      - name: Configure Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - name: Configure NPM
+        run: |
+          npm config set registry https://registry.npmjs.org/
+          npm config set //registry.npmjs.org/:_authToken=\${NPM_TOKEN}
+      - name: Check Authentication with Registry
+        run: npm whoami
+      - name: Checkout and pull branch
+        run: git checkout "${GITHUB_REF:11}" && git pull
+      - name: Install Dependencies
+        run: npm install --no-save
+      - name: Version Packages
+        run: npm run ci:version
+      - name: Publish Packages
+        run: npm run ci:publish

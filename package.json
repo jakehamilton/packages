@@ -5,8 +5,8 @@
         "chore:bootstrap": "lerna bootstrap && lerna link",
         "ci:build": "lerna run build",
         "ci:build:changed": "lerna run build --since",
-        "ci:version": "lerna version --no-push --conventional-commits --create-release=github -m \"chore(release): publish\" -y",
-        "ci:version:prerelease": "lerna version --no-push --conventional-prerelease --conventional-commits --create-release=github -m \"chore(release): publish prerelease\" -y",
+        "ci:version": "lerna version --conventional-commits --create-release=github -m \"chore(release): publish\" -y",
+        "ci:version:prerelease": "lerna version --conventional-prerelease --conventional-commits --create-release=github -m \"chore(release): publish prerelease\" -y",
         "ci:publish": "lerna publish from-git -y"
     },
     "husky": {
