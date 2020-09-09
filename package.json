@@ -1,6 +1,14 @@
 {
     "name": "root",
     "private": true,
+    "scripts": {
+        "chore:bootstrap": "lerna bootstrap && lerna link",
+        "ci:build": "lerna run build",
+        "ci:build:changed": "lerna run build --since",
+        "ci:version": "lerna version --conventional-commits --create-release=github -m \"chore(release): publish\"",
+        "ci:version:prerelease": "lerna version --conventional-prerelease --conventional-commits --create-release=github -m \"chore(release): publish prerelease\"",
+        "ci:publish": "lerna publish from-git"
+    },
     "husky": {
         "hooks": {
             "pre-commit": "lerna run --concurrency 1 --stream precommit --since HEAD --exclude-dependents",
