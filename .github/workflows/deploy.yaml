@@ -28,8 +28,11 @@ jobs:
       - name: Configure NPM
         run: |
           cat <<EOF > ~/.npmrc
-          //https://registry.npmjs.org/:_authToken \${NPM_TOKEN}
+          //https://registry.npmjs.org/:_authToken=\${NPM_TOKEN}
           EOF
+          cat ~/.npmrc
+      - name: Check Authentication with Registry
+        run: npm whoami
       - name: Checkout and pull branch
         run: git checkout "${GITHUB_REF:11}" && git pull
       - name: Install Packages
@@ -38,8 +41,6 @@ jobs:
           npm run chore:bootstrap
       - name: Build Packages
         run: npm run ci:build:changed
-      - name: Check Authentication with Registry
-        run: npm whoami
       - name: Version
         run: npm run ci:version
       - name: Publish
