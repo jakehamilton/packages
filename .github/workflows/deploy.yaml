@@ -43,3 +43,7 @@ jobs:
         run: npm run ci:version
       - name: Publish Packages
         run: npm run ci:publish
+      - name: Push New Version
+        run: |
+          git push
+          git push --tags
