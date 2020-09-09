@@ -20,20 +20,13 @@
         "type": "git",
         "url": "git+https://github.com/jakehamilton/packages.git"
     },
-    "scripts": {
-        "precommit": "lint-staged"
-    },
+    "scripts": {},
     "bugs": {
         "url": "https://github.com/jakehamilton/packages/issues"
-    },
-    "lint-staged": {
-        "*.{ts,tsx,js,jsx}": "prettier --write"
     },
     "devDependencies": {
         "@jakehamilton/dts-webpack-plugin": "^1.1.3",
         "fork-ts-checker-webpack-plugin": "^5.1.0",
-        "lint-staged": "^10.3.0",
-        "prettier": "^2.1.1",
         "ts-loader": "^8.0.3",
         "typescript": "^4.0.2",
         "webpack": "^4.44.1",
