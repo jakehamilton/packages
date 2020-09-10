@@ -137,7 +137,7 @@ module.exports = async ({ github, context }) => {
         }
     }
 
-    const pkgLabels = intersect(getPackages(), getAffectedPackages());
+    const pkgLabels = intersect(getPackages(), getAffectedPackages(issueBody));
 
     await github.issues.addLabels({
         issue_number: context.issue.number,
