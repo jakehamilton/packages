@@ -124,8 +124,8 @@ module.exports = async ({ github, context }) => {
     });
 
     const issueBody = context.payload.issue.body
-        .replace("\r\n", "\n")
-        .replace("\r", "\n");
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n");
 
     const labels = [];
 
