@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.11](https://github.com/jakehamilton/packages/compare/@jakehamilton/dts-webpack-plugin@1.1.10...@jakehamilton/dts-webpack-plugin@1.1.11) (2020-09-10)
+
+**Note:** Version bump only for package @jakehamilton/dts-webpack-plugin
+
+
+
+
+
 ## [1.1.10](https://github.com/jakehamilton/packages/compare/@jakehamilton/dts-webpack-plugin@1.1.9...@jakehamilton/dts-webpack-plugin@1.1.10) (2020-09-10)
 
 **Note:** Version bump only for package @jakehamilton/dts-webpack-plugin
