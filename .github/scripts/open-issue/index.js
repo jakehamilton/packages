@@ -6,6 +6,72 @@ const log = littlelog.create("Auto Issue");
 
 littlelog.setVerbosity("INFO");
 
+const ROOT_DIR = path.resolve(process.env.GITHUB_WORKSPACE);
+const LERNA_CONFIG = require(path.resolve(ROOT_DIR, "lerna.json"));
+
+const getPackages = () => {
+    let pkgs = [];
+
+    const rootPkgPaths = LERNA_CONFIG.packages.map((pkgPath) =>
+        path.resolve(ROOT_DIR, pkgPath.replace(/\*$/, ""))
+    );
+
+    for (const rootPkgPath of rootPkgPaths) {
+        for (const name of fs.readdirSync(rootPkgPath)) {
+            if (fs.statSync(name).isDirectory()) {
+                try {
+                    const pkg = require(path.resolve(
+                        rootPkgPath,
+                        name,
+                        "package.json"
+                    ));
+
+                    pkgs.push(pkg.name);
+                } catch (error) {
+                    log.error(error);
+                }
+            }
+        }
+    }
+
+    return pkgs;
+};
+
+const getAffectedPackages = (body) => {
+    const lines = body.split("\n");
+    const start = lines.findIndex((line) =>
+        line.match(/<!-- @region: affected -->/)
+    );
+    const end = lines.findIndex((line) =>
+        line.match(/<!-- @endregion: affected -->/)
+    );
+
+    if (start === -1 || end === -1) {
+        return [];
+    }
+
+    const pkgs = lines.slice(start, end).reduce((acc, line) => {
+        const match = line.match(/^\-\s+\[(x| )\] ([^\s]+)/);
+        if (match && match[1].toLowerCase() === "x") {
+            return acc.concat(match[2]);
+        }
+
+        return acc;
+    }, []);
+
+    return pkgs;
+};
+
+const intersect = (xs, ys) => {
+    return xs.reduce((acc, x) => {
+        if (ys.includes(x)) {
+            return acc.concat(x);
+        }
+
+        return acc;
+    }, []);
+};
+
 module.exports = async ({ github, context }) => {
     const creator = context.payload.sender.login;
 
@@ -57,22 +123,26 @@ module.exports = async ({ github, context }) => {
     const issueBody = context.payload.issue.body.replace("\r\n", "\n");
     console.log(issueBody.split("\n"));
 
-    let type = "invalid";
+    const labels = [];
 
     for (const line of issueBody.split("\n")) {
         const match = line.match(/^<!-- @type: (\w+) -->$/);
         if (match) {
             if (match[1] === "bug" || match[1] === "feature") {
-                type = match[1];
+                labels.push(match[1]);
+            } else {
+                labels.push("invalid");
             }
             break;
         }
     }
 
+    const pkgLabels = intersect(getPackages(), getAffectedPackages());
+
     await github.issues.addLabels({
         issue_number: context.issue.number,
         owner: context.repo.owner,
         repo: context.repo.repo,
-        labels: [type, "needs triage"],
+        labels: ["needs triage", type].concat(pkgLabels),
     });
 };

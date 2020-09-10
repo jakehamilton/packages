@@ -5,4 +5,11 @@ about: "Request a feature."
 
 <!-- @type: feature -->
 
-Placeholder
+## Affected Packages
+
+<!-- @region: affected -->
+
+-   [ ] @jakehamilton/dts-webpack-plugin
+-   [ ] @jakehamilton/example
+
+<!-- @endregion: affected -->

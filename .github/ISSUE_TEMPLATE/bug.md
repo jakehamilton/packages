@@ -5,4 +5,11 @@ about: "File a bug report."
 
 <!-- @type: bug -->
 
-Placeholder
+## Affected Packages
+
+<!-- @region: affected -->
+
+-   [ ] @jakehamilton/dts-webpack-plugin
+-   [ ] @jakehamilton/example
+
+<!-- @endregion: affected -->
