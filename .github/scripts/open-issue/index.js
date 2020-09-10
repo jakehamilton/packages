@@ -127,9 +127,10 @@ module.exports = async ({ github, context }) => {
 
     const labels = [];
 
+    console.log(issueBody.split("\n"));
+
     for (const line of issueBody.split("\n")) {
         const match = line.match(/^<!-- @type: (\w+) -->$/);
-        console.log(match);
         if (match) {
             log.info(`Found issue type "${match[1]}".`);
             if (match[1] === "bug" || match[1] === "feature") {
