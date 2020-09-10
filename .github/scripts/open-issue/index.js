@@ -54,6 +54,25 @@ module.exports = async ({ github, context }) => {
     });
 
     // @TODO(jakehamilton): check for package name
-    // const issueBody = context.payload.issue.body;
-    console.log(context.payload.issue);
+    const issueBody = context.payload.issue.body.replace("\r\n", "\n");
+    console.log(issueBody.split("\n"));
+
+    let type = "invalid";
+
+    for (const line of issueBody.split("\n")) {
+        const match = line.match(/^<!-- @type: (\w+) -->$/);
+        if (match) {
+            if (match[1] === "bug" || match[1] === "feature") {
+                type = match[1];
+            }
+            break;
+        }
+    }
+
+    await github.issues.addLabels({
+        issue_number: context.issue.number,
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        labels: [type, "needs triage"],
+    });
 };
