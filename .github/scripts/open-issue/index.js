@@ -18,7 +18,7 @@ const getPackages = () => {
 
     for (const rootPkgPath of rootPkgPaths) {
         for (const name of fs.readdirSync(rootPkgPath)) {
-            if (fs.statSync(name).isDirectory()) {
+            if (fs.statSync(path.resolve(rootPkgPath, name)).isDirectory()) {
                 try {
                     const pkg = require(path.resolve(
                         rootPkgPath,
