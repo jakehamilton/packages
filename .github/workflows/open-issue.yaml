@@ -4,7 +4,6 @@ on:
   issues:
     types:
       - "opened"
-      - "edited"
 jobs:
   welcome:
     runs-on: ubuntu-latest

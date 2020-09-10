@@ -47,6 +47,7 @@ const getAffectedPackages = (body) => {
     );
 
     if (start === -1 || end === -1) {
+        log.info("Could not find region for affected packages.");
         return [];
     }
 
@@ -58,6 +59,9 @@ const getAffectedPackages = (body) => {
 
         return acc;
     }, []);
+
+    log.info("Found affected packages:");
+    log.info(pkgs.join(", "));
 
     return pkgs;
 };
@@ -119,15 +123,14 @@ module.exports = async ({ github, context }) => {
         assignees: ["jakehamilton"],
     });
 
-    // @TODO(jakehamilton): check for package name
     const issueBody = context.payload.issue.body.replace("\r\n", "\n");
-    console.log(issueBody.split("\n"));
 
     const labels = [];
 
     for (const line of issueBody.split("\n")) {
         const match = line.match(/^<!-- @type: (\w+) -->$/);
         if (match) {
+            log.info(`Found issue type "${match[1]}".`);
             if (match[1] === "bug" || match[1] === "feature") {
                 labels.push(match[1]);
             } else {
