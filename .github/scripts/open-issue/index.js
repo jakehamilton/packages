@@ -33,7 +33,9 @@ module.exports = async ({ github, context }) => {
 
     if (isFirstSubmission) {
         log.info(`First submission from "${creator}".`);
-        const body = fs.readFileSync(path.resolve(__dirname, "welcome.md"));
+        const body = fs.readFileSync(path.resolve(__dirname, "welcome.md"), {
+            encoding: "utf8",
+        });
 
         await github.issues.createComment({
             issue_number: context.issue.number,
