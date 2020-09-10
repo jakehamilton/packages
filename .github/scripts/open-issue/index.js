@@ -129,8 +129,6 @@ module.exports = async ({ github, context }) => {
 
     const labels = [];
 
-    console.log(issueBody.split("\n"));
-
     for (const line of issueBody.split("\n")) {
         const match = line.match(/^<!-- @type: (\w+) -->$/);
         if (match) {
