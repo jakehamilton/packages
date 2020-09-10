@@ -32,7 +32,7 @@ module.exports = async ({ github, context }) => {
     }
 
     if (isFirstSubmission) {
-        log.info(`First submission from "${creator}".`);
+        log.info(`First submission from "${creator}", adding welcome comment.`);
         const body = fs.readFileSync(path.resolve(__dirname, "welcome.md"), {
             encoding: "utf8",
         });
@@ -45,6 +45,15 @@ module.exports = async ({ github, context }) => {
         });
     }
 
+    log.info("Assigning default assignees to issue.");
+    await github.issues.addAssignees({
+        issue_number: context.issue.number,
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        assignees: ["jakehamilton"],
+    });
+
     // @TODO(jakehamilton): check for package name
     // const issueBody = context.payload.issue.body;
+    console.log(context.payload.issue);
 };
