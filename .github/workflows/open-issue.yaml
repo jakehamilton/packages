@@ -1,0 +1,24 @@
+on:
+  issues:
+    types:
+      - "opened"
+      - "edited"
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - run: |
+          cd .github/scripts/pull-request
+          npm install --no-save
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const script = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/open-issue`);
+            const result = await script({ github, context });
+
+            if (result) {
+              console.log(result);
+            }
