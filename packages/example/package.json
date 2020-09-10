@@ -1,6 +1,6 @@
 {
     "name": "@jakehamilton/example",
-    "version": "1.1.11",
+    "version": "1.1.12",
     "description": "An example package.",
     "keywords": [],
     "author": "Jake Hamilton <jake.hamilton@hey.com>",
@@ -25,7 +25,7 @@
         "url": "https://github.com/jakehamilton/packages/issues"
     },
     "devDependencies": {
-        "@jakehamilton/dts-webpack-plugin": "^1.1.15",
+        "@jakehamilton/dts-webpack-plugin": "^1.1.16",
         "fork-ts-checker-webpack-plugin": "^5.1.0",
         "ts-loader": "^8.0.3",
         "typescript": "^4.0.2",
