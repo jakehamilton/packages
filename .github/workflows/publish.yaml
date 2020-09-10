@@ -32,7 +32,7 @@ jobs:
       - name: Check Authentication with Registry
         run: npm whoami
       - name: Checkout and pull branch
-        run: git checkout "${GITHUB_REF:11}" && git pull
+        run: git checkout "${GITHUB_REF:11}" && git pull && git pull --tags
       - name: Install Dependencies
         run: |
           npm install --no-save

@@ -143,6 +143,6 @@ module.exports = async ({ github, context }) => {
         issue_number: context.issue.number,
         owner: context.repo.owner,
         repo: context.repo.repo,
-        labels: ["needs triage", type].concat(pkgLabels),
+        labels: ["needs triage", ...labels, ...pkgLabels],
     });
 };
