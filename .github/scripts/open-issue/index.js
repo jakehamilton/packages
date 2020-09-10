@@ -9,6 +9,8 @@ littlelog.setVerbosity("INFO");
 module.exports = async ({ github, context }) => {
     const creator = context.payload.sender.login;
 
+    log.info(`Issue from "${creator}".`);
+
     const opts = github.issues.listForRepo.endpoint.merge({
         ...context.issue,
         creator,

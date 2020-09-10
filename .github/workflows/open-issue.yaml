@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
       - run: |
-          cd .github/scripts/pull-request
+          cd $GITHUB_WORKSPACE/.github/scripts/pull-request
           npm install --no-save
       - uses: actions/github-script@v3
         with:
