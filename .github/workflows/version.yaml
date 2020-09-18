@@ -16,6 +16,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+        with:
+          fetch-depth: 0
+      - name: Update History and Tags
+        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
       - name: Configure Git
         run: |
           git config --global user.name '@jakehamilton'
@@ -31,8 +35,6 @@ jobs:
           npm config set //registry.npmjs.org/:_authToken=\${NPM_TOKEN}
       - name: Check Authentication with Registry
         run: npm whoami
-      - name: Checkout and pull branch
-        run: git checkout "${GITHUB_REF:11}" && git pull && git pull --tags
       - name: Install Dependencies
         run: npm install --no-save
       - name: Version Packages
