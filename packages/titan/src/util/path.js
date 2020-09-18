@@ -1,5 +1,9 @@
 const path = require("path");
 
+const isPath = (input) => {
+    return input !== path.basename(input);
+};
+
 const resolveRelative = (input, root = process.cwd()) => {
     if (path.isAbsolute(input)) {
         return input;
@@ -10,5 +14,6 @@ const resolveRelative = (input, root = process.cwd()) => {
 
 module.exports = {
     ...path,
+    isPath,
     resolveRelative,
 };

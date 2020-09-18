@@ -1,13 +1,14 @@
 const fs = require("../../util/fs");
-
 const log = require("../../util/log");
 const git = require("../../util/git");
+const npm = require("../../util/npm");
 const path = require("../../util/path");
-const args = require("../../util/args");
-
 const help = require("./help");
+const getArgs = require("./args");
 
 const command = () => {
+    const args = getArgs();
+
     if (args["--help"]) {
         help();
         process.exit(0);
@@ -52,7 +53,6 @@ const command = () => {
     log.info("Creating directory.");
     fs.mkdir(root);
 
-    // Scaffold packages directory
     log.info("Scaffolding project.");
 
     const packages = path.resolve(root, "packages");
@@ -71,6 +71,36 @@ const command = () => {
     pkg.author = `${user.name} <${user.email}>`;
 
     fs.write(path.resolve(root, "package.json"), JSON.stringify(pkg, null, 2));
+
+    fs.write(
+        path.resolve(root, ".prettierignore"),
+        fs.read(path.resolve(__dirname, "prettierignore.template"))
+    );
+
+    fs.write(
+        path.resolve(root, ".gitignore"),
+        fs.read(path.resolve(__dirname, "gitignore.template"))
+    );
+
+    if (args["--skip-git"]) {
+        log.info("Skipping git initialization.");
+    } else {
+        log.info("Initializing git repository.");
+        git.init(root);
+    }
+
+    if (args["--skip-install"]) {
+        log.info("Skipping installing dependencies.");
+    } else {
+        log.info("Installing dependencies.");
+        npm.install(root);
+    }
+
+    if (!args["--skip-git"]) {
+        log.info("Committing changes.");
+        git.add(root, [], ["-A"]);
+        git.commit(root, "chore: initial commit");
+    }
 };
 
 module.exports = command;

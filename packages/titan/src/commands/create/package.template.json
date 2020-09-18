@@ -1,0 +1,12 @@
+{
+    "name": "",
+    "version": "1.0.0",
+    "description": "",
+    "license": "",
+    "author": "",
+    "main": "src/index.js",
+    "keywords": [],
+    "files": ["src", "dist"],
+    "dependencies": {},
+    "devDependencies": {}
+}

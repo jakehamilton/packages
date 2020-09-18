@@ -10,6 +10,11 @@ const mkdir = (path) => {
     mkdirp.sync(path);
 };
 
+const isDir = (path) => {
+    const stats = fs.statSync(path);
+    return stats.isDirectory();
+};
+
 const rm = (path) => {
     rimraf.sync(path);
 };
@@ -31,6 +36,7 @@ module.exports = {
     rm,
     exists,
     mkdir,
+    isDir,
     read,
     write,
     touch,
