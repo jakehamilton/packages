@@ -18,13 +18,15 @@ jobs:
         uses: actions/checkout@v1
         with:
           fetch-depth: 0
-      - name: Update History and Tags
-        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
       - name: Configure Git
         run: |
           git config --global user.name '@jakehamilton'
           git config --global user.email 'jakehamilton@users.noreply.github.com'
           git remote set-url origin https://$GITHUB_ACTOR:$GH_TOKEN@github.com/jakehamilton/packages
+      - name: Update History and Tags
+        run: |
+          git checkout "${GITHUB_REF:11}" && git pull
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
       - name: Configure Node
         uses: actions/setup-node@v1
         with:
