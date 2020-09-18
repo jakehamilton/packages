@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/jakehamilton/packages/compare/@jakehamilton/example@1.2.0...@jakehamilton/example@1.2.1) (2020-09-18)
+
+**Note:** Version bump only for package @jakehamilton/example
+
+
+
+
+
 # [1.2.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/example@1.1.12...@jakehamilton/example@1.2.0) (2020-09-18)
 
 
