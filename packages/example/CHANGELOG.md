@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/example@1.1.12...@jakehamilton/example@1.2.0) (2020-09-18)
+
+
+### Features
+
+* add titan and begin work ([73b1578](https://github.com/jakehamilton/packages/commit/73b1578881f0e6612c2ff178ba0f12ed54cecb59))
+
+
+
+
+
 ## [1.1.12](https://github.com/jakehamilton/packages/compare/@jakehamilton/example@1.1.11...@jakehamilton/example@1.1.12) (2020-09-10)
 
 **Note:** Version bump only for package @jakehamilton/example
