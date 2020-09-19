@@ -3,7 +3,7 @@
     "version": "independent",
     "command": {
         "publish": {
-            "message": "chore(release): Publish"
+            "message": "chore(release): publish"
         },
         "bootstrap": {
             "npmClientArgs": "--no-save"

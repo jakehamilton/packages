@@ -2,9 +2,9 @@
     "name": "root",
     "private": true,
     "scripts": {
-        "chore:bootstrap": "lerna bootstrap && lerna link",
-        "ci:build": "lerna run build",
-        "ci:build:changed": "lerna run build --since",
+        "chore:bootstrap": "lerna bootstrap",
+        "ci:bootstrap": "lerna bootstrap --since",
+        "ci:build": "lerna run build --since",
         "ci:version": "lerna version --conventional-commits --create-release=github -m \"chore(release): publish\" -y",
         "ci:version:prerelease": "lerna version --conventional-prerelease --conventional-commits --create-release=github -m \"chore(release): publish prerelease\" -y",
         "ci:publish": "lerna publish from-git -y"

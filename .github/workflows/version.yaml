@@ -8,12 +8,18 @@ on:
 jobs:
   version:
     runs-on: ubuntu-latest
+    if: "!startsWith(github.event.head_commit.message, 'chore(release): publish')"
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
       GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
+      - name: Turnstyle
+        uses: softprops/turnstyle@v1
+        with:
+          poll-interval-seconds: 30
+          continue-after-seconds: 180
       - name: Checkout
         uses: actions/checkout@v1
         with:
@@ -39,5 +45,11 @@ jobs:
         run: npm whoami
       - name: Install Dependencies
         run: npm install --no-save
+      - name: Bootstrap
+        run: |
+          npm run ci:bootstrap
+          npm run ci:build
       - name: Version Packages
         run: npm run ci:version
+      - name: Publish Packages
+        run: npm run ci:publish
