@@ -13,7 +13,11 @@ div[class^="language-"]
         scrollbar-color lighten($codeBgColor, 30%) $codeBgColor
 
         &::-webkit-scrollbar-track
-            background pink
+            background $codeBgColor
+
+        &::-webkit-scrollbar-thumb
+            background-color lighten($codeBgColor, 30%)
+            border-radius 6px
 
         &.language-md
         .code-block.language-md

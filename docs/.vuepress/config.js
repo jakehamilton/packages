@@ -2,6 +2,7 @@ module.exports = {
     title: "@jakehamilton",
     description:
         "Documentation for packages in the @jakehamilton namespace on npm.",
+    base: process.env.BASE_URL || "/",
     evergreen: true,
     plugins: [
         "@vuepress/active-header-links",
