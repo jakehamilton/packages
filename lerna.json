@@ -6,7 +6,7 @@
             "message": "chore(release): publish"
         },
         "bootstrap": {
-            "npmClientArgs": "--no-save"
+            "npmClientArgs": ["--no-save"]
         }
     }
 }
