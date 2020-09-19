@@ -3,6 +3,8 @@
     "private": true,
     "scripts": {
         "chore:bootstrap": "lerna bootstrap",
+        "docs:dev": "vuepress dev ./docs",
+        "docs:build": "vuepress build ./docs",
         "ci:bootstrap": "lerna bootstrap --since",
         "ci:build": "lerna run build --since",
         "ci:version": "lerna version --conventional-commits --create-release=github -m \"chore(release): publish\" -y",
@@ -26,9 +28,14 @@
     "devDependencies": {
         "@commitlint/cli": "^9.1.2",
         "@commitlint/config-conventional": "^9.1.2",
+        "@vuepress/plugin-active-header-links": "^1.5.4",
+        "@vuepress/plugin-back-to-top": "^1.5.4",
+        "@vuepress/plugin-nprogress": "^1.5.4",
+        "@vuepress/plugin-pwa": "^1.5.4",
         "husky": "^4.3.0",
         "lerna": "^3.22.1",
         "lint-staged": "^10.3.0",
-        "prettier": "^2.1.1"
+        "prettier": "^2.1.1",
+        "vuepress": "^1.5.4"
     }
 }

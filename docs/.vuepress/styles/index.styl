@@ -1,0 +1,80 @@
+@import "./palette"
+
+a .icon.outbound
+    color inherit
+
+.edit-link .icon.outbound
+    color inherit
+
+div[class^="language-"]
+    overflow hidden
+
+    pre[class^="language-"]
+        scrollbar-color lighten($codeBgColor, 30%) $codeBgColor
+
+        &::-webkit-scrollbar-track
+            background pink
+
+        &.language-md
+        .code-block.language-md
+            .token
+                &.punctuation
+                    color transparentify($cultured, 0.5)
+
+        &
+        .code-block
+            .token
+                color $cultured
+
+                &.punctuation
+                    color $cultured
+
+                &.variable
+                    color $maximum-purple
+
+                &.key
+                    color $maximum-blue
+
+                &.string
+                    color $dark-sea-green
+
+                &.number
+                    color $persian-orange
+
+                &.keyword
+                    color $coral
+
+                &.function
+                    color $maximum-blue
+
+                &.constant
+                    color $dark-sea-green
+
+                &.interpolation-punctuation
+                    color transparentify($cultured, 0.5)
+
+                &.boolean
+                    color $maximum-purple
+
+                &.important
+                    color lighten($cultured, 20%)
+
+                &.comment
+                    color transparentify($cultured, 0.5)
+
+                &.class-name
+                    color $persian-orange
+
+
+    &.line-numbers-mode
+        $width = 3rem
+
+        &::after
+            width $width
+            border-right-color rgba(0, 0, 0, 0.2)
+            z-index 0
+
+        .line-numbers-wrapper
+            width $width
+            background-color $codeBgColor
+            z-index 1
