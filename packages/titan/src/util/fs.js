@@ -15,6 +15,11 @@ const isDir = (path) => {
     return stats.isDirectory();
 };
 
+const readDir = (path, options) => {
+    const result = fs.readdirSync(path, options);
+    return result;
+};
+
 const rm = (path) => {
     rimraf.sync(path);
 };
@@ -37,6 +42,7 @@ module.exports = {
     exists,
     mkdir,
     isDir,
+    readDir,
     read,
     write,
     touch,

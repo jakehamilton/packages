@@ -67,12 +67,32 @@ const command = () => {
     const target = path.resolve(where, name);
 
     if (fs.exists(target)) {
-        log.error("Package already exists at path.");
-        process.exit(1);
+        if (args["--force"] && fs.isDir(target)) {
+            fs.rm(target);
+        } else {
+            log.error(
+                "Package already exists at path, use `--force` to override."
+            );
+            process.exit(1);
+        }
     }
 
     log.info("Creating package directory.");
     fs.mkdir(target);
+
+    const src = path.resolve(target, "src");
+
+    fs.mkdir(src);
+
+    fs.write(
+        path.resolve(target, "package.json"),
+        fs.read(path.resolve(__dirname, "package.template.json"))
+    );
+
+    fs.write(
+        path.resolve(src, "index.js"),
+        fs.read(path.resolve(__dirname, "index.template.js"))
+    );
 };
 
 module.exports = command;

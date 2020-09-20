@@ -7,6 +7,20 @@ const install = (path = process.cwd(), args = []) => {
     });
 };
 
+const parseNameWithVersion = (name) => {
+    const match = /(?<name>@?.+)@(?<version>.+)/.exec(name);
+
+    if (match) {
+        return {
+            name: match.groups.name,
+            version: match.groups.version,
+        };
+    } else {
+        throw new Error(`Unable to parse package name with version "${name}".`);
+    }
+};
+
 module.exports = {
     install,
+    parseNameWithVersion,
 };

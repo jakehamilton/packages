@@ -23,4 +23,5 @@ const main = async () => {
 main().catch((error) => {
     log.error("An unexpected error occurred:");
     log.error(error);
+    console.log(error.stack);
 });

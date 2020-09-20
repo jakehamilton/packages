@@ -1,4 +1,5 @@
 const { execSync } = require("child_process");
+const path = require("./path");
 
 const init = (root = process.cwd()) => {
     execSync("git init", {
@@ -25,10 +26,173 @@ const commit = (
     });
 };
 
+const status = (root = process.cwd()) => {
+    const result = execSync(`git status --porcelain`, {
+        cwd: root,
+        encoding: "utf8",
+        stdio: "pipe",
+    });
+
+    const lines = result.split("\n");
+    const items = lines.reduce((items, line) => {
+        const match = /^(?<type>M|A|\?\?)\s+(?<file>.+)$/.exec(line.trim());
+
+        if (match) {
+            let type;
+            switch (match.groups.type) {
+                default:
+                    type = "unknown";
+                    break;
+                case "M": {
+                    type = "modified";
+                    break;
+                }
+                case "A": {
+                    type = "added";
+                    break;
+                }
+                case "??": {
+                    type = "untracked";
+                    break;
+                }
+            }
+
+            items.push({
+                type,
+                file: path.resolve(root, match.groups.file),
+            });
+        }
+
+        return items;
+    }, []);
+
+    return items;
+};
+
+const diff = (root = process.cwd(), options = []) => {
+    const result = execSync(`git diff ${options.join(" ")}`, {
+        cwd: root,
+        encoding: "utf8",
+        stdio: "pipe",
+    });
+
+    return result.split("\n");
+};
+
+const log = (root = process.cwd(), options = []) => {
+    const result = execSync(`git log ${options.join(" ")}`, {
+        cwd: root,
+        encoding: "utf8",
+        stdio: "pipe",
+    });
+
+    return result;
+};
+
+const getCommitDataBetween = (root = process.cwd(), from, to) => {
+    const START_SEPARATOR = `#TITAN_START_COMMIT`;
+    const END_SEPARATOR = `#TITAN_END_COMMIT`;
+    const raw = log(root, [
+        // https://mirrors.edge.kernel.org/pub/software/scm/git/docs/git-log.html#_pretty_formats
+        `--format="format:${START_SEPARATOR}%n%cn%n%ce%n%G?%n%s%n%b%n${END_SEPARATOR}"`,
+        "--name-only",
+        from,
+        to,
+    ]);
+
+    const lines = raw.trim().split("\n");
+
+    const commits = [];
+
+    let commit;
+
+    let cur = 0;
+    while (cur < lines.length) {
+        if (lines[cur].trim() === START_SEPARATOR) {
+            cur++;
+
+            const author = lines[cur];
+            cur++;
+            const email = lines[cur];
+            cur++;
+
+            const signed = lines[cur];
+            cur++;
+
+            const title = lines[cur];
+            cur++;
+
+            const body = [];
+            while (cur < lines.length && lines[cur].trim() !== END_SEPARATOR) {
+                body.push(lines[cur]);
+                cur++;
+            }
+
+            cur++;
+
+            const changes = [];
+
+            while (
+                cur < lines.length &&
+                lines[cur].trim() !== START_SEPARATOR
+            ) {
+                changes.push(lines[cur]);
+                cur++;
+            }
+
+            commits.push({
+                author,
+                email,
+                signed,
+                title,
+                body: body.join("\n"),
+                changes,
+            });
+        }
+
+        cur++;
+    }
+
+    return commits;
+};
+
+const tag = {
+    list(root = process.cwd()) {
+        const raw = execSync(`git tag --list -n1 --sort=-taggerdate`, {
+            cwd: root,
+            encoding: "utf8",
+            stdio: "pipe",
+        });
+
+        const lines = raw.split("\n");
+        const tags = lines.reduce((tags, line) => {
+            const match = /(?<tag>\S+)\s*(?<annotation>.+)?/.exec(line);
+
+            if (match) {
+                tags.push({
+                    name: match.groups.tag,
+                    annotation: match.groups.annotation || "",
+                });
+            }
+
+            return tags;
+        }, []);
+
+        return tags;
+    },
+    create(root = process.cwd(), name, message) {
+        execSync(`git tag ${name} ${message ? `-m "${message}"` : ""}`, {
+            cwd: root,
+            stdio: "pipe",
+        });
+    },
+};
+
 const config = {
     get(key) {
         const result = execSync(`git config --get ${key}`, {
             encoding: "utf8",
+            stdio: "pipe",
         });
 
         return result.trim();
@@ -39,5 +203,10 @@ module.exports = {
     init,
     add,
     commit,
+    status,
+    diff,
+    log,
+    getCommitDataBetween,
+    tag,
     config,
 };

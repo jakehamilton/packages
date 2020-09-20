@@ -6,7 +6,7 @@
     "author": "",
     "main": "src/index.js",
     "keywords": [],
-    "files": ["src", "dist"],
+    "files": ["src", "dist", "README.md"],
     "dependencies": {},
     "devDependencies": {}
 }
