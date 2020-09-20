@@ -10,9 +10,6 @@ module.exports = {
         "@vuepress/nprogress",
         "@vuepress/pwa",
     ],
-    markdown: {
-        lineNumbers: true,
-    },
     themeConfig: {
         lastUpdated: "Last Updated",
         nextLinks: true,
