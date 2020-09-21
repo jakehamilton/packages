@@ -11,6 +11,7 @@ const main = async () => {
 
     if (args._.length === 0) {
         log.error("No command specified.");
+        help();
         process.exit(1);
     }
 
