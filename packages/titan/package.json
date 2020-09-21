@@ -18,7 +18,8 @@
         "src": "src"
     },
     "files": [
-        "dist"
+        "bin",
+        "src"
     ],
     "bin": {
         "titan": "bin/titan.js"
