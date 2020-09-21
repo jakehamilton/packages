@@ -3,6 +3,11 @@ const args = require("./util/args");
 const commands = require("./commands");
 
 const main = async () => {
+    if (args["--help"] && args._.length === 0) {
+        log.error("Root help message not implemented.");
+        process.exit(1);
+    }
+
     if (args._.length === 0) {
         log.error("No command specified.");
         process.exit(1);
@@ -12,8 +17,6 @@ const main = async () => {
 
     if (command in commands) {
         commands[command]();
-    } else if (args["--help"]) {
-        log.error("Root help message not implemented.");
     } else {
         log.error(`Unknown command "${command}".`);
         process.exit(1);

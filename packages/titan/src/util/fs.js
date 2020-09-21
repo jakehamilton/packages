@@ -36,6 +36,10 @@ const touch = (path) => {
     fs.writeFileSync(path, "");
 };
 
+const link = (from, to, type = "dir") => {
+    fs.symlinkSync(from, to, type);
+};
+
 module.exports = {
     ...fs,
     rm,
@@ -46,4 +50,5 @@ module.exports = {
     read,
     write,
     touch,
+    link,
 };

@@ -84,9 +84,19 @@ const command = () => {
 
     fs.mkdir(src);
 
+    const pkgTemplate = JSON.parse(
+        fs.read(path.resolve(__dirname, "package.template.json"), {
+            encoding: "utf8",
+        })
+    );
+
+    if (args["--private"]) {
+        pkgTemplate.private = true;
+    }
+
     fs.write(
         path.resolve(target, "package.json"),
-        fs.read(path.resolve(__dirname, "package.template.json"))
+        JSON.stringify(pkgTemplate, null, 2)
     );
 
     fs.write(

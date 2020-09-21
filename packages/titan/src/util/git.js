@@ -104,8 +104,6 @@ const getCommitDataBetween = (root = process.cwd(), from, to) => {
 
     const commits = [];
 
-    let commit;
-
     let cur = 0;
     while (cur < lines.length) {
         if (lines[cur].trim() === START_SEPARATOR) {

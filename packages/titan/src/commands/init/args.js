@@ -1,21 +1,26 @@
 const arg = require("arg");
 
 const getArgs = () =>
-    arg({
-        "--help": Boolean,
-        "-h": "--help",
+    arg(
+        {
+            "--help": Boolean,
+            "-h": "--help",
 
-        "--force": Boolean,
-        "-f": "--force",
+            "--force": Boolean,
+            "-f": "--force",
 
-        "--name": String,
-        "-n": "--name",
+            "--name": String,
+            "-n": "--name",
 
-        "--skip-install": Boolean,
-        "-x": "--skip-install",
+            "--skip-install": Boolean,
+            "-x": "--skip-install",
 
-        "--skip-git": Boolean,
-        "-X": "--skip-git",
-    });
+            "--skip-git": Boolean,
+            "-X": "--skip-git",
+        },
+        {
+            permissive: true,
+        }
+    );
 
 module.exports = getArgs;

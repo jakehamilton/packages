@@ -1,8 +1,8 @@
 const { execSync } = require("child_process");
 
-const install = (path = process.cwd(), args = []) => {
+const install = (root = process.cwd(), args = []) => {
     execSync(`npm install ${args.join(" ")}`, {
-        cwd: path,
+        cwd: root,
         stdio: "pipe",
     });
 };
