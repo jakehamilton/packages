@@ -11,6 +11,9 @@
     "homepage": "https://github.com/jakehamilton/packages",
     "license": "Apache-2.0",
     "main": "src/index.js",
+    "publishConfig": {
+        "access": "public"
+    },
     "directories": {
         "src": "src"
     },
