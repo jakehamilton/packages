@@ -19,7 +19,7 @@
     },
     "files": [
         "bin",
-        "src"
+        "src/**/*"
     ],
     "bin": {
         "titan": "bin/titan.js"
