@@ -17,14 +17,14 @@ const getAllPackageInfo = (root = process.cwd()) => {
         if (!fs.exists(pkgsDir)) {
             log.error(`Packages directory "${pkgsDir}" does not exist.`);
         } else {
-            log.info(`Loading packages in "${pkgsDir}".`);
+            log.debug(`Loading packages in "${pkgsDir}".`);
             for (const pkgDir of fs.readDir(pkgsDir)) {
                 if (fs.isDir(path.resolve(pkgsDir, pkgDir))) {
                     const pkg = JSON.parse(
                         fs.read(path.resolve(pkgsDir, pkgDir, "package.json"))
                     );
 
-                    log.debug(`Loaded config for package "${pkg.name}".`);
+                    log.trace(`Loaded config for package "${pkg.name}".`);
 
                     pkgs.push({
                         path: path.resolve(pkgsDir, pkgDir),
@@ -51,6 +51,7 @@ const writePackageInfo = (pkg) => {
                 "package.json"
             )}".`
         );
+        process.exit(1);
     }
 };
 

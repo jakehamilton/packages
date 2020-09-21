@@ -1,11 +1,25 @@
 const { execSync } = require("child_process");
+const semver = require("semver");
+const npm = require("./npm");
+const pkgs = require("./pkgs");
 const path = require("./path");
+const logger = require("./log");
 
 const init = (root = process.cwd()) => {
     execSync("git init", {
         cwd: root,
         stdio: "pipe",
     });
+};
+
+const diff = (root = process.cwd(), options = []) => {
+    const result = execSync(`git diff ${options.join(" ")}`, {
+        cwd: root,
+        encoding: "utf8",
+        stdio: "pipe",
+    });
+
+    return result.split("\n");
 };
 
 const add = (root = process.cwd(), files = [], options = []) => {
@@ -69,16 +83,6 @@ const status = (root = process.cwd()) => {
     return items;
 };
 
-const diff = (root = process.cwd(), options = []) => {
-    const result = execSync(`git diff ${options.join(" ")}`, {
-        cwd: root,
-        encoding: "utf8",
-        stdio: "pipe",
-    });
-
-    return result.split("\n");
-};
-
 const log = (root = process.cwd(), options = []) => {
     const result = execSync(`git log ${options.join(" ")}`, {
         cwd: root,
@@ -96,8 +100,7 @@ const getCommitDataBetween = (root = process.cwd(), from, to) => {
         // https://mirrors.edge.kernel.org/pub/software/scm/git/docs/git-log.html#_pretty_formats
         `--format="format:${START_SEPARATOR}%n%cn%n%ce%n%G?%n%s%n%b%n${END_SEPARATOR}"`,
         "--name-only",
-        from,
-        to,
+        `${from}..${to}`,
     ]);
 
     const lines = raw.trim().split("\n");
@@ -154,7 +157,111 @@ const getCommitDataBetween = (root = process.cwd(), from, to) => {
     return commits;
 };
 
+const getChangesBetween = (root = process.cwd(), from, to, pkg) => {
+    const fileDiff = diff(root, ["--name-only", from, to]);
+
+    const fileChanges = fileDiff.filter((file) =>
+        path.resolve(root, file).startsWith(pkg.path)
+    );
+
+    if (fileChanges.length === 0) {
+        return [];
+    }
+
+    const commits = getCommitDataBetween(root, from, to);
+
+    const affectingCommits = commits.filter((commit) => {
+        const change = commit.changes.find((file) =>
+            path.resolve(root, file).startsWith(pkg.path)
+        );
+
+        return Boolean(change);
+    });
+
+    return affectingCommits;
+};
+
+const changedSince = (root = process.cwd(), release, target = "HEAD") => {
+    const changes = getChangesBetween(
+        root,
+        release.tag.name,
+        target,
+        release.pkg
+    );
+
+    return changes.length !== 0;
+};
+
+const getUpgradeBetween = (root = process.cwd(), release, target = "HEAD") => {
+    const commits = getChangesBetween(
+        root,
+        release.tag.name,
+        target,
+        release.pkg
+    );
+
+    if (commits.length === 0) {
+        return null;
+    }
+
+    let bump = "patch";
+
+    for (const commit of commits) {
+        if (commit.body.match(/^BREAKING CHANGE/g)) {
+            bump = "major";
+            break;
+        }
+
+        if (commit.title.startsWith("feat")) {
+            bump = "minor";
+        }
+    }
+
+    const newVersion = semver.inc(release.version, bump);
+
+    if (newVersion === null) {
+        logger.error(
+            `Could not perform bump "${bump}" on version "${release.version}" for package "${release.name}".`
+        );
+        process.exit(1);
+    }
+
+    return {
+        name: release.name,
+        version: release.version,
+        newVersion,
+        pkg: release.pkg,
+    };
+};
+
+const getAllUpgradesBetween = (
+    root = process.cwd(),
+    releases,
+    target = "HEAD"
+) => {
+    const upgrades = [];
+
+    for (const release of releases) {
+        const upgrade = getUpgradeBetween(root, release, target);
+
+        if (upgrade !== null) {
+            upgrades.push(upgrade);
+        }
+    }
+
+    return upgrades;
+};
+
 const tag = {
+    at(root = process.cwd(), target = "HEAD") {
+        const result = execSync(`git tag --points-at ${target}`, {
+            cwd: root,
+            encoding: "utf8",
+            stdio: "pipe",
+        });
+
+        return result.trim().split("\n");
+    },
     list(root = process.cwd()) {
         const raw = execSync(`git tag --list -n1 --sort=-taggerdate`, {
             cwd: root,
@@ -177,6 +284,37 @@ const tag = {
         }, []);
 
         return tags;
+    },
+    releases(root = process.cwd()) {
+        return this.list(root).filter((tag) =>
+            tag.annotation.startsWith("titan-release:")
+        );
+    },
+    latestReleases(
+        root = process.cwd(),
+        pkgsData = pkgs.getAllPackageInfo(),
+        tags = this.releases(root)
+    ) {
+        const latest = new Map();
+
+        for (const tag of tags) {
+            const { name, version } = npm.parseNameWithVersion(tag.name);
+
+            if (!latest.has(name)) {
+                const pkg = pkgsData.find((data) => data.config.name === name);
+
+                if (pkg) {
+                    latest.set(name, {
+                        name,
+                        tag,
+                        version,
+                        pkg,
+                    });
+                }
+            }
+        }
+
+        return latest;
     },
     create(root = process.cwd(), name, message) {
         execSync(`git tag ${name} ${message ? `-m "${message}"` : ""}`, {
@@ -205,6 +343,10 @@ module.exports = {
     diff,
     log,
     getCommitDataBetween,
+    getChangesBetween,
+    changedSince,
+    getUpgradeBetween,
+    getAllUpgradesBetween,
     tag,
     config,
 };

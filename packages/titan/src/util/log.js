@@ -20,6 +20,10 @@ if (args["--verbose"]) {
     if (args["--verbose"] > 3) {
         littlelog.setVerbosity("TRACE");
     }
+} else if (!process.env.LOG_LEVEL) {
+    // @FIXME(jakehamilton): The @littlethings/log package needs to be updated
+    //  to default the verbosity level to "INFO".
+    littlelog.setVerbosity("INFO");
 }
 
 module.exports = littlelog.create("Titan");

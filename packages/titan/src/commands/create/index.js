@@ -90,6 +90,8 @@ const command = () => {
         })
     );
 
+    pkgTemplate.name = name;
+
     if (args["--private"]) {
         pkgTemplate.private = true;
     }
