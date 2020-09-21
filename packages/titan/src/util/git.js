@@ -83,6 +83,34 @@ const status = (root = process.cwd()) => {
     return items;
 };
 
+const printChanges = (root = process.cwd(), changes) => {
+    for (const change of changes) {
+        let type;
+
+        switch (change.type) {
+            default:
+            case "unknown": {
+                type = " ?";
+                break;
+            }
+            case "modified": {
+                type = " M";
+                break;
+            }
+            case "added": {
+                type = " A";
+                break;
+            }
+            case "untracked": {
+                type = "??";
+                break;
+            }
+        }
+
+        logger.error(`${type}: ${path.relative(root, change.file)}`);
+    }
+};
+
 const log = (root = process.cwd(), options = []) => {
     const result = execSync(`git log ${options.join(" ")}`, {
         cwd: root,
@@ -340,6 +368,7 @@ module.exports = {
     add,
     commit,
     status,
+    printChanges,
     diff,
     log,
     getCommitDataBetween,

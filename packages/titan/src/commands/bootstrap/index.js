@@ -1,11 +1,20 @@
+const semver = require("semver");
 const fs = require("../../util/fs");
 const log = require("../../util/log");
 const npm = require("../../util/npm");
 const path = require("../../util/path");
 const pkgs = require("../../util/pkgs");
-const semver = require("semver");
+const help = require("./help");
+const getArgs = require("./args");
 
 const command = () => {
+    const args = getArgs();
+
+    if (args["--help"]) {
+        help();
+        process.exit(0);
+    }
+
     const pkgsData = pkgs.getAllPackageInfo(process.cwd());
 
     const cycles = pkgs.detectCycles(pkgsData);

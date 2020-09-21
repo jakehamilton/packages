@@ -5,8 +5,17 @@ const git = require("../../util/git");
 const npm = require("../../util/npm");
 const pkgs = require("../../util/pkgs");
 const path = require("../../util/path");
+const help = require("./help");
+const getArgs = require("./args");
 
 const command = () => {
+    const args = getArgs();
+
+    if (args["--help"]) {
+        help();
+        process.exit(0);
+    }
+
     log.info("Loading git tags.");
     const tags = git.tag.releases();
 
@@ -17,32 +26,7 @@ const command = () => {
     if (changes.length > 0) {
         log.error("You must commit your changes before running this command.");
         log.error("");
-        for (const change of changes) {
-            let type;
-
-            switch (change.type) {
-                default:
-                case "unknown": {
-                    type = " ?";
-                    break;
-                }
-                case "modified": {
-                    type = " M";
-                    break;
-                }
-                case "added": {
-                    type = " A";
-                    break;
-                }
-                case "untracked": {
-                    type = "??";
-                    break;
-                }
-            }
-
-            log.error(`${type}: ${path.relative(process.cwd(), change.file)}`);
-        }
-
+        git.printChanges(process.cwd(), changes);
         process.exit(1);
     }
 

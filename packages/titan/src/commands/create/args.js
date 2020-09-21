@@ -1,11 +1,10 @@
 const arg = require("arg");
+const rootArgs = require("../../util/args");
 
-const getArgs = () =>
-    arg(
+const getArgs = () => ({
+    ...rootArgs,
+    ...arg(
         {
-            "--help": Boolean,
-            "-h": "--help",
-
             "--force": Boolean,
             "-f": "--force",
 
@@ -15,6 +14,7 @@ const getArgs = () =>
         {
             permissive: true,
         }
-    );
+    ),
+});
 
 module.exports = getArgs;

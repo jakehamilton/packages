@@ -1,12 +1,19 @@
 const chalk = require("chalk");
 const log = require("../../util/log");
 const cmd = require("../../util/cmd");
+const npm = require("../../util/npm");
 const git = require("../../util/git");
 const pkgs = require("../../util/pkgs");
+const help = require("./help");
 const getArgs = require("./args");
 
 const command = () => {
     const args = getArgs();
+
+    if (args["--help"]) {
+        help();
+        process.exit(0);
+    }
 
     if (args["--"].length === 0) {
         log.error("No command specified.");
@@ -25,6 +32,18 @@ const command = () => {
         }
     }
 
+    const tagged = [];
+
+    if (args["--tagged"]) {
+        const tags = git.tag.at(process.cwd());
+
+        for (const tag of tags) {
+            const { name } = npm.parseNameWithVersion(tag);
+
+            tagged.push(name);
+        }
+    }
+
     const pkgsData = pkgs.getAllPackageInfo();
 
     const scope = args["--scope"] || ".+";
@@ -37,6 +56,10 @@ const command = () => {
             return false;
         }
 
+        if (args["--tagged"] && !tagged.includes(pkg.config.name)) {
+            return false;
+        }
+
         return pkg.config.name.match(scopeRegex);
     });
 
@@ -46,6 +69,7 @@ const command = () => {
     }
 
     for (const pkg of matchingPkgs) {
+        log.info(chalk`{white ${pkg.config.name}} ${args["--"].join(" ")}`);
         const output = cmd.exec(args["--"].join(" "), {
             cwd: pkg.path,
             encoding: "utf8",
@@ -56,7 +80,7 @@ const command = () => {
 
         for (const line of lines) {
             if (line.trim() !== "") {
-                log.info(chalk`{white ${pkg.config.name}} ${line}`);
+                log.info(chalk`{white ${pkg.config.name}} > ${line}`);
             }
         }
     }

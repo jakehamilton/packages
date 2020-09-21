@@ -2,16 +2,35 @@ const chalk = require("chalk");
 
 const help = () => {
     const message = chalk`
-    {bold USAGE}
+{bold DESCRIPTION}
 
-        {dim $} {bold titan init} <name>
+    Create a new project managed by Titan.
 
-    {bold OPTIONS}
-        --help                Show this help message
+{bold USAGE}
 
-    {bold EXAMPLE}
+    {dim $} {bold titan init} [options] <name>
 
-        {dim $} {bold titan init} my-project
+{bold OPTIONS}
+
+    --help, -h                Show this help message
+    --name, -n                Set the name of the project for package.json
+    --force, -f               Overwrite existing directory
+    --skip-install, -x        Skip installing dependencies
+    --skip-git, -X            Skip running git commands
+
+{bold EXAMPLE}
+
+    {dim $ # Create a new project.}
+    {dim $} {bold titan init} my-project
+
+    {dim $ # Create a new project and overwrite an existing one.}
+    {dim $} {bold titan init} --force my-project
+
+    {dim $ # Create a new project but don't install dependencies.}
+    {dim $} {bold titan init} --skip-install my-project
+
+    {dim $ # Create a new project but don't run git commands.}
+    {dim $} {bold titan init} --skip-git my-project
 `;
 
     console.log(message);

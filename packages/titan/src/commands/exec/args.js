@@ -1,21 +1,20 @@
 const arg = require("arg");
+const rootArgs = require("../../util/args");
 
 const dashIndex = process.argv.indexOf("--");
 
 const getArgs = () => ({
+    ...rootArgs,
     ...arg(
         {
-            "--help": Boolean,
-            "-h": "--help",
-
-            "--verbose": arg.COUNT,
-            "-v": "--verbose",
-
             "--scope": String,
             "-s": "--scope",
 
             "--changed": Boolean,
             "-c": "--changed",
+
+            "--tagged": Boolean,
+            "-t": "--tagged",
         },
         {
             permissive: true,

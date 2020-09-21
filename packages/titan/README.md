@@ -1,11 +1,16 @@
-# `titan`
+# @jakehamilton/titan
 
-> TODO: description
+> Manage monorepo projects.
+
+## Installation
+
+```shell
+npm install --global @jakehamilton/titan
+```
 
 ## Usage
 
-```
-const titan = require('titan');
-
-// TODO: DEMONSTRATE API
+```shell
+# Print help message.
+titan --help
 ```

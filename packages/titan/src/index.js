@@ -1,11 +1,12 @@
 const log = require("./util/log");
 const args = require("./util/args");
+const help = require("./util/help");
 const commands = require("./commands");
 
 const main = async () => {
     if (args["--help"] && args._.length === 0) {
-        log.error("Root help message not implemented.");
-        process.exit(1);
+        help();
+        process.exit(0);
     }
 
     if (args._.length === 0) {
