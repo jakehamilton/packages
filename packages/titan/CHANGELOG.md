@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.1.3...@jakehamilton/titan@1.2.0) (2020-09-20)
+
+
+### Features
+
+* add support for versioning ([38b6db5](https://github.com/jakehamilton/packages/commit/38b6db56540bcd53bc9c3c738dae4dcfcec195f7))
+
+
+
+
+
 ## [1.1.3](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.1.2...@jakehamilton/titan@1.1.3) (2020-09-19)
 
 **Note:** Version bump only for package @jakehamilton/titan
