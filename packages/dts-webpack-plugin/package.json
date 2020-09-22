@@ -7,6 +7,7 @@
         "typescript",
         "dts"
     ],
+    "types": "./lib/types.d.ts",
     "author": "Jake Hamilton <jake.hamilton@hey.com>",
     "homepage": "https://github.com/jakehamilton/packages",
     "license": "Apache-2.0",
@@ -18,7 +19,7 @@
         "lib": "lib"
     },
     "files": [
-        "lib"
+        "lib/**/*"
     ],
     "repository": {
         "type": "git",
