@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.2.0 (2020-09-22)
+
+
+### Features
+
+* add type definitions ([d16ffd4](https://github.com/jakehamilton/packages/commit/d16ffd452889ec3b31f0c69d3f8797a00fd5cde9)), closes [#4](https://github.com/jakehamilton/packages/issues/4)
+
+
+
+
+
 ## [1.1.16](https://github.com/jakehamilton/packages/compare/@jakehamilton/dts-webpack-plugin@1.1.15...@jakehamilton/dts-webpack-plugin@1.1.16) (2020-09-10)
 
 **Note:** Version bump only for package @jakehamilton/dts-webpack-plugin
