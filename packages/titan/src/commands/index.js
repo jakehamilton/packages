@@ -5,4 +5,5 @@ module.exports = {
     bootstrap: require("./bootstrap"),
     exec: require("./exec"),
     publish: require("./publish"),
+    add: require("./add"),
 };

@@ -1,5 +1,10 @@
+const arg = require("arg");
 const littlelog = require("@littlethings/log");
-const args = require("./args");
+const rootArgs = require("./args");
+
+const args = arg(rootArgs, {
+    permissive: true,
+});
 
 if (args["--verbose"]) {
     switch (args["--verbose"]) {

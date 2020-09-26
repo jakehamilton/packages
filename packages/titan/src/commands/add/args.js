@@ -1,8 +1,6 @@
 const arg = require("arg");
 const rootArgs = require("../../util/args");
 
-const dashIndex = process.argv.indexOf("--");
-
 const getArgs = () => ({
     ...arg(
         {
@@ -15,16 +13,20 @@ const getArgs = () => ({
 
             "--tagged": Boolean,
             "-t": "--tagged",
+
+            "--dev": Boolean,
+            "-d": "--dev",
+
+            "--peer": Boolean,
+            "-p": "--peer",
+
+            "--optional": Boolean,
+            "-o": "--optional",
         },
         {
             permissive: true,
-            argv: process.argv.slice(
-                2,
-                dashIndex > -1 ? dashIndex : process.argv.length
-            ),
         }
     ),
-    "--": dashIndex > -1 ? process.argv.slice(dashIndex + 1) : [],
 });
 
 module.exports = getArgs;

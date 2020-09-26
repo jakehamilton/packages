@@ -1,7 +1,9 @@
+const arg = require("arg");
 const rootArgs = require("../../util/args");
 
-const getArgs = () => ({
-    ...rootArgs,
-});
+const getArgs = () =>
+    arg({
+        ...rootArgs,
+    });
 
 module.exports = getArgs;

@@ -2,9 +2,9 @@ const arg = require("arg");
 const rootArgs = require("../../util/args");
 
 const getArgs = () => ({
-    ...rootArgs,
     ...arg(
         {
+            ...rootArgs,
             "--force": Boolean,
             "-f": "--force",
 

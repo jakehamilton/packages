@@ -1,6 +1,7 @@
 const { execSync } = require("child_process");
 const semver = require("semver");
 const log = require("./log");
+const pkgs = require("./pkgs");
 
 const install = (root = process.cwd(), args = []) => {
     execSync(`npm install ${args.join(" ")}`, {
@@ -10,12 +11,12 @@ const install = (root = process.cwd(), args = []) => {
 };
 
 const parseNameWithVersion = (name) => {
-    const match = /(?<name>@?.+)@(?<version>.+)/.exec(name);
+    const match = /(?<name>@?[^@]+)(?:@(?<version>.+))?/.exec(name);
 
     if (match) {
         return {
             name: match.groups.name,
-            version: match.groups.version,
+            version: match.groups.version || "latest",
         };
     } else {
         throw new Error(`Unable to parse package name with version "${name}".`);
@@ -53,9 +54,64 @@ const publish = (pkg) => {
     });
 };
 
+const patchDependenciesWithLocals = (pkgsMap, dependencies) => {
+    for (const [name, version] of Object.entries(dependencies)) {
+        if (pkgsMap.has(name)) {
+            const local = pkgsMap.get(name);
+            if (semver.satisfies(local.config.version, version)) {
+                dependencies[name] = `file:${local.path}`;
+            }
+        }
+    }
+
+    return dependencies;
+};
+
+const withLinkedLocals = (pkgsData, fn) => {
+    const pkgsMap = pkgsData.reduce((data, pkg) => {
+        data.set(pkg.config.name, pkg);
+        return data;
+    }, new Map());
+
+    for (const pkg of pkgsData) {
+        const dependencies = patchDependenciesWithLocals(pkgsMap, {
+            ...(pkg.config.dependencies || {}),
+        });
+        const devDependencies = patchDependenciesWithLocals(pkgsMap, {
+            ...(pkg.config.devDependencies || {}),
+        });
+        const optionalDependencies = patchDependenciesWithLocals(pkgsMap, {
+            ...(pkg.config.optionalDependencies || {}),
+        });
+        const peerDependencies = patchDependenciesWithLocals(pkgsMap, {
+            ...(pkg.config.peerDependencies || {}),
+        });
+
+        const newPkg = {
+            ...pkg,
+            config: {
+                ...pkg.config,
+                dependencies,
+                devDependencies,
+                optionalDependencies,
+                peerDependencies,
+            },
+        };
+
+        pkgs.writePackageInfo(newPkg);
+    }
+
+    fn();
+
+    for (const pkg of pkgsData) {
+        pkgs.writePackageInfo(pkg);
+    }
+};
+
 module.exports = {
     install,
     parseNameWithVersion,
     dedupe,
     publish,
+    withLinkedLocals,
 };

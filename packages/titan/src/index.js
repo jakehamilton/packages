@@ -1,9 +1,14 @@
+const arg = require("arg");
 const log = require("./util/log");
-const args = require("./util/args");
+const rootArgs = require("./util/args");
 const help = require("./util/help");
 const commands = require("./commands");
 
 const main = async () => {
+    const args = arg(rootArgs, {
+        permissive: true,
+    });
+
     if (args["--help"] && args._.length === 0) {
         help();
         process.exit(0);

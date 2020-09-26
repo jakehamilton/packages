@@ -1,16 +1,11 @@
 const arg = require("arg");
 
-const args = arg(
-    {
-        "--help": Boolean,
-        "-h": "--help",
+const args = {
+    "--help": Boolean,
+    "-h": "--help",
 
-        "--verbose": arg.COUNT,
-        "-v": "--verbose",
-    },
-    {
-        permissive: true,
-    }
-);
+    "--verbose": arg.COUNT,
+    "-v": "--verbose",
+};
 
 module.exports = args;
