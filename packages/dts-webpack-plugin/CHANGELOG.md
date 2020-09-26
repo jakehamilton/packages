@@ -3,77 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.2.0 (2020-09-22)
+
+### Features
+
+-   add type definitions ([d16ffd4](https://github.com/jakehamilton/packages/commit/d16ffd452889ec3b31f0c69d3f8797a00fd5cde9)), closes [#4](https://github.com/jakehamilton/packages/issues/4)
+
 ## [1.1.16](https://github.com/jakehamilton/packages/compare/@jakehamilton/dts-webpack-plugin@1.1.15...@jakehamilton/dts-webpack-plugin@1.1.16) (2020-09-10)
 
 **Note:** Version bump only for package @jakehamilton/dts-webpack-plugin
-
-
-
-
 
 ## [1.1.15](https://github.com/jakehamilton/packages/compare/@jakehamilton/dts-webpack-plugin@1.1.14...@jakehamilton/dts-webpack-plugin@1.1.15) (2020-09-10)
 
 **Note:** Version bump only for package @jakehamilton/dts-webpack-plugin
 
-
-
-
-
 ## [1.1.14](https://github.com/jakehamilton/packages/compare/@jakehamilton/dts-webpack-plugin@1.1.13...@jakehamilton/dts-webpack-plugin@1.1.14) (2020-09-10)
 
 **Note:** Version bump only for package @jakehamilton/dts-webpack-plugin
-
-
-
-
 
 ## [1.1.13](https://github.com/jakehamilton/packages/compare/@jakehamilton/dts-webpack-plugin@1.1.12...@jakehamilton/dts-webpack-plugin@1.1.13) (2020-09-10)
 
 **Note:** Version bump only for package @jakehamilton/dts-webpack-plugin
 
-
-
-
-
 ## [1.1.12](https://github.com/jakehamilton/packages/compare/@jakehamilton/dts-webpack-plugin@1.1.11...@jakehamilton/dts-webpack-plugin@1.1.12) (2020-09-10)
 
 **Note:** Version bump only for package @jakehamilton/dts-webpack-plugin
-
-
-
-
 
 ## [1.1.11](https://github.com/jakehamilton/packages/compare/@jakehamilton/dts-webpack-plugin@1.1.10...@jakehamilton/dts-webpack-plugin@1.1.11) (2020-09-10)
 
 **Note:** Version bump only for package @jakehamilton/dts-webpack-plugin
 
-
-
-
-
 ## [1.1.10](https://github.com/jakehamilton/packages/compare/@jakehamilton/dts-webpack-plugin@1.1.9...@jakehamilton/dts-webpack-plugin@1.1.10) (2020-09-10)
 
 **Note:** Version bump only for package @jakehamilton/dts-webpack-plugin
-
-
-
-
 
 ## [1.1.9](https://github.com/jakehamilton/packages/compare/@jakehamilton/dts-webpack-plugin@1.1.7...@jakehamilton/dts-webpack-plugin@1.1.9) (2020-09-10)
 
 **Note:** Version bump only for package @jakehamilton/dts-webpack-plugin
 
-
-
-
-
 ## [1.1.7](https://github.com/jakehamilton/packages/compare/@jakehamilton/dts-webpack-plugin@1.1.6...@jakehamilton/dts-webpack-plugin@1.1.7) (2020-09-09)
 
 **Note:** Version bump only for package @jakehamilton/dts-webpack-plugin
-
-
-
-
 
 ## [1.1.6](https://github.com/jakehamilton/packages/compare/@jakehamilton/dts-webpack-plugin@1.1.5...@jakehamilton/dts-webpack-plugin@1.1.6) (2020-09-09)
 
