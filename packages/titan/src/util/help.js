@@ -29,6 +29,7 @@ const help = () => {
     {dim $} {bold titan init} --help
     {dim $} {bold titan create} --help
     {dim $} {bold titan bootstrap} --help
+    {dim $} {bold titan add} --help
     {dim $} {bold titan version} --help
     {dim $} {bold titan publish} --help
     {dim $} {bold titan exec} --help
