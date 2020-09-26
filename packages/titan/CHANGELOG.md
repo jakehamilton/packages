@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.11.0...@jakehamilton/titan@1.12.0) (2020-09-26)
+
+
+### Features
+
+* add changed command ([7b9a902](https://github.com/jakehamilton/packages/commit/7b9a90208579c11696891e6038f61183e5bc5cc6))
+
+
+
+
+
 # [1.11.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.10.0...@jakehamilton/titan@1.11.0) (2020-09-26)
 
 
