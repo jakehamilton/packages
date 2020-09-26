@@ -6,4 +6,5 @@ module.exports = {
     exec: require("./exec"),
     publish: require("./publish"),
     add: require("./add"),
+    changed: require("./changed"),
 };
