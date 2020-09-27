@@ -37,9 +37,8 @@ const command = () => {
     for (const tag of npm.dedupe(tags)) {
         const { name } = npm.parseNameWithVersion(tag);
 
-        const pkg = pkgs.has(name);
-
-        if (pkg) {
+        if (pkgs.has(name)) {
+            const pkg = pkgs.get(name);
             if (args["--dry-run"]) {
                 log.info(
                     `Publish package "${pkg.config.name}" at version "${pkg.config.version}".`

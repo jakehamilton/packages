@@ -33,6 +33,7 @@ const help = () => {
     {dim $} {bold titan version} --help
     {dim $} {bold titan publish} --help
     {dim $} {bold titan exec} --help
+    {dim $} {bold titan changed} --help
 `;
 
     console.log(message);

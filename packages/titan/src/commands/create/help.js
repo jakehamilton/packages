@@ -18,6 +18,9 @@ const help = () => {
 
     {bold EXAMPLE}
 
+        {dim $ # Create a package named "my-library".}
+        {dim $} {bold titan create} my-library
+
         {dim $ # Create a package at "./cli/my-library".}
         {dim $} {bold titan create} my-library ./cli
 

@@ -22,6 +22,9 @@ const help = () => {
 
 {bold EXAMPLE}
 
+    {dim $ # Add "react" and "redux" as dependencies for all packages.}
+    {dim $} {bold titan add} react redux
+
     {dim $ # Add "react" as a dependency for all packages in the "@jakehamilton" namespace.}
     {dim $} {bold titan add} --scope="^@jakehamilton" react
 

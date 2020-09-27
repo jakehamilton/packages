@@ -19,6 +19,9 @@ const help = () => {
 
 {bold EXAMPLE}
 
+    {dim $ # Build all packages.}
+    {dim $} {bold titan exec} -- npm run build
+
     {dim $ # Build only packages in the "@jakehamilton" namespace.}
     {dim $} {bold titan exec} --scope="^@jakehamilton" -- npm run build
 
