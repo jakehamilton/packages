@@ -3,7 +3,6 @@ const fs = require("../../util/fs");
 const log = require("../../util/log");
 const git = require("../../util/git");
 const npm = require("../../util/npm");
-const pkgs = require("../../util/pkgs");
 const path = require("../../util/path");
 const help = require("./help");
 const getArgs = require("./args");
@@ -19,22 +18,20 @@ const command = () => {
     log.info("Loading git tags.");
     const tags = git.tag.releases();
 
-    const pkgsData = pkgs.getAllPackageInfo();
+    const pkgs = npm.getAllPackages();
 
     const changes = git.status();
 
     if (changes.length > 0) {
         log.error("You must commit your changes before running this command.");
         log.error("");
-        git.printChanges(process.cwd(), changes);
+        git.printChanges(changes);
         process.exit(1);
     }
 
-    const latest = [
-        ...git.tag.latestReleases(process.cwd(), pkgsData, tags).values(),
-    ];
+    const latest = [...git.tag.latestReleases(pkgs, tags).values()];
 
-    const newPkgs = pkgsData.filter((pkg) => {
+    const newPkgs = [...pkgs.values()].filter((pkg) => {
         const release = latest.find(
             (release) => release.name === pkg.config.name
         );
@@ -42,7 +39,7 @@ const command = () => {
         return !release;
     });
 
-    const upgrades = git.getAllUpgradesBetween(process.cwd(), latest, "HEAD");
+    const upgrades = git.getAllUpgradesBetween(latest, "HEAD");
 
     if (upgrades.length === 0 && newPkgs.length === 0) {
         log.info("No packages to upgrade.");
@@ -56,7 +53,7 @@ const command = () => {
 
         upgrade.pkg.config.version = upgrade.newVersion;
 
-        pkgs.writePackageInfo(upgrade.pkg);
+        npm.writePackageInfo(upgrade.pkg);
     }
 
     for (const pkg of newPkgs) {
@@ -68,7 +65,7 @@ const command = () => {
             `Setting version "${pkg.config.version}" for new package "${pkg.config.name}".`
         );
 
-        pkgs.writePackageInfo(pkg);
+        npm.writePackageInfo(pkg);
     }
 
     const updatedFiles = [
@@ -79,17 +76,17 @@ const command = () => {
     ];
 
     log.info("Adding modified files to git.");
-    git.add(process.cwd(), updatedFiles);
+    git.add(updatedFiles);
 
     log.info("Creating release commit.");
-    git.commit(process.cwd(), "chore(release): publish", ["--allow-empty"]);
+    git.commit("chore(release): publish", ["--allow-empty"]);
 
     const updatedPkgs = [...upgrades.map((upgrade) => upgrade.pkg), ...newPkgs];
 
     log.info("Tagging releases.");
     for (const pkg of updatedPkgs) {
         const name = `${pkg.config.name}@${pkg.config.version}`;
-        git.tag.create(process.cwd(), name, `titan-release:${name}`);
+        git.tag.create(name, `titan-release:${name}`);
     }
 };
 

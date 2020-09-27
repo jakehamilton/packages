@@ -3,7 +3,6 @@ const log = require("../../util/log");
 const cmd = require("../../util/cmd");
 const npm = require("../../util/npm");
 const git = require("../../util/git");
-const pkgs = require("../../util/pkgs");
 const help = require("./help");
 const getArgs = require("./args");
 
@@ -23,10 +22,10 @@ const command = () => {
     const changed = [];
 
     if (args["--changed"]) {
-        const releases = git.tag.latestReleases(process.cwd());
+        const releases = git.tag.latestReleases();
 
         for (const release of releases.values()) {
-            if (git.changedSince(process.cwd(), release)) {
+            if (git.changedSince(release)) {
                 changed.push(release.name);
             }
         }
@@ -35,7 +34,7 @@ const command = () => {
     const tagged = [];
 
     if (args["--tagged"]) {
-        const tags = git.tag.at(process.cwd());
+        const tags = git.tag.at();
 
         for (const tag of tags) {
             const { name } = npm.parseNameWithVersion(tag);
@@ -44,14 +43,14 @@ const command = () => {
         }
     }
 
-    const pkgsData = pkgs.getAllPackageInfo();
+    const pkgs = npm.getAllPackages();
 
     const scope = args["--scope"] || ".+";
 
     log.debug(`Creating matcher for scope "${scope}".`);
     const scopeRegex = new RegExp(scope);
 
-    const matchingPkgs = pkgsData.filter((pkg) => {
+    const matchingPkgs = [...pkgs.values()].filter((pkg) => {
         if (args["--changed"] && !changed.includes(pkg.config.name)) {
             return false;
         }

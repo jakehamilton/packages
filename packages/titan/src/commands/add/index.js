@@ -1,12 +1,7 @@
-const chalk = require("chalk");
 const semver = require("semver");
-const fs = require("../../util/fs");
 const log = require("../../util/log");
-const cmd = require("../../util/cmd");
 const npm = require("../../util/npm");
 const git = require("../../util/git");
-const pkgs = require("../../util/pkgs");
-const path = require("../../util/path");
 const help = require("./help");
 const getArgs = require("./args");
 
@@ -29,10 +24,10 @@ const command = () => {
     const changed = [];
 
     if (args["--changed"]) {
-        const releases = git.tag.latestReleases(process.cwd());
+        const releases = git.tag.latestReleases();
 
         for (const release of releases.values()) {
-            if (git.changedSince(process.cwd(), release)) {
+            if (git.changedSince(release)) {
                 changed.push(release.name);
             }
         }
@@ -41,7 +36,7 @@ const command = () => {
     const tagged = [];
 
     if (args["--tagged"]) {
-        const tags = git.tag.at(process.cwd());
+        const tags = git.tag.at();
 
         for (const tag of tags) {
             const { name } = npm.parseNameWithVersion(tag);
@@ -50,19 +45,14 @@ const command = () => {
         }
     }
 
-    const pkgsData = pkgs.getAllPackageInfo();
-
-    const pkgsMap = pkgsData.reduce((data, pkg) => {
-        data.set(pkg.config.name, pkg);
-        return data;
-    }, new Map());
+    const pkgs = npm.getAllPackages();
 
     const scope = args["--scope"] || ".+";
 
     log.debug(`Creating matcher for scope "${scope}".`);
     const scopeRegex = new RegExp(scope);
 
-    const matchingPkgs = pkgsData.filter((pkg) => {
+    const matchingPkgs = [...pkgs.values()].filter((pkg) => {
         if (args["--changed"] && !changed.includes(pkg.config.name)) {
             return false;
         }
@@ -84,14 +74,14 @@ const command = () => {
         for (const dep of deps) {
             const { name, version } = npm.parseNameWithVersion(dep);
 
-            if (pkgsMap.has(name)) {
+            if (pkgs.has(name)) {
                 if (
                     version === "latest" ||
-                    semver.satisfies(pkgsMap.get(name).config.version, version)
+                    semver.satisfies(pkgs.get(name).config.version, version)
                 ) {
                     const localVersion =
                         version === "latest"
-                            ? pkgsMap.get(name).config.version
+                            ? `^${pkgs.get(name).config.version}`
                             : version;
 
                     if (
@@ -140,7 +130,22 @@ const command = () => {
         }
     }
 
-    npm.withLinkedLocals(pkgsData, () => {
+    const cycles = npm.detectCycles(pkgs);
+
+    if (cycles.length > 0) {
+        log.error("Cyclic dependencies detected. Fix these to continue:");
+        log.error("");
+
+        for (const cycle of cycles) {
+            log.error(
+                `Cycle: ${cycle.map((name) => `"${name}"`).join(" -> ")}`
+            );
+        }
+
+        process.exit(1);
+    }
+
+    npm.withLinkedLocals(pkgs, () => {
         log.info("Installing dependencies.");
         for (const pkg of matchingPkgs) {
             npm.install(pkg.path);

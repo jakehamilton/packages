@@ -1,10 +1,5 @@
-const chalk = require("chalk");
-const semver = require("semver");
-const fs = require("../../util/fs");
 const log = require("../../util/log");
 const npm = require("../../util/npm");
-const path = require("../../util/path");
-const pkgs = require("../../util/pkgs");
 const help = require("./help");
 const getArgs = require("./args");
 
@@ -16,9 +11,9 @@ const command = () => {
         process.exit(0);
     }
 
-    const pkgsData = pkgs.getAllPackageInfo(process.cwd());
+    const pkgs = npm.getAllPackages();
 
-    const cycles = pkgs.detectCycles(pkgsData);
+    const cycles = npm.detectCycles(pkgs);
 
     if (cycles.length > 0) {
         log.error("Cyclic dependencies detected. Fix these to continue:");
@@ -34,8 +29,8 @@ const command = () => {
     }
 
     log.info("Bootstrapping packages.");
-    npm.withLinkedLocals(pkgsData, () => {
-        for (const pkg of pkgsData) {
+    npm.withLinkedLocals(pkgs, () => {
+        for (const pkg of pkgs.values()) {
             log.info(`Installing dependencies for "${pkg.config.name}".`);
             npm.install(pkg.path);
         }

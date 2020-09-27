@@ -1,7 +1,6 @@
 const log = require("../../util/log");
 const git = require("../../util/git");
 const npm = require("../../util/npm");
-const pkgs = require("../../util/pkgs");
 const help = require("./help");
 const getArgs = require("./args");
 
@@ -18,18 +17,18 @@ const command = () => {
     if (changes.length > 0) {
         log.error("You must commit your changes before running this command.");
         log.error("");
-        git.printChanges(process.cwd(), changes);
+        git.printChanges(changes);
         process.exit(1);
     }
 
-    const tags = git.tag.at(process.cwd()).filter((tag) => tag !== "");
+    const tags = git.tag.at();
 
     if (tags.length === 0) {
         log.info("No tags for current commit, nothing to publish.");
         process.exit(0);
     }
 
-    const pkgsData = pkgs.getAllPackageInfo();
+    const pkgs = npm.getAllPackages();
 
     if (args["--dry-run"]) {
         log.info("Executing dry run.");
@@ -38,7 +37,7 @@ const command = () => {
     for (const tag of npm.dedupe(tags)) {
         const { name } = npm.parseNameWithVersion(tag);
 
-        const pkg = pkgsData.find((pkg) => pkg.config.name === name);
+        const pkg = pkgs.has(name);
 
         if (pkg) {
             if (args["--dry-run"]) {

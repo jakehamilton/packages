@@ -98,8 +98,8 @@ const command = () => {
 
     if (!args["--skip-git"]) {
         log.info("Committing changes.");
-        git.add(root, [], ["-A"]);
-        git.commit(root, "chore: initial commit");
+        git.add([], ["-A"], root);
+        git.commit("chore: initial commit", [], root);
     }
 };
 

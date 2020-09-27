@@ -1,20 +1,19 @@
 const { execSync } = require("child_process");
 const semver = require("semver");
 const npm = require("./npm");
-const pkgs = require("./pkgs");
 const path = require("./path");
 const logger = require("./log");
 
-const init = (root = process.cwd()) => {
+const init = (root) => {
     execSync("git init", {
         cwd: root,
         stdio: "pipe",
     });
 };
 
-const diff = (root = process.cwd(), options = []) => {
+const diff = (options = []) => {
     const result = execSync(`git diff ${options.join(" ")}`, {
-        cwd: root,
+        cwd: npm.getProjectRoot(),
         encoding: "utf8",
         stdio: "pipe",
     });
@@ -22,7 +21,7 @@ const diff = (root = process.cwd(), options = []) => {
     return result.split("\n");
 };
 
-const add = (root = process.cwd(), files = [], options = []) => {
+const add = (files = [], options = [], root = npm.getProjectRoot()) => {
     execSync(`git add ${files.join(" ")} ${options.join(" ")}`, {
         cwd: root,
         stdio: "pipe",
@@ -30,9 +29,9 @@ const add = (root = process.cwd(), files = [], options = []) => {
 };
 
 const commit = (
-    root = process.cwd(),
     message = "chore: commit",
-    options = []
+    options = [],
+    root = npm.getProjectRoot()
 ) => {
     execSync(`git commit -m "${message}" ${options.join(" ")}`, {
         cwd: root,
@@ -40,9 +39,9 @@ const commit = (
     });
 };
 
-const status = (root = process.cwd()) => {
+const status = () => {
     const result = execSync(`git status --porcelain`, {
-        cwd: root,
+        cwd: npm.getProjectRoot(),
         encoding: "utf8",
         stdio: "pipe",
     });
@@ -83,7 +82,7 @@ const status = (root = process.cwd()) => {
     return items;
 };
 
-const printChanges = (root = process.cwd(), changes) => {
+const printChanges = (changes) => {
     for (const change of changes) {
         let type;
 
@@ -111,7 +110,8 @@ const printChanges = (root = process.cwd(), changes) => {
     }
 };
 
-const log = (root = process.cwd(), options = []) => {
+const log = (options = []) => {
+    const root = npm.getProjectRoot();
     const result = execSync(`git log ${options.join(" ")}`, {
         cwd: root,
         encoding: "utf8",
@@ -121,10 +121,10 @@ const log = (root = process.cwd(), options = []) => {
     return result;
 };
 
-const getCommitDataBetween = (root = process.cwd(), from, to) => {
+const getCommitDataBetween = (from, to) => {
     const START_SEPARATOR = `#TITAN_START_COMMIT`;
     const END_SEPARATOR = `#TITAN_END_COMMIT`;
-    const raw = log(root, [
+    const raw = log([
         // https://mirrors.edge.kernel.org/pub/software/scm/git/docs/git-log.html#_pretty_formats
         `--format="format:${START_SEPARATOR}%n%cn%n%ce%n%G?%n%s%n%b%n${END_SEPARATOR}"`,
         "--name-only",
@@ -185,8 +185,9 @@ const getCommitDataBetween = (root = process.cwd(), from, to) => {
     return commits;
 };
 
-const getChangesBetween = (root = process.cwd(), from, to, pkg) => {
-    const fileDiff = diff(root, ["--name-only", from, to]);
+const getChangesBetween = (from, to, pkg) => {
+    const root = npm.getProjectRoot();
+    const fileDiff = diff(["--name-only", from, to]);
 
     const fileChanges = fileDiff.filter((file) =>
         path.resolve(root, file).startsWith(pkg.path)
@@ -196,7 +197,7 @@ const getChangesBetween = (root = process.cwd(), from, to, pkg) => {
         return [];
     }
 
-    const commits = getCommitDataBetween(root, from, to);
+    const commits = getCommitDataBetween(from, to);
 
     const affectingCommits = commits.filter((commit) => {
         const change = commit.changes.find((file) =>
@@ -209,24 +210,14 @@ const getChangesBetween = (root = process.cwd(), from, to, pkg) => {
     return affectingCommits;
 };
 
-const changedSince = (root = process.cwd(), release, target = "HEAD") => {
-    const changes = getChangesBetween(
-        root,
-        release.tag.name,
-        target,
-        release.pkg
-    );
+const changedSince = (release, target = "HEAD") => {
+    const changes = getChangesBetween(release.tag.name, target, release.pkg);
 
     return changes.length !== 0;
 };
 
-const getUpgradeBetween = (root = process.cwd(), release, target = "HEAD") => {
-    const commits = getChangesBetween(
-        root,
-        release.tag.name,
-        target,
-        release.pkg
-    );
+const getUpgradeBetween = (release, target = "HEAD") => {
+    const commits = getChangesBetween(release.tag.name, target, release.pkg);
 
     if (commits.length === 0) {
         return null;
@@ -262,15 +253,11 @@ const getUpgradeBetween = (root = process.cwd(), release, target = "HEAD") => {
     };
 };
 
-const getAllUpgradesBetween = (
-    root = process.cwd(),
-    releases,
-    target = "HEAD"
-) => {
+const getAllUpgradesBetween = (releases, target = "HEAD") => {
     const upgrades = [];
 
     for (const release of releases) {
-        const upgrade = getUpgradeBetween(root, release, target);
+        const upgrade = getUpgradeBetween(release, target);
 
         if (upgrade !== null) {
             upgrades.push(upgrade);
@@ -281,18 +268,18 @@ const getAllUpgradesBetween = (
 };
 
 const tag = {
-    at(root = process.cwd(), target = "HEAD") {
+    at(target = "HEAD") {
         const result = execSync(`git tag --points-at ${target}`, {
-            cwd: root,
+            cwd: npm.getProjectRoot(),
             encoding: "utf8",
             stdio: "pipe",
         });
 
-        return result.trim().split("\n");
+        return result.trim().split("\n").filter(Boolean);
     },
-    list(root = process.cwd()) {
+    list() {
         const raw = execSync(`git tag --list -n1 --sort=-taggerdate`, {
-            cwd: root,
+            cwd: npm.getProjectRoot(),
             encoding: "utf8",
             stdio: "pipe",
         });
@@ -313,15 +300,14 @@ const tag = {
 
         return tags;
     },
-    releases(root = process.cwd()) {
-        return this.list(root).filter((tag) =>
+    releases() {
+        return this.list().filter((tag) =>
             tag.annotation.startsWith("titan-release:")
         );
     },
     latestReleases(
-        root = process.cwd(),
-        pkgsData = pkgs.getAllPackageInfo(),
-        tags = this.releases(root)
+        pkgs = npm.getAllPackages(),
+        tags = this.releases(npm.getProjectRoot())
     ) {
         const latest = new Map();
 
@@ -329,14 +315,12 @@ const tag = {
             const { name, version } = npm.parseNameWithVersion(tag.name);
 
             if (!latest.has(name)) {
-                const pkg = pkgsData.find((data) => data.config.name === name);
-
-                if (pkg) {
+                if (pkgs.has(name)) {
                     latest.set(name, {
                         name,
                         tag,
                         version,
-                        pkg,
+                        pkg: pkgs.get(name),
                     });
                 }
             }
@@ -344,9 +328,9 @@ const tag = {
 
         return latest;
     },
-    create(root = process.cwd(), name, message) {
+    create(name, message) {
         execSync(`git tag ${name} ${message ? `-m "${message}"` : ""}`, {
-            cwd: root,
+            cwd: npm.getProjectRoot(),
             stdio: "pipe",
         });
     },
