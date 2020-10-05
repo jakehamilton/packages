@@ -27,7 +27,7 @@
     },
     "scripts": {
         "dev": "start-storybook -p 6006 --no-dll",
-        "build": "microbundle build --define process.env.NODE_ENV=development",
+        "build": "microbundle build --jsx React.createElement --define process.env.NODE_ENV=development",
         "build:storybook": "build-storybook"
     },
     "bugs": {
