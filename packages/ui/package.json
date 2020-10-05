@@ -1,0 +1,57 @@
+{
+    "name": "@jakehamilton/ui",
+    "version": "1.0.0",
+    "description": "React UI components.",
+    "keywords": [
+        "ui",
+        "react",
+        "components"
+    ],
+    "author": "Jake Hamilton <jake.hamilton@hey.com>",
+    "homepage": "https://github.com/jakehamilton/packages",
+    "license": "Apache-2.0",
+    "source": "src/index.js",
+    "main": "dist/ui.js",
+    "module": "dist/ui.modern.module.js",
+    "unpkg": "dist/ui.umd.js",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist/**/*",
+        "src/**/*"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jakehamilton/packages.git"
+    },
+    "scripts": {
+        "dev": "start-storybook -p 6006 --no-dll",
+        "build": "microbundle build",
+        "build:storybook": "build-storybook"
+    },
+    "bugs": {
+        "url": "https://github.com/jakehamilton/packages/issues"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.11.6",
+        "@popperjs/core": "^2.5.3",
+        "@storybook/addon-actions": "^6.0.25",
+        "@storybook/addon-essentials": "^6.0.25",
+        "@storybook/addon-links": "^6.0.25",
+        "@storybook/react": "^6.0.25",
+        "babel-loader": "^8.1.0",
+        "classnames": "^2.2.6",
+        "deepmerge": "^4.2.2",
+        "goober": "^2.0.6",
+        "microbundle": "^0.12.4",
+        "prop-types": "^15.7.2",
+        "react-is": "^16.13.1",
+        "react-popper": "^2.2.3",
+        "storybook": "6.0.21",
+        "tinycolor2": "^1.4.2"
+    },
+    "dependencies": {
+        "react": "^16.13.1"
+    }
+}
