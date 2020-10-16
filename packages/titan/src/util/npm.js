@@ -244,9 +244,21 @@ const publish = (pkg) => {
     });
 };
 
+const ALIAS_PROTOCOL = "npm:";
 const patchDependenciesWithLocals = (pkgsMap, dependencies) => {
     for (const [name, version] of Object.entries(dependencies)) {
-        if (pkgsMap.has(name)) {
+        if (version.startsWith(ALIAS_PROTOCOL)) {
+            const alias = parseNameWithVersion(
+                version.slice(ALIAS_PROTOCOL.length)
+            );
+
+            if (pkgsMap.has(alias.name)) {
+                const local = pkgsMap.get(alias.name);
+                if (semver.satisfies(local.config.version, alias.version)) {
+                    dependencies[name] = `file:${local.path}`;
+                }
+            }
+        } else if (pkgsMap.has(name)) {
             const local = pkgsMap.get(name);
             if (semver.satisfies(local.config.version, version)) {
                 dependencies[name] = `file:${local.path}`;
