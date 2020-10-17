@@ -250,6 +250,8 @@ const getUpgradeBetween = (release, target = "HEAD") => {
         version: release.version,
         newVersion,
         pkg: release.pkg,
+        commits,
+        bump,
     };
 };
 

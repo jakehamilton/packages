@@ -15,6 +15,10 @@ const command = () => {
         process.exit(0);
     }
 
+    if (args["--dry-run"]) {
+        log.info("Executing dry run.");
+    }
+
     log.info("Loading git tags.");
     const tags = git.tag.releases();
 
@@ -53,7 +57,9 @@ const command = () => {
 
         upgrade.pkg.config.version = upgrade.newVersion;
 
-        npm.writePackageInfo(upgrade.pkg);
+        if (!args["--dry-run"]) {
+            npm.writePackageInfo(upgrade.pkg);
+        }
     }
 
     for (const pkg of newPkgs) {
@@ -65,7 +71,9 @@ const command = () => {
             `Setting version "${pkg.config.version}" for new package "${pkg.config.name}".`
         );
 
-        npm.writePackageInfo(pkg);
+        if (!args["--dry-run"]) {
+            npm.writePackageInfo(pkg);
+        }
     }
 
     const updatedFiles = [
@@ -75,18 +83,26 @@ const command = () => {
         ...newPkgs.map((pkg) => path.resolve(pkg.path, "package.json")),
     ];
 
-    log.info("Adding modified files to git.");
-    git.add(updatedFiles);
-
-    log.info("Creating release commit.");
-    git.commit("chore(release): publish", ["--allow-empty"]);
-
     const updatedPkgs = [...upgrades.map((upgrade) => upgrade.pkg), ...newPkgs];
 
-    log.info("Tagging releases.");
-    for (const pkg of updatedPkgs) {
-        const name = `${pkg.config.name}@${pkg.config.version}`;
-        git.tag.create(name, `titan-release:${name}`);
+    if (args["--dry-run"]) {
+        for (const pkg of updatedPkgs) {
+            log.info(
+                `Package "${pkg.config.name}" set to version "${pkg.config.version}".`
+            );
+        }
+    } else {
+        log.info("Adding modified files to git.");
+        git.add(updatedFiles);
+
+        log.info("Creating release commit.");
+        git.commit("chore(release): publish", ["--allow-empty"]);
+
+        log.info("Tagging releases.");
+        for (const pkg of updatedPkgs) {
+            const name = `${pkg.config.name}@${pkg.config.version}`;
+            git.tag.create(name, `titan-release:${name}`);
+        }
     }
 };
 
