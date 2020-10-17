@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.15.2...@jakehamilton/titan@1.16.0) (2020-10-16)
+
+
+### Features
+
+* **dependencies:** add support for package aliases ([c0953f4](https://github.com/jakehamilton/packages/commit/c0953f437fff1864e8da076860a345228086dc08))
+
+
+
+
+
 ## [1.15.2](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.15.1...@jakehamilton/titan@1.15.2) (2020-10-05)
 
 **Note:** Version bump only for package @jakehamilton/titan
