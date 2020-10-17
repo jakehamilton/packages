@@ -27,7 +27,7 @@ self.addEventListener('message', (event) => {
 self.__precacheManifest = [
   {
     "url": "404.html",
-    "revision": "b25381a64d1aaf24170dce5ebd47e01c"
+    "revision": "37b01fb9602c6a515d7643b77c374d7c"
   },
   {
     "url": "assets/css/0.styles.607c8ecb.css",
@@ -62,16 +62,16 @@ self.__precacheManifest = [
     "revision": "8c1a743af63097a54952da48317cb049"
   },
   {
-    "url": "assets/js/app.afa9749b.js",
-    "revision": "2b0022ba6d54b9c8d77c05d396f948ec"
+    "url": "assets/js/app.5b1e742b.js",
+    "revision": "c31d4b26f21b48b35041463974f3738e"
   },
   {
     "url": "dts-webpack-plugin/index.html",
-    "revision": "b0810d1a5b692632102e2fa25b6357f4"
+    "revision": "0fccbafa4a180ed48a8b39e6328b7432"
   },
   {
     "url": "index.html",
-    "revision": "9f960935c7b22ebeda432bfe7227be45"
+    "revision": "3efee5e188deed6dfc627937e346e020"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
