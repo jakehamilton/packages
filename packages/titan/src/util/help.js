@@ -22,6 +22,7 @@ const help = () => {
 {bold OPTIONS}
 
     --help, -h                Show this help message
+    --verbose, -v             Set logging verbosity
 
 {bold EXAMPLE}
 
@@ -34,6 +35,14 @@ const help = () => {
     {dim $} {bold titan publish} --help
     {dim $} {bold titan exec} --help
     {dim $} {bold titan changed} --help
+
+    {dim $ # Run Titan with verbose logging.}
+    {dim $} {bold titan} -v
+    {dim $} {bold titan} -vv
+    {dim $} {bold titan} -vvv
+
+    {dim $ # Run Titan with no logging.}
+    {dim $} LOG_LEVEL=SILENT {bold titan}
 `;
 
     console.log(message);
