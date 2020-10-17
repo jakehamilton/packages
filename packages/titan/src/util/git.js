@@ -39,9 +39,9 @@ const commit = (
     });
 };
 
-const status = () => {
+const status = (root = npm.getProjectRoot()) => {
     const result = execSync(`git status --porcelain`, {
-        cwd: npm.getProjectRoot(),
+        cwd: root,
         encoding: "utf8",
         stdio: "pipe",
     });
@@ -82,7 +82,7 @@ const status = () => {
     return items;
 };
 
-const printChanges = (changes) => {
+const printChanges = (changes, root = npm.getProjectRoot()) => {
     for (const change of changes) {
         let type;
 

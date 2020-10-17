@@ -39,7 +39,17 @@ const command = () => {
 
         if (pkgs.has(name)) {
             const pkg = pkgs.get(name);
-            if (args["--dry-run"]) {
+
+            if (
+                pkg.config.private === true ||
+                (pkg.config.titan &&
+                    typeof pkg.config.titan === "object" &&
+                    pkg.config.titan.publish === false)
+            ) {
+                log.info(
+                    `Skipping unpublishable package "${pkg.config.name}".`
+                );
+            } else if (args["--dry-run"]) {
                 log.info(
                     `Publish package "${pkg.config.name}" at version "${pkg.config.version}".`
                 );
