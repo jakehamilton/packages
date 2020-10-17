@@ -111,6 +111,19 @@ const command = () => {
             }
         }
 
+        for (const pkg of newPkgs) {
+            const file = path.resolve(pkg.path, "CHANGELOG.md");
+
+            const contents = changelog.create(
+                pkg,
+                undefined,
+                `Created package "${pkg.config.name}".`
+            );
+
+            fs.write(file, contents);
+            git.add([file]);
+        }
+
         log.info("Adding modified files to git.");
         git.add(updatedFiles);
 

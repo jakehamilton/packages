@@ -18,7 +18,7 @@ ${contents.join("\n\n")}
 `;
 };
 
-const changes = (upgrade, message = "") => {
+const changes = (upgrade, note = "") => {
     const features = [];
     const fixes = [];
     const chores = [];
@@ -72,7 +72,7 @@ const changes = (upgrade, message = "") => {
     }
 
     const contents = [
-        message,
+        note,
         renderChanges("Features", features),
         renderChanges("Fixes", fixes),
         renderChanges("Chores", chores),
@@ -82,13 +82,13 @@ const changes = (upgrade, message = "") => {
     return contents.join("\n\n");
 };
 
-const patch = (changelog, upgrade, message) => {
+const patch = (changelog, upgrade, note) => {
     const contents = changelog
         .split("\n")
         .slice(CHANGELOG_HEADER_LINES)
         .join("\n");
 
-    const newContents = changes(upgrade, message);
+    const newContents = changes(upgrade, note);
 
     return `${CHANGELOG_HEADER}
 ## ${upgrade.newVersion}
@@ -107,9 +107,10 @@ const create = (
         pkg,
         commits: [],
         bump: "major",
-    }
+    },
+    note
 ) => {
-    return patch(CHANGELOG_HEADER, upgrade);
+    return patch(CHANGELOG_HEADER, upgrade, note);
 };
 
 module.exports = {
