@@ -177,9 +177,9 @@ const getCommitDataBetween = (from, to) => {
                 body: body.join("\n"),
                 changes,
             });
+        } else {
+            cur++;
         }
-
-        cur++;
     }
 
     return commits;

@@ -4,6 +4,7 @@ const log = require("../../util/log");
 const git = require("../../util/git");
 const npm = require("../../util/npm");
 const path = require("../../util/path");
+const changelog = require("../../util/changelog");
 const help = require("./help");
 const getArgs = require("./args");
 
@@ -92,6 +93,24 @@ const command = () => {
             );
         }
     } else {
+        log.info("Updating changelogs.");
+        for (const upgrade of upgrades) {
+            const file = path.resolve(upgrade.pkg.path, "CHANGELOG.md");
+
+            if (fs.exists(file)) {
+                const contents = fs.read(file, { encoding: "utf8" });
+                const newContents = changelog.patch(contents, upgrade);
+
+                fs.write(file, newContents);
+                git.add([file]);
+            } else {
+                const contents = changelog.create(upgrade.pkg, upgrade);
+
+                fs.write(file, contents);
+                git.add([file]);
+            }
+        }
+
         log.info("Adding modified files to git.");
         git.add(updatedFiles);
 
