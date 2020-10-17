@@ -125,6 +125,76 @@ const command = () => {
                     log.debug(
                         `Local package "${name}" with version "${version}" could not be used in "${pkg.config.name}".`
                     );
+
+                    if (
+                        !args["--dev"] &&
+                        !args["--peer"] &&
+                        !args["--optional"]
+                    ) {
+                        if (!pkg.config.hasOwnProperty("dependencies")) {
+                            pkg.config.dependencies = {};
+                        }
+
+                        pkg.config.dependencies[name] = version;
+                    }
+
+                    if (args["--dev"]) {
+                        if (!pkg.config.hasOwnProperty("devDependencies")) {
+                            pkg.config.devDependencies = {};
+                        }
+
+                        pkg.config.devDependencies[name] = version;
+                    }
+
+                    if (args["--peer"]) {
+                        if (!pkg.config.hasOwnProperty("peerDependencies")) {
+                            pkg.config.peerDependencies = {};
+                        }
+
+                        pkg.config.peerDependencies[name] = version;
+                    }
+
+                    if (args["--optional"]) {
+                        if (
+                            !pkg.config.hasOwnProperty("optionalDependencies")
+                        ) {
+                            pkg.config.optionalDependencies = {};
+                        }
+
+                        pkg.config.optionalDependencies[name] = version;
+                    }
+                }
+            } else {
+                if (!args["--dev"] && !args["--peer"] && !args["--optional"]) {
+                    if (!pkg.config.hasOwnProperty("dependencies")) {
+                        pkg.config.dependencies = {};
+                    }
+
+                    pkg.config.dependencies[name] = version;
+                }
+
+                if (args["--dev"]) {
+                    if (!pkg.config.hasOwnProperty("devDependencies")) {
+                        pkg.config.devDependencies = {};
+                    }
+
+                    pkg.config.devDependencies[name] = version;
+                }
+
+                if (args["--peer"]) {
+                    if (!pkg.config.hasOwnProperty("peerDependencies")) {
+                        pkg.config.peerDependencies = {};
+                    }
+
+                    pkg.config.peerDependencies[name] = version;
+                }
+
+                if (args["--optional"]) {
+                    if (!pkg.config.hasOwnProperty("optionalDependencies")) {
+                        pkg.config.optionalDependencies = {};
+                    }
+
+                    pkg.config.optionalDependencies[name] = version;
                 }
             }
         }

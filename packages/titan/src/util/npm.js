@@ -118,7 +118,27 @@ const withLinkedLocals = (pkgs, fn) => {
     }
 };
 
-const getLocalDependencies = (pkg, pkgs) => {
+const ensureLocals = (pkg, locals) => {
+    for (const local of locals.values()) {
+        const dir = path.resolve(pkg.path, "node_modules", local.config.name);
+
+        // @NOTE(jakehamilton): This fixes an issue with symlinks on macOS.
+        //  More analysis can be done to understand exactly why macOS
+        //  thinks the directory both does and does not exist at the same time.
+        fs.rm(dir);
+
+        if (!fs.exists(dir)) {
+            fs.mkdir(dir);
+        }
+    }
+};
+
+const getLocalDependencies = (
+    pkg,
+    pkgs,
+    recursive = false,
+    known = new Map()
+) => {
     const locals = new Map();
 
     const allDependencies = {
@@ -134,6 +154,28 @@ const getLocalDependencies = (pkg, pkgs) => {
             semver.satisfies(pkgs.get(name).config.version, version)
         ) {
             locals.set(name, pkgs.get(name));
+        }
+    }
+
+    ensureLocals(pkg, locals);
+
+    if (recursive) {
+        const currentLocals = [...locals.values()];
+        for (const local of currentLocals) {
+            if (known.has(local.config.name)) {
+                continue;
+            }
+
+            const transitiveLocals = getLocalDependencies(
+                local,
+                pkgs,
+                true,
+                locals
+            );
+
+            for (const [name, local] of transitiveLocals.entries()) {
+                locals.set(name, local);
+            }
         }
     }
 
@@ -272,6 +314,7 @@ const patchDependenciesWithLocals = (pkgsMap, dependencies) => {
 module.exports = {
     getProjectRoot,
     getAllPackages,
+    getLocalDependencies,
     withLinkedLocals,
     detectCycles,
     writePackageInfo,
