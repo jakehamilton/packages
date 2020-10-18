@@ -77,6 +77,13 @@ const command = () => {
     }
 
     for (const pkg of matchingPkgs) {
+        if (!pkg.config.scripts || !pkg.config.scripts[name]) {
+            log.debug(
+                `No script "${name}" found in package "${pkg.config.name}".`
+            );
+            continue;
+        }
+
         let command = `npm run ${name}`;
 
         if (args["--"].length > 0) {
