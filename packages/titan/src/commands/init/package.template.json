@@ -1,6 +1,9 @@
 {
     "name": "",
     "author": "",
+    "description": "",
+    "keywords": [],
+    "license": "",
     "private": true,
     "scripts": {
         "build": "titan run build",

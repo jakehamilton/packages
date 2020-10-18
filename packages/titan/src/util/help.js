@@ -35,6 +35,7 @@ const help = () => {
     {dim $} {bold titan publish} --help
     {dim $} {bold titan exec} --help
     {dim $} {bold titan changed} --help
+    {dim $} {bold titan run} --help
 
     {dim $ # Run Titan with verbose logging.}
     {dim $} {bold titan} -v

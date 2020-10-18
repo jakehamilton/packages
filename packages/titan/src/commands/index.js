@@ -7,4 +7,5 @@ module.exports = {
     publish: require("./publish"),
     add: require("./add"),
     changed: require("./changed"),
+    run: require("./run"),
 };
