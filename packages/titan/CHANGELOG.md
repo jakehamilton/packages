@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.23.0...@jakehamilton/titan@1.24.0) (2020-10-18)
+
+
+### Bug Fixes
+
+* **help:** add missing arguments ([33f813c](https://github.com/jakehamilton/packages/commit/33f813c19c1510822dde342be12461252e6b3aa6))
+* **init:** add titan as project dependency ([7e19174](https://github.com/jakehamilton/packages/commit/7e19174eae7ffdf0833e56c48e8b53883d65fe44))
+* **publish:** skip private packages ([70c1c0c](https://github.com/jakehamilton/packages/commit/70c1c0c123b1652448e25052ad3eef07c4cd41ca))
+* **run:** check if script exists before executing ([a057fc1](https://github.com/jakehamilton/packages/commit/a057fc13444ededbbf1e9d27c448e2c55fb5417d))
+
+
+### Features
+
+* **bootstrap:** support transitive and external deps ([55d3ddd](https://github.com/jakehamilton/packages/commit/55d3dddc82498e75d0ab3087700c18cfe54fb6ae))
+* **commands:** add run command ([82dd5af](https://github.com/jakehamilton/packages/commit/82dd5af42884188ec5d53e021255ab8bc7617603))
+* generate changelog for new packages ([2e930ee](https://github.com/jakehamilton/packages/commit/2e930ee1316167658201943c5112bcd083694937))
+* **dependencies:** add support for package aliases ([c0953f4](https://github.com/jakehamilton/packages/commit/c0953f437fff1864e8da076860a345228086dc08))
+* **version:** support changelog generation ([a206d91](https://github.com/jakehamilton/packages/commit/a206d91e0884008ed232dc7ddb7d56a620978ca7))
+* **version:** support dry runs ([9de00c0](https://github.com/jakehamilton/packages/commit/9de00c00922e163156a0529e3e6741e4e3cd4690))
+
+
+
+
+
 # [1.23.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.22.0...@jakehamilton/titan@1.23.0) (2020-10-18)
 
 
