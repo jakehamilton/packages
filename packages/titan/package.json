@@ -1,6 +1,6 @@
 {
     "name": "@jakehamilton/titan",
-    "version": "1.22.0",
+    "version": "1.23.0",
     "description": "A simple, opinionated monorepo management tool.",
     "keywords": [
         "monorepo",
