@@ -10,6 +10,9 @@ const getArgs = () => ({
 
             "--private": Boolean,
             "-p": "--private",
+
+            "--name": String,
+            "-n": "--name",
         },
         {
             permissive: true,

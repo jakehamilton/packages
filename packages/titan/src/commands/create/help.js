@@ -15,6 +15,7 @@ const help = () => {
         --help                    Show this help message
         --force, -f               Overwrite existing directory if it exists
         --private, -p             Set the package to private
+        --name, -n                Set the name used in package.json
 
     {bold EXAMPLE}
 

@@ -26,6 +26,8 @@ const command = () => {
         process.exit(1);
     }
 
+    const pkgName = args["--name"] || name;
+
     const pkgPath = path.resolve(process.cwd(), "package.json");
 
     if (!fs.exists(pkgPath)) {
@@ -90,7 +92,7 @@ const command = () => {
         })
     );
 
-    pkgTemplate.name = name;
+    pkgTemplate.name = pkgName;
 
     if (args["--private"]) {
         pkgTemplate.private = true;
