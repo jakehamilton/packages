@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.25.1](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.25.0...@jakehamilton/titan@1.25.1) (2020-10-21)
+
+**Note:** Version bump only for package @jakehamilton/titan
+
+
+
+
+
 # [1.25.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.24.0...@jakehamilton/titan@1.25.0) (2020-10-19)
 
 
