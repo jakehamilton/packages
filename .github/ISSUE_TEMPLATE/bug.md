@@ -24,6 +24,8 @@ For packages that this ticket affects, please replace its
 -->
 
 -   [ ] @jakehamilton/dts-webpack-plugin
+-   [ ] @jakehamilton/titan
+-   [ ] @jakehamilton/ui
 -   [ ] @jakehamilton/example
 
 <!-- @endregion: affected -->
