@@ -89,7 +89,7 @@ module.exports = async ({ github, context }) => {
 
     const issues = await github.paginate(opts);
 
-    const isFirstSubmission = issues.length > 1;
+    const isFirstSubmission = issues.length <= 1;
 
     if (isFirstSubmission) {
         log.info(`First submission from "${creator}", adding welcome comment.`);
