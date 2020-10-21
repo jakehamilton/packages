@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.25.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.24.0...@jakehamilton/titan@1.25.0) (2020-10-19)
+
+
+### Features
+
+* **create:** add option for pkg name ([7028fae](https://github.com/jakehamilton/packages/commit/7028faebef63ad0eb3db4989a8285046942cd6bc))
+
+
+
+
+
 # [1.24.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.23.0...@jakehamilton/titan@1.24.0) (2020-10-18)
 
 
