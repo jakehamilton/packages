@@ -37,9 +37,11 @@ const Block = ({
 
     const [themeColor, themeColorVariant = "main"] = color.split(".");
 
-    return (
-        <div
-            className={cn(
+    return React.createElement(
+        as,
+        {
+            ...props,
+            className: cn(
                 className,
                 BlockClass({
                     ...theme,
@@ -48,11 +50,9 @@ const Block = ({
                     color: themeColor,
                     variant: themeColorVariant,
                 })
-            )}
-            {...props}
-        >
-            {children}
-        </div>
+            ),
+        },
+        children
     );
 };
 
