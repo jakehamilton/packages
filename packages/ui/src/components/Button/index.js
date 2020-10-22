@@ -4,7 +4,6 @@ import cn from "classnames";
 import { css } from "goober";
 
 import useTheme from "../../hooks/useTheme";
-import Block from "../Block";
 
 const FilledButtonClass = ({
     background,
@@ -37,6 +36,12 @@ const FilledButtonClass = ({
         &:active {
             background: ${lightBackground};
             box-shadow: ${activeShadow};
+            transform: translateY(0);
+        }
+
+        &[disabled] {
+            background: ${lightBackground};
+            box-shadow: ${shadow};
             transform: translateY(0);
         }
     `;
@@ -73,6 +78,11 @@ const OutlinedButtonClass = ({
             color: ${darkBackground};
             border-color: ${darkBackground};
         }
+
+        &[disabled] {
+            color: ${lightBackground};
+            border-color: ${lightBackground};
+        }
     `;
 };
 
@@ -80,9 +90,6 @@ const TextButtonClass = ({
     background,
     lightBackground,
     darkBackground,
-    color,
-    shadow,
-    activeShadow,
     padding,
 }) => {
     return css`
@@ -102,6 +109,10 @@ const TextButtonClass = ({
 
         &:active {
             color: ${darkBackground};
+        }
+
+        &[disabled] {
+            color: ${lightBackground};
         }
     `;
 };

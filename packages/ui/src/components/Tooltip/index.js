@@ -68,6 +68,7 @@ const Tooltip = ({
     delay = 1000,
     arrow = false,
     animation = "reveal",
+    placement = "right",
     children,
 }) => {
     if (!children) {
@@ -132,7 +133,7 @@ const Tooltip = ({
                     }
                     offset={[0, 10]}
                     arrow={arrow ? <div className={ArrowClass(theme)} /> : null}
-                    placement="right"
+                    placement={placement}
                 />
             ) : null}
         </React.Fragment>
@@ -144,6 +145,23 @@ Tooltip.propTypes = {
     delay: PropTypes.number,
     arrow: PropTypes.bool,
     animation: PropTypes.oneOf(["fade", "reveal"]),
+    placement: PropTypes.oneOf([
+        "auto",
+        "auto-start",
+        "auto-end",
+        "top",
+        "top-start",
+        "top-end",
+        "bottom",
+        "bottom-start",
+        "bottom-end",
+        "right",
+        "right-start",
+        "right-end",
+        "left",
+        "left-start",
+        "left-end",
+    ]),
 };
 
 export default Tooltip;

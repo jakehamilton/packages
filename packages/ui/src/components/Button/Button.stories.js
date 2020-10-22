@@ -40,3 +40,11 @@ Text.args = {
     color: "primary",
     variant: "text",
 };
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+    children: "Click Me",
+    color: "primary",
+    variant: "filled",
+    disabled: true,
+};
