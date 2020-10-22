@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/ui@1.4.0...@jakehamilton/ui@1.5.0) (2020-10-22)
+
+
+### Bug Fixes
+
+* **logs:** remove console logs ([3b32b32](https://github.com/jakehamilton/packages/commit/3b32b322d51826751706af7b5b67e27f4db6c853))
+
+
+### Features
+
+* **ui:** theming updates ([f6129da](https://github.com/jakehamilton/packages/commit/f6129da9135036a0c0984a9c020cebb2553bad35))
+
+
+
+
+
 # 1.4.0 (2020-10-22)
 
 
