@@ -36,7 +36,6 @@ const Block = ({
     const theme = useTheme();
 
     const [themeColor, themeColorVariant = "main"] = color.split(".");
-    console.log(themeColor, themeColorVariant);
 
     return (
         <div

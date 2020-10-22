@@ -77,8 +77,6 @@ export const ThemeProvider = ({ palettes = {}, mode = null, children }) => {
         [currentMode, normalizedPalettes]
     );
 
-    console.log(currentMode, normalizedPalettes[currentMode]);
-
     return (
         <THEME_PROVIDER_CONTEXT.Provider
             value={{
