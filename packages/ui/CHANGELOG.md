@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.4.0 (2020-10-22)
+
+
+### Features
+
+* **ui:** theming updates ([f6129da](https://github.com/jakehamilton/packages/commit/f6129da9135036a0c0984a9c020cebb2553bad35))
+
+
+
+
+
 # [1.3.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/ui@1.2.0...@jakehamilton/ui@1.3.0) (2020-10-05)
 
 
