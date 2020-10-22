@@ -16,28 +16,60 @@ const fade = keyframes`
     }
 `;
 
-const PopperClass = () => {
+const reveal = keyframes`
+    from {
+        clip-path: circle(0% at 50% 100%);
+    }
+
+    to {
+        clip-path: circle(150% at 50% 100%);
+    }
+`;
+
+const PopperClass = ({ animation }) => {
+    let animationCSS;
+
+    switch (animation) {
+        default:
+        case "reveal":
+            animationCSS = `${reveal} 0.275s ease-in-out forwards`;
+            break;
+        case "fade":
+            animationCSS = `${fade} 0.25s linear forwards`;
+            break;
+    }
+
     return css`
-        animation: ${fade} 0.075s linear forwards;
+        opacity: ${animation === "fade" ? "0" : "1"};
+        animation: ${animationCSS};
     `;
 };
 
-const ContentClass = ({ background }) => {
+const ContentClass = () => {
     return css`
         border-radius: 6px;
     `;
 };
 
-const ArrowClass = ({ background }) => {
+const ArrowClass = ({ theme }) => {
     return css`
         transform: translateX(-100%);
         border-width: 6px 7px;
-        border-color: transparent ${background} transparent transparent;
         border-style: solid;
+
+        /* prettier-ignore */
+        border-color: transparent ${theme.background
+            .light} transparent transparent;
     `;
 };
 
-const Tooltip = ({ text, delay = 1000, children }) => {
+const Tooltip = ({
+    text,
+    delay = 1000,
+    arrow = false,
+    animation = "reveal",
+    children,
+}) => {
     if (!children) {
         throw new Error("Tooltip does not have a child.");
     }
@@ -46,7 +78,7 @@ const Tooltip = ({ text, delay = 1000, children }) => {
         throw new Error("Tooltip can only have one child.");
     }
 
-    const { theme } = useTheme();
+    const theme = useTheme();
 
     const child = Array.isArray(children) ? children[0] : children;
 
@@ -82,41 +114,36 @@ const Tooltip = ({ text, delay = 1000, children }) => {
     });
 
     return (
-        <>
+        <React.Fragment>
             {clonedChild}
             {visible && text ? (
                 <Popper
                     target={targetElement}
-                    className={PopperClass()}
+                    className={PopperClass({ animation })}
                     content={
                         <Block
                             elevation={3}
                             padding={1}
-                            className={ContentClass({
-                                background: theme.background.light,
-                            })}
+                            color="background.light"
+                            className={ContentClass()}
                         >
                             {text}
                         </Block>
                     }
                     offset={[0, 10]}
-                    arrow={
-                        <div
-                            className={ArrowClass({
-                                background: theme.background.light,
-                            })}
-                        />
-                    }
+                    arrow={arrow ? <div className={ArrowClass(theme)} /> : null}
                     placement="right"
                 />
             ) : null}
-        </>
+        </React.Fragment>
     );
 };
 
 Tooltip.propTypes = {
     text: PropTypes.string,
     delay: PropTypes.number,
+    arrow: PropTypes.bool,
+    animation: PropTypes.oneOf(["fade", "reveal"]),
 };
 
 export default Tooltip;

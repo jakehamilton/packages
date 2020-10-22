@@ -20,6 +20,7 @@ const Text = ({
     bold = false,
     italic = false,
     underline = false,
+    className = "",
     children,
     ...props
 } = {}) => {
@@ -38,7 +39,7 @@ const Text = ({
                     italic,
                     underline,
                 }),
-                props.className
+                className
             ),
         },
         children
@@ -51,6 +52,7 @@ Text.propTypes = {
     bold: PropTypes.bool,
     italic: PropTypes.bool,
     underline: PropTypes.bool,
+    className: PropTypes.string,
 };
 
 export default Text;

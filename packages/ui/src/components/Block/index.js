@@ -5,10 +5,22 @@ import { css } from "goober";
 
 import useTheme from "../../hooks/useTheme";
 
-const BlockClass = ({ shadow, padding }) => {
+const BlockClass = ({
+    theme,
+    shadow,
+    pad,
+    padding,
+    elevation,
+    color,
+    variant,
+}) => {
+    const background =
+        theme[color] && theme[color][variant] ? theme[color][variant] : color;
+
     return css`
-        padding: ${padding}px;
-        box-shadow: ${shadow};
+        padding: ${pad(padding)}px;
+        box-shadow: ${shadow(elevation)};
+        background: ${background};
     `;
 };
 
@@ -16,19 +28,26 @@ const Block = ({
     as = "div",
     elevation = 0,
     padding = 0,
+    color = "background.light",
     className,
     children,
     ...props
 }) => {
-    const { theme, pad, shadow } = useTheme();
+    const theme = useTheme();
+
+    const [themeColor, themeColorVariant = "main"] = color.split(".");
+    console.log(themeColor, themeColorVariant);
 
     return (
         <div
             className={cn(
                 className,
                 BlockClass({
-                    shadow: shadow(elevation),
-                    padding: pad(padding),
+                    ...theme,
+                    elevation,
+                    padding,
+                    color: themeColor,
+                    variant: themeColorVariant,
                 })
             )}
             {...props}

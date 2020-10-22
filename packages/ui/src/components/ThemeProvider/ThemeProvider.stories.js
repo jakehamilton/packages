@@ -5,86 +5,65 @@ import ColorSwatch from "../ColorSwatch";
 import useTheme from "../../hooks/useTheme";
 
 import { ThemeProvider } from ".";
+import Block from "../Block";
 
 export default {
     title: "Utility/ThemeProvider",
     component: ThemeProvider,
 };
 
-const Template = (args) => <ThemeProvider {...args} />;
+const SwatchesForColor = ({ label, color }) => {
+    return (
+        <React.Fragment>
+            <ColorSwatch label={label} color={color.main} format="inline" />
+            <Gap vertical />
+            <ColorSwatch
+                label={`${label} (light)`}
+                color={color.light}
+                format="inline"
+            />
+            <Gap vertical />
+            <ColorSwatch
+                label={`${label} (dark)`}
+                color={color.dark}
+                format="inline"
+            />
+        </React.Fragment>
+    );
+};
 
 const ThemeDisplay = () => {
     const { theme } = useTheme();
 
     return (
-        <div>
-            <ColorSwatch
-                label="Primary"
-                color={theme.primary.main}
-                format="inline"
-            />
+        <Block padding={1}>
+            <SwatchesForColor label="Primary" color={theme.primary} />
             <Gap vertical />
-            <ColorSwatch
-                label="Primary (light)"
-                color={theme.primary.light}
-                format="inline"
-            />
+            <SwatchesForColor label="Secondary" color={theme.secondary} />
             <Gap vertical />
-            <ColorSwatch
-                label="Primary (dark)"
-                color={theme.primary.dark}
-                format="inline"
-            />
+            <SwatchesForColor label="Text" color={theme.text} />
             <Gap vertical />
-            <ColorSwatch
-                label="Secondary"
-                color={theme.secondary.main}
-                format="inline"
-            />
-            <Gap vertical />
-            <ColorSwatch
-                label="Secondary (light)"
-                color={theme.secondary.light}
-                format="inline"
-            />
-            <Gap vertical />
-            <ColorSwatch
-                label="Secondary (dark)"
-                color={theme.secondary.dark}
-                format="inline"
-            />
-            <Gap vertical />
-            <ColorSwatch label="Text" color={theme.text.main} format="inline" />
-            <Gap vertical />
-            <ColorSwatch
-                label="Text (light)"
-                color={theme.text.light}
-                format="inline"
-            />
-            <Gap vertical />
-            <ColorSwatch
-                label="Text (dark)"
-                color={theme.text.dark}
-                format="inline"
-            />
-        </div>
+            <SwatchesForColor label="Background" color={theme.background} />
+        </Block>
     );
 };
 
+const Template = (args) => <ThemeProvider {...args} />;
+
 export const Default = Template.bind({});
 Default.args = {
-    palettes: {
-        light: {
-            primary: {
-                main: "#842dbf",
-            },
-            secondary: {
-                main: "#ecb33a",
-            },
-            text: {
-                main: "#333333",
-            },
-        },
-    },
+    mode: "light",
+    children: <ThemeDisplay />,
+};
+
+export const Light = Template.bind({});
+Light.args = {
+    mode: "light",
+    children: <ThemeDisplay />,
+};
+
+export const Dark = Template.bind({});
+Dark.args = {
+    mode: "dark",
     children: <ThemeDisplay />,
 };

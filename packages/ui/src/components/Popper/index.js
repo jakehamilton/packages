@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { usePopper } from "react-popper";
-import { css } from "goober";
 
 const Popper = ({
     target,

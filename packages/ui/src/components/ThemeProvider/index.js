@@ -24,23 +24,29 @@ export const THEME_PROVIDER_CONTEXT = React.createContext({
     setMode: noop,
 });
 
-export const ThemeProvider = ({
-    palettes = {},
-    mode = DEFAULT_MODE,
-    children,
-}) => {
-    const [currentMode, setCurrentMode] = React.useState(mode);
+export const ThemeProvider = ({ palettes = {}, mode = null, children }) => {
+    const [currentMode, setCurrentMode] = React.useState(mode || DEFAULT_MODE);
 
     React.useEffect(() => {
         const saved = localStorage.getItem(THEME_MODE_LOCAL_STORAGE_KEY);
 
-        if (isValidMode(saved)) {
-            setCurrentMode(saved);
+        if (mode === null) {
+            if (isValidMode(saved)) {
+                setCurrentMode(saved);
+            } else {
+                setCurrentMode(DEFAULT_MODE);
+            }
+        } else {
+            if (isValidMode(mode)) {
+                setCurrentMode(mode);
+            } else {
+                setCurrentMode(DEFAULT_MODE);
+            }
         }
     }, []);
 
     React.useEffect(() => {
-        if (isValidMode(currentMode)) {
+        if (isValidMode(currentMode) && mode === null) {
             localStorage.setItem(THEME_MODE_LOCAL_STORAGE_KEY, currentMode);
         }
     }, [currentMode]);
@@ -70,6 +76,8 @@ export const ThemeProvider = ({
         },
         [currentMode, normalizedPalettes]
     );
+
+    console.log(currentMode, normalizedPalettes[currentMode]);
 
     return (
         <THEME_PROVIDER_CONTEXT.Provider

@@ -24,7 +24,8 @@ const Template = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-    elevation: 1,
+    elevation: 0,
+    color: "background.light",
 };
 
 export const Elevation1 = Template.bind({});

@@ -60,14 +60,14 @@ export const DEFAULT_DARK_THEME = {
         text: "#ffffff",
     },
     text: {
-        main: "#333333",
-        light: "#808080",
-        dark: "#404040",
+        main: "#efefef",
+        light: "#ffffff",
+        dark: "#c9c9c9",
     },
     background: {
-        main: "#ededed",
-        light: "#ffffff",
-        dark: "#dfdfdf",
+        main: "#222222",
+        light: "#3b3b3b",
+        dark: "#080808",
     },
 };
 
@@ -89,11 +89,11 @@ export const normalizeColor = (color, lighten = 10, darken = 10) => {
 
 export const normalizePalette = (palette, defaults) => {
     if (!palette.primary || !palette.primary.main) {
-        throw new Error("Light palette does not have a primary color.");
+        throw new Error("Palette does not have a primary color.");
     }
 
     if (!palette.secondary || !palette.secondary.main) {
-        throw new Error("Light palette does not have a secondary color.");
+        throw new Error("Palette does not have a secondary color.");
     }
 
     const padding = palette.padding || DEFAULT_PADDING;

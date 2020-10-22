@@ -2,7 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import tinycolor from "tinycolor2";
 import { css } from "goober";
+
 import useTheme from "../../hooks/useTheme";
+import Text from "../Text";
 
 const BLOCK_COLOR_SWATCH_SIZES = {
     small: "16px",
@@ -89,9 +91,9 @@ const InlineColorSwatch = ({ color, label, size, round }) => {
     return (
         <div className={InlineColorSwatchClass({ size })}>
             <div className={BlockColorSwatchClass({ color, size, round })} />
-            <span className={InlineColorSwatchLabelClass({ size })}>
+            <Text className={InlineColorSwatchLabelClass({ size })}>
                 {label}
-            </span>
+            </Text>
         </div>
     );
 };
