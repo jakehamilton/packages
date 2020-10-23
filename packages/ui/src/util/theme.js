@@ -103,6 +103,7 @@ export const normalizePalette = (palette, defaults) => {
     const background = normalizeColor(
         palette.background || defaults.background
     );
+    const shadows = palette.shadows || defaults.shadows;
 
     return {
         padding,
@@ -110,6 +111,7 @@ export const normalizePalette = (palette, defaults) => {
         secondary,
         text,
         background,
+        shadows,
     };
 };
 
