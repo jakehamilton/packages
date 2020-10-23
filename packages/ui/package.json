@@ -27,7 +27,9 @@
     },
     "scripts": {
         "dev": "start-storybook -p 6006 --no-dll",
-        "build": "microbundle build --jsx React.createElement --define process.env.NODE_ENV=development",
+        "build": "npm run build:main && npm run build:micro",
+        "build:main": "microbundle build --jsx React.createElement --define process.env.NODE_ENV=development",
+        "build:micro": "microbundle build --jsx React.createElement --define process.env.NODE_ENV=development -o dist/micro.js --external tinycolor2,goober,react-popper,react-is,classnames,prop-types",
         "build:storybook": "build-storybook"
     },
     "bugs": {
