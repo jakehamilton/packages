@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/ui@1.8.0...@jakehamilton/ui@1.9.0) (2020-10-23)
+
+
+### Bug Fixes
+
+* **block:** support the 'as' pattern ([f3d7112](https://github.com/jakehamilton/packages/commit/f3d7112d9b9de7f155305fa051bcb6306dabc1c6))
+* **logs:** remove console logs ([3b32b32](https://github.com/jakehamilton/packages/commit/3b32b322d51826751706af7b5b67e27f4db6c853))
+* **theme:** pass through shadows ([8bf96ba](https://github.com/jakehamilton/packages/commit/8bf96bae80752fe6cae28b5d18010a81e1414334))
+
+
+### Features
+
+* **build:** add micro version for ui ([65ec721](https://github.com/jakehamilton/packages/commit/65ec72197de64cc365d3755971e420813182ce3d))
+* support disabled buttons and tooltip placement ([09888b7](https://github.com/jakehamilton/packages/commit/09888b7e96966bb1014a2d42bf6b54902ca63e2b))
+* **ui:** theming updates ([f6129da](https://github.com/jakehamilton/packages/commit/f6129da9135036a0c0984a9c020cebb2553bad35))
+
+
+
+
+
 # [1.8.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/ui@1.7.0...@jakehamilton/ui@1.8.0) (2020-10-23)
 
 
