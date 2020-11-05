@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.25.9](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.25.8...@jakehamilton/titan@1.25.9) (2020-11-05)
+
+
+### Bug Fixes
+
+* **args:** don't allow unknown arguments ([0788ede](https://github.com/jakehamilton/packages/commit/0788ede690dce884dec012f0baece90625903eca))
+
+
+
+
+
 ## [1.25.8](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.25.7...@jakehamilton/titan@1.25.8) (2020-10-23)
 
 **Note:** Version bump only for package @jakehamilton/titan
