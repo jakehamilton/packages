@@ -18,7 +18,7 @@ const getArgs = () => ({
             "-X": "--skip-git",
         },
         {
-            permissive: true,
+            permissive: false,
         }
     ),
 });

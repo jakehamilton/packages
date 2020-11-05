@@ -7,7 +7,7 @@ const getArgs = () => ({
             ...rootArgs,
         },
         {
-            permissive: true,
+            permissive: false,
         }
     ),
 });

@@ -24,7 +24,7 @@ const getArgs = () => ({
             "-o": "--optional",
         },
         {
-            permissive: true,
+            permissive: false,
         }
     ),
 });

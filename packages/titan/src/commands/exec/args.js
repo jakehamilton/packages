@@ -17,7 +17,6 @@ const getArgs = () => ({
             "-t": "--tagged",
         },
         {
-            permissive: true,
             argv: process.argv.slice(
                 2,
                 dashIndex > -1 ? dashIndex : process.argv.length

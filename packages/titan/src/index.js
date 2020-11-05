@@ -31,7 +31,8 @@ const main = async () => {
 };
 
 main().catch((error) => {
-    log.error("An unexpected error occurred:");
-    log.error(error);
-    console.log(error.stack);
+    log.error(error.message || error);
+    for (const line of error.stack.split("\n").slice(1)) {
+        log.error(`${line}`);
+    }
 });

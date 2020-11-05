@@ -15,7 +15,7 @@ const getArgs = () => ({
             "-n": "--name",
         },
         {
-            permissive: true,
+            permissive: false,
         }
     ),
 });
