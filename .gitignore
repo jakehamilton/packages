@@ -117,3 +117,6 @@ dist
 
 tmp
 .DS_Store
+
+packages/ui/micro/*
+!packages/ui/micro/package.json

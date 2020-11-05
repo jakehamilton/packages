@@ -1,0 +1,11 @@
+{
+    "name": "@jakehamilton/ui-micro",
+    "version": "0.0.0",
+    "description": "Micro edition for @jakehamilton/ui.",
+    "private": true,
+    "main": "dist/ui.js",
+    "module": "dist/ui.module.js",
+    "umd:main": "dist/hooks.umd.js",
+    "amdName": "UI",
+    "source": "../src"
+}
