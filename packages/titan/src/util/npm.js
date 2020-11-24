@@ -222,7 +222,7 @@ const writePackageInfo = (pkg) => {
     if (fs.exists(pkg.path)) {
         fs.write(
             path.resolve(pkg.path, "package.json"),
-            JSON.stringify(pkg.config, null, 2)
+            JSON.stringify(pkg.config, null, 4) + "\n"
         );
     } else {
         log.error(

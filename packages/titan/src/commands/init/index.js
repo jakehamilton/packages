@@ -70,7 +70,10 @@ const command = () => {
     pkg.name = name;
     pkg.author = `${user.name} <${user.email}>`;
 
-    fs.write(path.resolve(root, "package.json"), JSON.stringify(pkg, null, 2));
+    fs.write(
+        path.resolve(root, "package.json"),
+        JSON.stringify(pkg, null, 4) + "\n"
+    );
 
     fs.write(
         path.resolve(root, ".prettierignore"),

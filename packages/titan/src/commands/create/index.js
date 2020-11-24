@@ -100,7 +100,7 @@ const command = () => {
 
     fs.write(
         path.resolve(target, "package.json"),
-        JSON.stringify(pkgTemplate, null, 2)
+        JSON.stringify(pkgTemplate, null, 4) + "\n"
     );
 
     fs.write(
