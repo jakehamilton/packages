@@ -108,7 +108,11 @@ const command = () => {
                 log.info(`Installing dependencies for "${pkg.config.name}".`);
             }
 
-            npm.install(pkg.path);
+            if (args["--no-save"]) {
+                npm.install(pkg.path, ["--no-save"]);
+            } else {
+                npm.install(pkg.path);
+            }
         }
     });
 };

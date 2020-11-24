@@ -13,6 +13,9 @@ const getArgs = () =>
 
         "--tagged": Boolean,
         "-t": "--tagged",
+
+        "--no-save": Boolean,
+        "-S": "--no-save",
     });
 
 module.exports = getArgs;

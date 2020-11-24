@@ -16,6 +16,7 @@ const help = () => {
     --scope, -s               Set the scope regex to match against
     --changed, -c             Only run for packages that have changed
     --tagged, -t              Only run for packages that are tagged on HEAD
+    --no-save, -S             Run npm with the "--no-save" option
 
 {bold EXAMPLE}
 
@@ -30,6 +31,9 @@ const help = () => {
 
     {dim $ # Install dependencies for packages with releases.}
     {dim $} {bold titan bootstrap} --tagged
+
+    {dim $ # Install dependencies but don't modify "package-lock.json" files.}
+    {dim $} {bold titan bootstrap} --no-save
 `;
 
     console.log(message);
