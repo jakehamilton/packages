@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/ui@1.9.1...@jakehamilton/ui@1.10.0) (2020-11-24)
+
+
+### Features
+
+* **build:** create sub-package for micro build ([f9b07b2](https://github.com/jakehamilton/packages/commit/f9b07b2481703b18084a3748998523c76e1cd1cf))
+
+
+
+
+
 ## [1.9.1](https://github.com/jakehamilton/packages/compare/@jakehamilton/ui@1.9.0...@jakehamilton/ui@1.9.1) (2020-11-05)
 
 **Note:** Version bump only for package @jakehamilton/ui
