@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.25.10...@jakehamilton/titan@1.26.0) (2020-11-24)
+
+
+### Bug Fixes
+
+* render json with formatting ([b54a145](https://github.com/jakehamilton/packages/commit/b54a1451f508b354e39f33e25af0ef7897c3ba9b))
+* **args:** don't allow unknown arguments ([0788ede](https://github.com/jakehamilton/packages/commit/0788ede690dce884dec012f0baece90625903eca))
+
+
+### Features
+
+* **bootstrap:** add --no-save option ([33e7a15](https://github.com/jakehamilton/packages/commit/33e7a1523f6f1db7385cbe8405853638eb9668bd))
+
+
+
+
+
 ## [1.25.10](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.25.9...@jakehamilton/titan@1.25.10) (2020-11-24)
 
 
