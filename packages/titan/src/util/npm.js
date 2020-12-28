@@ -4,6 +4,7 @@ const fs = require("./fs");
 const log = require("./log");
 const path = require("./path");
 
+let PROJECT_ROOT_CONFIG = null;
 let PROJECT_ROOT = null;
 const getProjectRoot = () => {
     if (PROJECT_ROOT === null) {
@@ -19,24 +20,44 @@ const getProjectRoot = () => {
             const files = fs.readDir(currentPath);
 
             if (files.find((file) => file === "package.json")) {
-                const pkg = JSON.parse(
-                    fs.read(path.resolve(currentPath, "package.json"), {
-                        encoding: "utf8",
-                    })
-                );
+                let pkg;
 
-                if ("titan" in pkg) {
+                try {
+                    pkg = JSON.parse(
+                        fs.read(path.resolve(currentPath, "package.json"), {
+                            encoding: "utf8",
+                        })
+                    );
+                } catch (error) {
+                    log.debug(
+                        `Could not import file "${path.resolve(
+                            currentPath,
+                            "package.json"
+                        )}".`
+                    );
+                }
+
+                if (pkg && "titan" in pkg) {
                     PROJECT_ROOT = currentPath;
+                    PROJECT_ROOT_CONFIG = pkg;
                     return PROJECT_ROOT;
                 }
             }
         }
 
-        log.error("Unable to find project root.");
+        log.error("Unable to find project root. Are you in a Titan project?");
         process.exit(1);
     } else {
         return PROJECT_ROOT;
     }
+};
+
+const getProjectRootConfig = () => {
+    if (PROJECT_ROOT_CONFIG === null) {
+        getProjectRoot();
+    }
+
+    return PROJECT_ROOT_CONFIG;
 };
 
 const getAllPackages = () => {
@@ -313,6 +334,7 @@ const patchDependenciesWithLocals = (pkgsMap, dependencies) => {
 
 module.exports = {
     getProjectRoot,
+    getProjectRootConfig,
     getAllPackages,
     getLocalDependencies,
     withLinkedLocals,

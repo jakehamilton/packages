@@ -16,6 +16,9 @@ const getArgs = () => ({
 
             "--skip-git": Boolean,
             "-X": "--skip-git",
+
+            "--template": String,
+            "-t": "--template",
         },
         {
             permissive: false,

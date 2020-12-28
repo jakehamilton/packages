@@ -1,6 +1,9 @@
+const chalk = require("chalk");
+const starters = require("@starters/core");
 const fs = require("../../util/fs");
 const log = require("../../util/log");
 const path = require("../../util/path");
+const npm = require("../../util/npm");
 
 const help = require("./help");
 const getArgs = require("./args");
@@ -14,7 +17,7 @@ const command = () => {
     }
 
     if (args._.length === 1) {
-        log.error("Missing position arguments");
+        log.error("No name specified.");
         help();
         process.exit(1);
     }
@@ -26,50 +29,56 @@ const command = () => {
         process.exit(1);
     }
 
-    const pkgName = args["--name"] || name;
-
-    const pkgPath = path.resolve(process.cwd(), "package.json");
-
-    if (!fs.exists(pkgPath)) {
-        log.error(`Unable to load package configuration at "${pkgPath}".`);
-        process.exit(1);
-    }
-
-    const pkg = JSON.parse(
-        fs.read(pkgPath, {
-            encoding: "utf8",
-        })
-    );
-
-    if (!pkg.titan) {
-        log.error("Package has no titan config.");
-        process.exit(1);
-    }
+    const rootPkgPath = npm.getProjectRoot();
+    const pkg = npm.getProjectRootConfig();
 
     if (!pkg.titan.packages) {
-        log.error("Package has no `titan.packages` property.");
+        log.error(
+            chalk`Root configuration has no {white titan.packages} property.`
+        );
         process.exit(1);
     }
 
-    const where = path.resolveRelative(args._[2] || pkg.titan.packages[0]);
+    const root = path.resolveRelative(args._[2] || pkg.titan.packages[0]);
 
-    if (!where) {
+    let isPkgMapped = false;
+    for (const pkgPath of pkg.titan.packages) {
+        const resolvedPkgPath = path.resolveRelative(pkgPath, rootPkgPath);
+
+        if (root === resolvedPkgPath) {
+            isPkgMapped = true;
+        }
+    }
+
+    if (!isPkgMapped) {
+        log.warn(
+            chalk`Root configuration's {white.bold titan.packages} property does not include {white.bold ${path.relative(
+                rootPkgPath,
+                root
+            )}}.`
+        );
+    }
+
+    if (!root) {
         log.error("No destination available.");
         process.exit(1);
     }
 
-    if (!fs.exists(where)) {
+    if (!fs.exists(root)) {
         log.info("Creating destination directory.");
-        fs.mkdir(where);
-    } else if (!fs.isDir(where)) {
+        fs.mkdir(root);
+    } else if (!fs.isDir(root)) {
         log.info("Creating destination directory.");
-        fs.mkdir(where);
+        fs.mkdir(root);
     }
 
-    const target = path.resolve(where, name);
+    const target = path.resolve(root, name);
 
     if (fs.exists(target)) {
         if (args["--force"] && fs.isDir(target)) {
+            log.debug(
+                chalk`Removing existing directory {white.bold ${target}}.`
+            );
             fs.rm(target);
         } else {
             log.error(
@@ -82,31 +91,14 @@ const command = () => {
     log.info("Creating package directory.");
     fs.mkdir(target);
 
-    const src = path.resolve(target, "src");
+    const template = args["--template"] || "@starters/library";
 
-    fs.mkdir(src);
-
-    const pkgTemplate = JSON.parse(
-        fs.read(path.resolve(__dirname, "package.template.json"), {
-            encoding: "utf8",
-        })
-    );
-
-    pkgTemplate.name = pkgName;
-
-    if (args["--private"]) {
-        pkgTemplate.private = true;
+    try {
+        starters.create(target, template, name);
+    } catch (error) {
+        log.error("Could not create package.");
+        process.exit(1);
     }
-
-    fs.write(
-        path.resolve(target, "package.json"),
-        JSON.stringify(pkgTemplate, null, 4) + "\n"
-    );
-
-    fs.write(
-        path.resolve(src, "index.js"),
-        fs.read(path.resolve(__dirname, "index.template.js"))
-    );
 };
 
 module.exports = command;

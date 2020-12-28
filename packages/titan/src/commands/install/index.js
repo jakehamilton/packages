@@ -97,7 +97,7 @@ const command = () => {
         return locals;
     }, new Map());
 
-    log.info("Bootstrapping packages.");
+    log.info("Installing packages.");
     npm.withLinkedLocals(pkgs, () => {
         for (const { pkg, transitive } of locals.values()) {
             if (transitive) {

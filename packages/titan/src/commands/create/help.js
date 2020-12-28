@@ -8,7 +8,7 @@ const help = () => {
 
     {bold USAGE}
 
-        {dim $} {bold titan create} <name> [root]
+        {dim $} {bold titan create} <name> [root] [options]
 
     {bold OPTIONS}
 
@@ -16,6 +16,7 @@ const help = () => {
         --force, -f               Overwrite existing directory if it exists
         --private, -p             Set the package to private
         --name, -n                Set the name used in package.json
+        --template, -t            The {white.bold starters} template to use
 
     {bold EXAMPLE}
 
@@ -30,6 +31,9 @@ const help = () => {
 
         {dim $ # Create a private package.}
         {dim $} {bold titan create} --private my-private-library
+
+        {dim $ # Create a JavaScript library from a template.}
+        {dim $} {bold titan create} my-library --template @starters/library
 `;
 
     console.log(message);

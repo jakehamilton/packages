@@ -8,7 +8,7 @@ const help = () => {
 
 {bold USAGE}
 
-    {dim $} {bold titan bootstrap} [options]
+    {dim $} {bold titan install} [options]
 
 {bold OPTIONS}
 
@@ -21,19 +21,19 @@ const help = () => {
 {bold EXAMPLE}
 
     {dim $ # Install and link all dependencies}
-    {dim $} {bold titan bootstrap}
+    {dim $} {bold titan install}
 
     {dim $ # Install dependencies for all packages in the "@jakehamilton" namespace.}
-    {dim $} {bold titan bootstrap} --scope="^@jakeahmilton"
+    {dim $} {bold titan install} --scope="^@jakeahmilton"
 
     {dim $ # Install dependencies for all changed packages.}
-    {dim $} {bold titan bootstrap} --changed
+    {dim $} {bold titan install} --changed
 
     {dim $ # Install dependencies for packages with releases.}
-    {dim $} {bold titan bootstrap} --tagged
+    {dim $} {bold titan install} --tagged
 
     {dim $ # Install dependencies but don't modify "package-lock.json" files.}
-    {dim $} {bold titan bootstrap} --no-save
+    {dim $} {bold titan install} --no-save
 `;
 
     console.log(message);

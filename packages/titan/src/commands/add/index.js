@@ -2,6 +2,7 @@ const semver = require("semver");
 const log = require("../../util/log");
 const npm = require("../../util/npm");
 const git = require("../../util/git");
+const cmd = require("../../util/cmd");
 const help = require("./help");
 const getArgs = require("./args");
 
@@ -165,12 +166,38 @@ const command = () => {
                     }
                 }
             } else {
+                let resolvedVersion = version;
+
+                if (version === "latest") {
+                    try {
+                        const versions = JSON.parse(
+                            cmd.exec(`npm view ${name} versions --json`, {
+                                encoding: "utf8",
+                            })
+                        );
+
+                        if (versions.length === 0) {
+                            log.error(
+                                `No versions found for package "${name}". Defaulting to "latest".`
+                            );
+                        } else {
+                            resolvedVersion = `^${
+                                versions[versions.length - 1]
+                            }`;
+                        }
+                    } catch (error) {
+                        log.error(
+                            `Could not fetch versions from npm for package "${name}". Defaulting to "latest".`
+                        );
+                    }
+                }
+
                 if (!args["--dev"] && !args["--peer"] && !args["--optional"]) {
                     if (!pkg.config.hasOwnProperty("dependencies")) {
                         pkg.config.dependencies = {};
                     }
 
-                    pkg.config.dependencies[name] = version;
+                    pkg.config.dependencies[name] = resolvedVersion;
                 }
 
                 if (args["--dev"]) {
@@ -178,7 +205,7 @@ const command = () => {
                         pkg.config.devDependencies = {};
                     }
 
-                    pkg.config.devDependencies[name] = version;
+                    pkg.config.devDependencies[name] = resolvedVersion;
                 }
 
                 if (args["--peer"]) {
@@ -186,7 +213,7 @@ const command = () => {
                         pkg.config.peerDependencies = {};
                     }
 
-                    pkg.config.peerDependencies[name] = version;
+                    pkg.config.peerDependencies[name] = resolvedVersion;
                 }
 
                 if (args["--optional"]) {
@@ -194,7 +221,7 @@ const command = () => {
                         pkg.config.optionalDependencies = {};
                     }
 
-                    pkg.config.optionalDependencies[name] = version;
+                    pkg.config.optionalDependencies[name] = resolvedVersion;
                 }
             }
         }

@@ -5,11 +5,14 @@ const getArgs = () => ({
     ...arg(
         {
             ...rootArgs,
-            "--force": Boolean,
-            "-f": "--force",
+            "--scope": String,
+            "-s": "--scope",
 
-            "--template": String,
-            "-t": "--template",
+            "--changed": Boolean,
+            "-c": "--changed",
+
+            "--tagged": Boolean,
+            "-t": "--tagged",
         },
         {
             permissive: false,

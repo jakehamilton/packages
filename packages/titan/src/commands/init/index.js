@@ -1,3 +1,4 @@
+const starters = require("@starters/core");
 const fs = require("../../util/fs");
 const log = require("../../util/log");
 const git = require("../../util/git");
@@ -50,59 +51,68 @@ const command = () => {
         }
     }
 
-    log.info("Creating directory.");
-    fs.mkdir(root);
-
-    log.info("Scaffolding project.");
-
-    const packages = path.resolve(root, "packages");
-
-    fs.mkdir(packages);
-    fs.touch(path.resolve(packages, ".gitkeep"));
-
-    const pkg = require("./package.template.json");
-
-    const user = {
-        name: git.config.get("user.name"),
-        email: git.config.get("user.email"),
-    };
-
-    pkg.name = name;
-    pkg.author = `${user.name} <${user.email}>`;
-
-    fs.write(
-        path.resolve(root, "package.json"),
-        JSON.stringify(pkg, null, 4) + "\n"
-    );
-
-    fs.write(
-        path.resolve(root, ".prettierignore"),
-        fs.read(path.resolve(__dirname, "prettierignore.template"))
-    );
-
-    fs.write(
-        path.resolve(root, ".gitignore"),
-        fs.read(path.resolve(__dirname, "gitignore.template"))
-    );
-
-    if (args["--skip-git"]) {
-        log.info("Skipping git initialization.");
+    if (args["--template"]) {
+        try {
+            starters.create(root, args["--template"], name);
+        } catch (error) {
+            log.error("Could not create project.");
+            process.exit(1);
+        }
     } else {
-        log.info("Initializing git repository.");
-        git.init(root);
-    }
+        log.info("Creating directory.");
+        fs.mkdir(root);
 
-    if (args["--skip-install"]) {
-        log.info("Skipping installing dependencies.");
-    } else {
-        log.info("Installing dependencies.");
-        npm.install(root);
-    }
+        log.info("Scaffolding project.");
 
-    if (!args["--skip-git"]) {
-        log.info("Committing changes.");
-        git.add([], ["-A"], root);
-        git.commit("chore: initial commit", [], root);
+        const packages = path.resolve(root, "packages");
+
+        fs.mkdir(packages);
+        fs.touch(path.resolve(packages, ".gitkeep"));
+
+        const pkg = require("./package.template.json");
+
+        const user = {
+            name: git.config.get("user.name"),
+            email: git.config.get("user.email"),
+        };
+
+        pkg.name = name;
+        pkg.author = `${user.name} <${user.email}>`;
+
+        fs.write(
+            path.resolve(root, "package.json"),
+            JSON.stringify(pkg, null, 4) + "\n"
+        );
+
+        fs.write(
+            path.resolve(root, ".prettierignore"),
+            fs.read(path.resolve(__dirname, "prettierignore.template"))
+        );
+
+        fs.write(
+            path.resolve(root, ".gitignore"),
+            fs.read(path.resolve(__dirname, "gitignore.template"))
+        );
+
+        if (args["--skip-git"]) {
+            log.info("Skipping git initialization.");
+        } else {
+            log.info("Initializing git repository.");
+            git.init(root);
+        }
+
+        if (args["--skip-install"]) {
+            log.info("Skipping installing dependencies.");
+        } else {
+            log.info("Installing dependencies.");
+            npm.install(root);
+        }
+
+        if (!args["--skip-git"]) {
+            log.info("Committing changes.");
+            git.add([], ["-A"], root);
+            git.commit("chore: initial commit", [], root);
+        }
     }
 };
 

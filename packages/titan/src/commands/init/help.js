@@ -17,6 +17,7 @@ const help = () => {
     --force, -f               Overwrite existing directory
     --skip-install, -x        Skip installing dependencies
     --skip-git, -X            Skip running git commands
+    --template, -t            The {white.bold starters} template to use
 
 {bold EXAMPLE}
 
@@ -31,6 +32,9 @@ const help = () => {
 
     {dim $ # Create a new project but don't run git commands.}
     {dim $} {bold titan init} --skip-git my-project
+
+    {dim $ # Create a new project using a template.}
+    {dim $} {bold titan init} my-project --template my-starters-template
 `;
 
     console.log(message);
