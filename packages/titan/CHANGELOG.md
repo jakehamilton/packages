@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.26.0...@jakehamilton/titan@2.0.0) (2020-12-28)
+
+
+### Features
+
+* add template support ([2dbede1](https://github.com/jakehamilton/packages/commit/2dbede117563b2a7ecee53b8114606cf5e79955b))
+
+
+### BREAKING CHANGES
+
+* renamed "bootstrap" command to "install"
+
+
+
+
+
 # [1.26.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@1.25.10...@jakehamilton/titan@1.26.0) (2020-11-24)
 
 
