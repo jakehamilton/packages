@@ -91,7 +91,7 @@ const command = () => {
     log.info("Creating package directory.");
     fs.mkdir(target);
 
-    const template = args["--template"] || "@starters/library";
+    const template = args["--template"] || "@starters/empty";
 
     try {
         starters.create(
