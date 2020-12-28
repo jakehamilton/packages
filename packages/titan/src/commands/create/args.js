@@ -10,6 +10,9 @@ const getArgs = () => ({
 
             "--template": String,
             "-t": "--template",
+
+            "--name": String,
+            "-n": "--name",
         },
         {
             permissive: false,

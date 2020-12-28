@@ -94,7 +94,11 @@ const command = () => {
     const template = args["--template"] || "@starters/library";
 
     try {
-        starters.create(target, template, name);
+        starters.create(
+            target,
+            template,
+            args["--name"] || path.basename(name)
+        );
     } catch (error) {
         log.error("Could not create package.");
         process.exit(1);
