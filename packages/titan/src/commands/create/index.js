@@ -8,7 +8,7 @@ const npm = require("../../util/npm");
 const help = require("./help");
 const getArgs = require("./args");
 
-const command = () => {
+const command = async () => {
     const args = getArgs();
 
     if (args["--help"]) {
@@ -94,7 +94,7 @@ const command = () => {
     const template = args["--template"] || "@starters/empty";
 
     try {
-        starters.create(
+        await starters.create(
             target,
             template,
             args["--name"] || path.basename(name)

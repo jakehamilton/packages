@@ -7,7 +7,7 @@ const path = require("../../util/path");
 const help = require("./help");
 const getArgs = require("./args");
 
-const command = () => {
+const command = async () => {
     const args = getArgs();
 
     if (args["--help"]) {
@@ -53,7 +53,7 @@ const command = () => {
 
     if (args["--template"]) {
         try {
-            starters.create(root, args["--template"], name);
+            await starters.create(root, args["--template"], name);
         } catch (error) {
             log.error("Could not create project.");
             process.exit(1);

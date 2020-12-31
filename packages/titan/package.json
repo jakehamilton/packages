@@ -39,12 +39,11 @@
     "dependencies": {
         "@littlethings/log": "^2.3.0",
         "@littlethings/test": "^1.2.1",
-        "@starters/core": "^1.2.0",
+        "@starters/core": "^1.4.0",
         "arg": "^4.1.3",
         "chalk": "^4.1.0",
         "inquirer": "^7.3.3",
         "mkdirp": "^1.0.4",
-        "npm-package-arg": "^8.0.1",
         "rimraf": "^3.0.2",
         "semver": "^7.3.2"
     }

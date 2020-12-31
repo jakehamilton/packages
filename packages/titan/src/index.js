@@ -23,7 +23,7 @@ const main = async () => {
     const command = args._[0];
 
     if (command in commands) {
-        commands[command]();
+        await commands[command]();
     } else {
         log.error(`Unknown command "${command}".`);
         process.exit(1);
