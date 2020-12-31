@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@3.0.0...@jakehamilton/titan@4.0.0) (2020-12-28)
+
+
+### Bug Fixes
+
+* **create:** default to empty template ([75aabbb](https://github.com/jakehamilton/packages/commit/75aabbb113428191e079c58b51d4c07d12d8c875))
+* **create:** update args and help to match ([67abfa3](https://github.com/jakehamilton/packages/commit/67abfa31430aad515ecee7f2937871afc112017e))
+
+
+### Features
+
+* add template support ([2dbede1](https://github.com/jakehamilton/packages/commit/2dbede117563b2a7ecee53b8114606cf5e79955b))
+
+
+### BREAKING CHANGES
+
+* renamed "bootstrap" command to "install"
+
+
+
+
+
 # [3.0.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@2.0.0...@jakehamilton/titan@3.0.0) (2020-12-28)
 
 
