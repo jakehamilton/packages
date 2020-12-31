@@ -97,7 +97,8 @@ const command = async () => {
         await starters.create(
             target,
             template,
-            args["--name"] || path.basename(name)
+            args["--name"] || path.basename(name),
+            args
         );
     } catch (error) {
         log.error("Could not create package.");
