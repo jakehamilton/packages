@@ -51,9 +51,34 @@ const command = async () => {
         }
     }
 
+    const user = {
+        name: git.config.get("user.name"),
+        email: git.config.get("user.email"),
+    };
+
     if (args["--template"]) {
         try {
-            await starters.create(root, args["--template"], name);
+            await starters.create(root, args["--template"], name, { user });
+
+            if (args["--skip-git"]) {
+                log.info("Skipping git initialization.");
+            } else {
+                log.info("Initializing git repository.");
+                git.init(root);
+            }
+
+            if (args["--skip-install"]) {
+                log.info("Skipping installing dependencies.");
+            } else {
+                log.info("Installing dependencies.");
+                npm.install(root);
+            }
+
+            if (!args["--skip-git"]) {
+                log.info("Committing changes.");
+                git.add([], ["-A"], root);
+                git.commit("chore: initial commit", [], root);
+            }
         } catch (error) {
             log.error("Could not create project.");
             process.exit(1);
@@ -70,11 +95,6 @@ const command = async () => {
         fs.touch(path.resolve(packages, ".gitkeep"));
 
         const pkg = require("./package.template.json");
-
-        const user = {
-            name: git.config.get("user.name"),
-            email: git.config.get("user.email"),
-        };
 
         pkg.name = name;
         pkg.author = `${user.name} <${user.email}>`;

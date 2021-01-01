@@ -115,8 +115,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Misc
 tmp
 .DS_Store
-
-packages/ui/micro/*
-!packages/ui/micro/package.json
