@@ -7,12 +7,12 @@ const log = littlelog.create("Auto Issue");
 littlelog.setVerbosity("INFO");
 
 const ROOT_DIR = path.resolve(process.env.GITHUB_WORKSPACE);
-const LERNA_CONFIG = require(path.resolve(ROOT_DIR, "lerna.json"));
+const TITAN_CONFIG = require(path.resolve(ROOT_DIR, "package.json")).titan;
 
 const getPackages = () => {
     let pkgs = [];
 
-    const rootPkgPaths = LERNA_CONFIG.packages.map((pkgPath) =>
+    const rootPkgPaths = TITAN_CONFIG.packages.map((pkgPath) =>
         path.resolve(ROOT_DIR, pkgPath.replace(/\*$/, ""))
     );
 
@@ -89,7 +89,7 @@ module.exports = async ({ github, context }) => {
 
     const issues = await github.paginate(opts);
 
-    const isFirstSubmission = issues.length <= 1;
+    const isFirstSubmission = issues.length === 1;
 
     if (isFirstSubmission) {
         log.info(`First submission from "${creator}", adding welcome comment.`);
