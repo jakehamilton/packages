@@ -38,6 +38,7 @@ jobs:
                   node-version: "12.x"
             - name: Configure NPM
               run: |
+                  npm i -g npm@7
                   npm config set registry https://registry.npmjs.org/
                   npm config set //registry.npmjs.org/:_authToken=\${NPM_TOKEN}
             - name: Check Authentication with Registry
