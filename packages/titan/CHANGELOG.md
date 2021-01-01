@@ -1,5 +1,22 @@
 # Change Log
 
+# [5.0.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@4.0.0...@jakehamilton/titan@5.0.0) (2020-12-31)
+
+### Bug Fixes
+
+-   **create:** pass args to starter template ([936f543](https://github.com/jakehamilton/packages/commit/936f54312982762d81f3eef814b1f838dc20de3c))
+-   handle promise rejections ([55b358a](https://github.com/jakehamilton/packages/commit/55b358a1dc9834660640479f38f8c165f8669757))
+-   **create:** default to empty template ([75aabbb](https://github.com/jakehamilton/packages/commit/75aabbb113428191e079c58b51d4c07d12d8c875))
+-   **create:** update args and help to match ([67abfa3](https://github.com/jakehamilton/packages/commit/67abfa31430aad515ecee7f2937871afc112017e))
+
+### Features
+
+-   add template support ([2dbede1](https://github.com/jakehamilton/packages/commit/2dbede117563b2a7ecee53b8114606cf5e79955b))
+
+### BREAKING CHANGES
+
+-   renamed "bootstrap" command to "install"
+
 # [4.0.0](https://github.com/jakehamilton/packages/compare/@jakehamilton/titan@3.0.0...@jakehamilton/titan@4.0.0) (2020-12-28)
 
 ### Bug Fixes
