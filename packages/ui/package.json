@@ -19,7 +19,8 @@
     },
     "files": [
         "dist/**/*",
-        "src/**/*"
+        "src/**/*",
+        "micro/**/*"
     ],
     "repository": {
         "type": "git",
