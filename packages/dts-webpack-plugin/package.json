@@ -1,6 +1,6 @@
 {
     "name": "@jakehamilton/dts-webpack-plugin",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "description": "A webpack plugin to generate type definitions.",
     "keywords": [
         "webpack",
