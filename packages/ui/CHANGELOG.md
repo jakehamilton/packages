@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.10.4
+
+### Fixes
+
+- publish micro subpackage
+
+
 ## 1.10.3
 
 ### Fixes
