@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.3.0
+
+### Features
+
+- bump version for redeploy
+
+
 ## 1.2.8
 
 ### Fixes
