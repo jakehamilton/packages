@@ -31,6 +31,9 @@ const help = () => {
 
     {dim $ # Build all packages that are tagged for release.}
     {dim $} {bold titan run} build --tagged
+
+    {dim $ # Build all packages in order of dependencies.}
+    {dim $} {bold titan run} build --ordered
 `;
 
     console.log(message);
