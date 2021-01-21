@@ -47,7 +47,7 @@ jobs:
               run: npm install --no-save
             - name: Bootstrap
               run: |
-                  npm run bootstrap
+                  npm run bootstrap:changed
                   npm run build:changed
             - name: Version Packages
               run: npm run version
