@@ -241,7 +241,7 @@ const command = () => {
     npm.withLinkedLocals(pkgs, () => {
         log.info("Installing dependencies.");
         for (const pkg of matchingPkgs) {
-            npm.install(pkg.path);
+            npm.install(pkg.path, ["--no-save"]);
         }
     });
 };

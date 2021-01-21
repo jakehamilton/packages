@@ -63,19 +63,38 @@ const command = () => {
         process.exit(0);
     }
 
-    for (const pkg of matchingPkgs) {
-        log.info(chalk`{white ${pkg.config.name}} ${args["--"].join(" ")}`);
-        const output = cmd.exec(args["--"].join(" "), {
-            cwd: pkg.path,
-            encoding: "utf8",
-            stdio: "pipe",
+    if (args["--ordered"]) {
+        npm.traverseOrdered(matchingPkgs, (pkg) => {
+            log.info(chalk`{white ${pkg.config.name}} ${args["--"].join(" ")}`);
+            const output = cmd.exec(args["--"].join(" "), {
+                cwd: pkg.path,
+                encoding: "utf8",
+                stdio: "pipe",
+            });
+
+            const lines = output.split("\n");
+
+            for (const line of lines) {
+                if (line.trim() !== "") {
+                    log.info(chalk`{white ${pkg.config.name}} > ${line}`);
+                }
+            }
         });
+    } else {
+        for (const pkg of matchingPkgs) {
+            log.info(chalk`{white ${pkg.config.name}} ${args["--"].join(" ")}`);
+            const output = cmd.exec(args["--"].join(" "), {
+                cwd: pkg.path,
+                encoding: "utf8",
+                stdio: "pipe",
+            });
 
-        const lines = output.split("\n");
+            const lines = output.split("\n");
 
-        for (const line of lines) {
-            if (line.trim() !== "") {
-                log.info(chalk`{white ${pkg.config.name}} > ${line}`);
+            for (const line of lines) {
+                if (line.trim() !== "") {
+                    log.info(chalk`{white ${pkg.config.name}} > ${line}`);
+                }
             }
         }
     }

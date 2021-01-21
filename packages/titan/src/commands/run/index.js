@@ -72,32 +72,63 @@ const command = () => {
         process.exit(0);
     }
 
-    for (const pkg of matchingPkgs) {
-        if (!pkg.config.scripts || !pkg.config.scripts[name]) {
-            log.debug(
-                `No script "${name}" found in package "${pkg.config.name}".`
-            );
-            continue;
-        }
+    if (args["--ordered"]) {
+        npm.traverseOrdered(matchingPkgs, (pkg) => {
+            if (!pkg.config.scripts || !pkg.config.scripts[name]) {
+                log.debug(
+                    `No script "${name}" found in package "${pkg.config.name}".`
+                );
+            } else {
+                let command = `npm run ${name}`;
 
-        let command = `npm run ${name}`;
+                if (args["--"].length > 0) {
+                    command += `-- ${args["--"].join(" ")}`;
+                }
 
-        if (args["--"].length > 0) {
-            command += `-- ${args["--"].join(" ")}`;
-        }
+                log.info(chalk`{white ${pkg.config.name}} ${command}`);
+                const output = cmd.exec(command, {
+                    cwd: pkg.path,
+                    encoding: "utf8",
+                    stdio: "pipe",
+                });
 
-        log.info(chalk`{white ${pkg.config.name}} ${command}`);
-        const output = cmd.exec(command, {
-            cwd: pkg.path,
-            encoding: "utf8",
-            stdio: "pipe",
+                const lines = output.split("\n");
+
+                for (const line of lines) {
+                    if (line.trim() !== "") {
+                        log.info(chalk`{white ${pkg.config.name}} ${line}`);
+                    }
+                }
+            }
         });
+    } else {
+        for (const pkg of matchingPkgs) {
+            if (!pkg.config.scripts || !pkg.config.scripts[name]) {
+                log.debug(
+                    `No script "${name}" found in package "${pkg.config.name}".`
+                );
+                continue;
+            }
 
-        const lines = output.split("\n");
+            let command = `npm run ${name}`;
 
-        for (const line of lines) {
-            if (line.trim() !== "") {
-                log.info(chalk`{white ${pkg.config.name}} ${line}`);
+            if (args["--"].length > 0) {
+                command += `-- ${args["--"].join(" ")}`;
+            }
+
+            log.info(chalk`{white ${pkg.config.name}} ${command}`);
+            const output = cmd.exec(command, {
+                cwd: pkg.path,
+                encoding: "utf8",
+                stdio: "pipe",
+            });
+
+            const lines = output.split("\n");
+
+            for (const line of lines) {
+                if (line.trim() !== "") {
+                    log.info(chalk`{white ${pkg.config.name}} ${line}`);
+                }
             }
         }
     }

@@ -16,6 +16,7 @@ const help = () => {
     --scope, -s               Set the scope regex to match against
     --changed, -c             Only run for packages that have changed
     --tagged, -t              Only run for packages that are tagged on HEAD
+    --ordered, -o             Run command for packages in order of dependencies
 
 {bold EXAMPLE}
 

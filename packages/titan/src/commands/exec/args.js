@@ -15,6 +15,9 @@ const getArgs = () => ({
 
             "--tagged": Boolean,
             "-t": "--tagged",
+
+            "--ordered": Boolean,
+            "-o": "--ordered",
         },
         {
             argv: process.argv.slice(

@@ -60,7 +60,12 @@ const getProjectRootConfig = () => {
     return PROJECT_ROOT_CONFIG;
 };
 
-const getAllPackages = () => {
+let ALL_PACKAGES_CACHE = null;
+const getAllPackages = (cache = false) => {
+    if (cache && ALL_PACKAGES_CACHE !== null) {
+        return ALL_PACKAGES_CACHE;
+    }
+
     const root = getProjectRoot();
 
     const config = JSON.parse(
@@ -99,6 +104,8 @@ const getAllPackages = () => {
             log.error(`Packages directory "${pkgsDir}" does not exist.`);
         }
     }
+
+    ALL_PACKAGES_CACHE = pkgs;
 
     return pkgs;
 };
@@ -332,6 +339,26 @@ const patchDependenciesWithLocals = (pkgsMap, dependencies) => {
     return dependencies;
 };
 
+const traverseOrdered = async (pkgs, cb, known = new Map()) => {
+    for (const pkg of pkgs) {
+        if (known.has(pkg.config.name)) {
+            continue;
+        }
+
+        const locals = [
+            ...getLocalDependencies(pkg, getAllPackages(true)).values(),
+        ];
+
+        if (locals.length > 0) {
+            await traverseOrdered(locals, cb, known);
+        }
+
+        await cb(pkg);
+
+        known.set(pkg.config.name, pkg);
+    }
+};
+
 module.exports = {
     getProjectRoot,
     getProjectRootConfig,
@@ -344,4 +371,5 @@ module.exports = {
     dedupe,
     install,
     publish,
+    traverseOrdered,
 };
