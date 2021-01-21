@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.1.1
+
+### Other
+
+- add examples for ordered run/exec
+
+
 ## 5.1.0
 
 ### Features
