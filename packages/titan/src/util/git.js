@@ -349,6 +349,44 @@ const config = {
     },
 };
 
+const getChangedPackages = (from = undefined, to = "HEAD") => {
+    const pkgs = npm.getAllPackages();
+
+    const tags = tag.releases();
+
+    const releases = tag.latestReleases(pkgs, tags);
+
+    const changed = [];
+
+    for (const pkg of pkgs.values()) {
+        if (releases.has(pkg.config.name)) {
+            const release = releases.get(pkg.config.name);
+            const changes = getChangesBetween(
+                from || release.tag.name,
+                to,
+                release.pkg
+            );
+
+            if (changes.length > 0) {
+                changed.push({
+                    release,
+                    changes,
+                    pkg,
+                });
+            }
+        } else {
+            // Packages without a release are considered changed
+            changed.push({
+                release: null,
+                changes: null,
+                pkg,
+            });
+        }
+    }
+
+    return changed;
+};
+
 module.exports = {
     init,
     add,
@@ -364,4 +402,5 @@ module.exports = {
     getAllUpgradesBetween,
     tag,
     config,
+    getChangedPackages,
 };

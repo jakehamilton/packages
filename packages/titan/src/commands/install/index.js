@@ -32,12 +32,8 @@ const command = () => {
     const changed = [];
 
     if (args["--changed"]) {
-        const releases = git.tag.latestReleases();
-
-        for (const release of releases.values()) {
-            if (git.changedSince(release)) {
-                changed.push(release.name);
-            }
+        for (const { pkg } of git.getChangedPackages()) {
+            changed.push(pkg.config.name);
         }
     }
 

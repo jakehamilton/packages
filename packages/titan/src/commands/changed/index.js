@@ -13,36 +13,26 @@ const command = () => {
         process.exit(0);
     }
 
-    const pkgs = npm.getAllPackages();
+    const changed = git.getChangedPackages();
 
-    const tags = git.tag.releases();
-
-    const latest = git.tag.latestReleases(pkgs, tags);
-
-    let hasChanges = false;
-
-    for (const release of latest.values()) {
-        const changes = git.getChangesBetween(
-            release.tag.name,
-            "HEAD",
-            release.pkg
-        );
-
-        if (changes.length == 0) {
-            continue;
-        }
-
-        hasChanges = true;
-
-        log.info(
-            chalk`{white ${release.name}} has ${changes.length} change${
-                changes.length === 1 ? "" : "s"
-            } since version "${release.version}".`
-        );
-    }
-
-    if (!hasChanges) {
+    if (changed.length === 0) {
         log.info("No changed packages.");
+    } else {
+        for (const { release, changes, pkg } of changed) {
+            if (release === null) {
+                log.info(
+                    chalk`New package {white.bold ${pkg.config.name}} was created.`
+                );
+            } else {
+                log.info(
+                    chalk`Package {white.bold ${release.name}} has ${
+                        changes.length
+                    } change${changes.length === 1 ? "" : "s"} since version "${
+                        release.version
+                    }".`
+                );
+            }
+        }
     }
 };
 
