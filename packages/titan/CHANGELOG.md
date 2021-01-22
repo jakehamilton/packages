@@ -1,5 +1,17 @@
 # Change Log
 
+## 5.3.0
+
+### Features
+
+- migrate from chalk to kleur
+
+
+### Chores
+
+- _(npm)_: remove unused dependency
+
+
 ## 5.2.0
 
 ### Features
