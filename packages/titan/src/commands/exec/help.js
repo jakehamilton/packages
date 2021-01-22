@@ -1,16 +1,16 @@
-const chalk = require("chalk");
+const kleur = require("kleur");
 
 const help = () => {
-    const message = chalk`
-{bold DESCRIPTION}
+    const message = `
+${kleur.bold(`DESCRIPTION`)}
 
     Run a shell command in each package.
 
-{bold USAGE}
+${kleur.bold(`USAGE`)}
 
-    {dim $} {bold titan exec} [options] -- <command>
+    ${kleur.dim(`$`)} ${kleur.bold(`titan exec`)} [options] -- <command>
 
-{bold OPTIONS}
+${kleur.bold(`OPTIONS`)}
 
     --help, -h                Show this help message
     --scope, -s               Set the scope regex to match against
@@ -18,22 +18,24 @@ const help = () => {
     --tagged, -t              Only run for packages that are tagged on HEAD
     --ordered, -o             Run command for packages in order of dependencies
 
-{bold EXAMPLE}
+${kleur.bold(`EXAMPLE`)}
 
-    {dim $ # Build all packages.}
-    {dim $} {bold titan exec} -- npm run build
+    ${kleur.dim(`$ # Build all packages.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan exec`)} -- npm run build
 
-    {dim $ # Build only packages in the "@jakehamilton" namespace.}
-    {dim $} {bold titan exec} --scope="^@jakehamilton" -- npm run build
+    ${kleur.dim(`$ # Build only packages in the "@jakehamilton" namespace.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(
+        `titan exec`
+    )} --scope="^@jakehamilton" -- npm run build
 
-    {dim $ # Build all packages that have changed since release.}
-    {dim $} {bold titan exec} --changed -- npm run build
+    ${kleur.dim(`$ # Build all packages that have changed since release.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan exec`)} --changed -- npm run build
 
-    {dim $ # Build all packages that are tagged for release.}
-    {dim $} {bold titan exec} --tagged -- npm run build
+    ${kleur.dim(`$ # Build all packages that are tagged for release.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan exec`)} --tagged -- npm run build
 
-    {dim $ # Build all packages in order of dependencies.}
-    {dim $} {bold titan exec} --ordered -- npm run build
+    ${kleur.dim(`$ # Build all packages in order of dependencies.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan exec`)} --ordered -- npm run build
 `;
 
     console.log(message);

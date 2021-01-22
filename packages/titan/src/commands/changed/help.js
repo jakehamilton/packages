@@ -1,22 +1,22 @@
-const chalk = require("chalk");
+const kleur = require("kleur");
 
 const help = () => {
-    const message = chalk`
-{bold DESCRIPTION}
+    const message = `
+${kleur.bold(`DESCRIPTION`)}
 
     List changed packages since the last release.
 
-{bold USAGE}
+${kleur.bold(`USAGE`)}
 
-    {dim $} {bold titan changed}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan changed`)}
 
-{bold OPTIONS}
+${kleur.bold(`OPTIONS`)}
 
     --help, -h                Show this help message
 
-{bold EXAMPLE}
+${kleur.bold(`EXAMPLE`)}
 
-    {dim $} {bold titan changed}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan changed`)}
 `;
 
     console.log(message);

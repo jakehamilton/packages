@@ -1,16 +1,16 @@
-const chalk = require("chalk");
+const kleur = require("kleur");
 
 const help = () => {
-    const message = chalk`
-{bold DESCRIPTION}
+    const message = `
+${kleur.bold("DESCRIPTION")}
 
     Add dependencies to packages.
 
-{bold USAGE}
+${kleur.bold("USAGE")}
 
-    {dim $} {bold titan add} [options] deps
+    ${kleur.dim(`$`)} ${kleur.bold(`titan add`)} [options] deps
 
-{bold OPTIONS}
+${kleur.bold("OPTIONS")}
 
     --help, -h                Show this help message
     --scope, -s               Set the scope regex to match against
@@ -21,22 +21,32 @@ const help = () => {
     --optional, -o            Save to optionalDependencies
     --no-save, -S             Run npm with the "--no-save" option
 
-{bold EXAMPLE}
+${kleur.bold("EXAMPLE")}
 
-    {dim $ # Add "react" and "redux" as dependencies for all packages.}
-    {dim $} {bold titan add} react redux
+    ${kleur.dim(
+        `$ # Add "react" and "redux" as dependencies for all packages.`
+    )}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan add`)} react redux
 
-    {dim $ # Add "react" as a dependency for all packages in the "@jakehamilton" namespace.}
-    {dim $} {bold titan add} --scope="^@jakehamilton" react
+    ${kleur.dim(
+        `$ # Add "react" as a dependency for all packages in the "@jakehamilton" namespace.`
+    )}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan add`)} --scope="^@jakehamilton" react
 
-    {dim $ # Add "react" as a peer dependency for all changed packages.}
-    {dim $} {bold titan add} --changed --peer react
+    ${kleur.dim(
+        `$ # Add "react" as a peer dependency for all changed packages.`
+    )}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan add`)} --changed --peer react
 
-    {dim $ # Add "react" as an optional dependency for packages with releases.}
-    {dim $} {bold titan add} --tagged --optional react
+    ${kleur.dim(
+        `$ # Add "react" as an optional dependency for packages with releases.`
+    )}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan add`)} --tagged --optional react
 
-    {dim $ # Add "react" and "redux" as dependencies for all packages without updating package locks.}
-    {dim $} {bold titan add} --no-save react redux
+    ${kleur.dim(
+        `$ # Add "react" and "redux" as dependencies for all packages without updating package locks.`
+    )}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan add`)} --no-save react redux
 `;
 
     console.log(message);

@@ -1,16 +1,16 @@
-const chalk = require("chalk");
+const kleur = require("kleur");
 
 const help = () => {
-    const message = chalk`
-{bold DESCRIPTION}
+    const message = `
+${kleur.bold(`DESCRIPTION`)}
 
     Manage monorepo projects.
 
-{bold USAGE}
+${kleur.bold(`USAGE`)}
 
-    {dim $} {bold titan} <command> [options]
+    ${kleur.dim(`$`)} ${kleur.bold(`titan`)} <command> [options]
 
-{bold COMMANDS}
+${kleur.bold(`COMMANDS`)}
 
     init                      Create a new monorepo project
     create                    Create a new package
@@ -19,32 +19,32 @@ const help = () => {
     publish                   Publish released packages
     exec                      Execute commands on packages
 
-{bold OPTIONS}
+${kleur.bold(`OPTIONS`)}
 
     --help, -h                Show this help message
     --verbose, -v             Set logging verbosity
 
-{bold EXAMPLE}
+${kleur.bold(`EXAMPLE`)}
 
-    {dim $ # Get help for commands.}
-    {dim $} {bold titan init} --help
-    {dim $} {bold titan create} --help
-    {dim $} {bold titan bootstrap} --help
-    {dim $} {bold titan add} --help
-    {dim $} {bold titan rm} --help
-    {dim $} {bold titan version} --help
-    {dim $} {bold titan publish} --help
-    {dim $} {bold titan exec} --help
-    {dim $} {bold titan changed} --help
-    {dim $} {bold titan run} --help
+    ${kleur.dim(`$ # Get help for commands.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan init`)} --help
+    ${kleur.dim(`$`)} ${kleur.bold(`titan create`)} --help
+    ${kleur.dim(`$`)} ${kleur.bold(`titan bootstrap`)} --help
+    ${kleur.dim(`$`)} ${kleur.bold(`titan add`)} --help
+    ${kleur.dim(`$`)} ${kleur.bold(`titan rm`)} --help
+    ${kleur.dim(`$`)} ${kleur.bold(`titan version`)} --help
+    ${kleur.dim(`$`)} ${kleur.bold(`titan publish`)} --help
+    ${kleur.dim(`$`)} ${kleur.bold(`titan exec`)} --help
+    ${kleur.dim(`$`)} ${kleur.bold(`titan changed`)} --help
+    ${kleur.dim(`$`)} ${kleur.bold(`titan run`)} --help
 
-    {dim $ # Run Titan with verbose logging.}
-    {dim $} {bold titan} -v
-    {dim $} {bold titan} -vv
-    {dim $} {bold titan} -vvv
+    ${kleur.dim(`$ # Run Titan with verbose logging.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan`)} -v
+    ${kleur.dim(`$`)} ${kleur.bold(`titan`)} -vv
+    ${kleur.dim(`$`)} ${kleur.bold(`titan`)} -vvv
 
-    {dim $ # Run Titan with no logging.}
-    {dim $} LOG_LEVEL=SILENT {bold titan}
+    ${kleur.dim(`$ # Run Titan with no logging.`)}
+    ${kleur.dim(`$`)} LOG_LEVEL=SILENT ${kleur.bold(`titan`)}
 `;
 
     console.log(message);

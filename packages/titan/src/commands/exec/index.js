@@ -1,4 +1,4 @@
-const chalk = require("chalk");
+const kleur = require("kleur");
 const log = require("../../util/log");
 const cmd = require("../../util/cmd");
 const npm = require("../../util/npm");
@@ -65,7 +65,9 @@ const command = () => {
 
     if (args["--ordered"]) {
         npm.traverseOrdered(matchingPkgs, (pkg) => {
-            log.info(chalk`{white ${pkg.config.name}} ${args["--"].join(" ")}`);
+            log.info(
+                `${kleur.white().bold(pkg.config.name)} ${args["--"].join(" ")}`
+            );
             const output = cmd.exec(args["--"].join(" "), {
                 cwd: pkg.path,
                 encoding: "utf8",
@@ -76,13 +78,19 @@ const command = () => {
 
             for (const line of lines) {
                 if (line.trim() !== "") {
-                    log.info(chalk`{white ${pkg.config.name}} > ${line}`);
+                    log.info(
+                        `${kleur.white().bold(pkg.config.name)} > ${line}`
+                    );
                 }
             }
+
+            process.stdout.write("\n");
         });
     } else {
         for (const pkg of matchingPkgs) {
-            log.info(chalk`{white ${pkg.config.name}} ${args["--"].join(" ")}`);
+            log.info(
+                `${kleur.white().bold(pkg.config.name)} ${args["--"].join(" ")}`
+            );
             const output = cmd.exec(args["--"].join(" "), {
                 cwd: pkg.path,
                 encoding: "utf8",
@@ -93,9 +101,13 @@ const command = () => {
 
             for (const line of lines) {
                 if (line.trim() !== "") {
-                    log.info(chalk`{white ${pkg.config.name}} > ${line}`);
+                    log.info(
+                        `${kleur.white().bold(pkg.config.name)} > ${line}`
+                    );
                 }
             }
+
+            process.stdout.write("\n");
         }
     }
 };

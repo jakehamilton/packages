@@ -1,16 +1,16 @@
-const chalk = require("chalk");
+const kleur = require("kleur");
 
 const help = () => {
-    const message = chalk`
-{bold DESCRIPTION}
+    const message = `
+${kleur.bold(`DESCRIPTION`)}
 
     Create a new project managed by Titan.
 
-{bold USAGE}
+${kleur.bold(`USAGE`)}
 
-    {dim $} {bold titan init} [options] <name>
+    ${kleur.dim(`$`)} ${kleur.bold(`titan init`)} [options] <name>
 
-{bold OPTIONS}
+${kleur.bold(`OPTIONS`)}
 
     --help, -h                Show this help message
     --name, -n                Set the name of the project for package.json
@@ -19,22 +19,24 @@ const help = () => {
     --skip-git, -X            Skip running git commands
     --template, -t            The {white.bold starters} template to use
 
-{bold EXAMPLE}
+${kleur.bold(`EXAMPLE`)}
 
-    {dim $ # Create a new project.}
-    {dim $} {bold titan init} my-project
+    ${kleur.dim(`$ # Create a new project.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan init`)} my-project
 
-    {dim $ # Create a new project and overwrite an existing one.}
-    {dim $} {bold titan init} --force my-project
+    ${kleur.dim(`$ # Create a new project and overwrite an existing one.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan init`)} --force my-project
 
-    {dim $ # Create a new project but don't install dependencies.}
-    {dim $} {bold titan init} --skip-install my-project
+    ${kleur.dim(`$ # Create a new project but don't install dependencies.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan init`)} --skip-install my-project
 
-    {dim $ # Create a new project but don't run git commands.}
-    {dim $} {bold titan init} --skip-git my-project
+    ${kleur.dim(`$ # Create a new project but don't run git commands.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan init`)} --skip-git my-project
 
-    {dim $ # Create a new project using a template.}
-    {dim $} {bold titan init} my-project --template my-starters-template
+    ${kleur.dim(`$ # Create a new project using a template.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(
+        `titan init`
+    )} my-project --template my-starters-template
 `;
 
     console.log(message);

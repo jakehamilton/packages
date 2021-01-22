@@ -1,4 +1,4 @@
-const chalk = require("chalk");
+const kleur = require("kleur");
 const semver = require("semver");
 const log = require("../../util/log");
 const npm = require("../../util/npm");
@@ -79,7 +79,11 @@ const command = () => {
                     semver.satisfies(pkg.config.dependencies[name], version))
             ) {
                 log.debug(
-                    chalk`Removing {white "${name}@${pkg.config.dependencies[name]}"} from package "${pkg.config.name}" in dependencies.`
+                    `Removing ${kleur
+                        .white()
+                        .bold(
+                            `"${name}@${pkg.config.dependencies[name]}"`
+                        )} from package "${pkg.config.name}" in dependencies.`
                 );
                 delete pkg.config.dependencies[name];
             } else if (
@@ -90,7 +94,13 @@ const command = () => {
                     semver.satisfies(pkg.config.devDependencies[name], version))
             ) {
                 log.debug(
-                    `Removing "${name}@${pkg.config.dependencies[name]}" from package "${pkg.config.name}" in devDependencies.`
+                    `Removing ${kleur
+                        .white()
+                        .bold(
+                            `"${name}@${pkg.config.dependencies[name]}`
+                        )}" from package "${
+                        pkg.config.name
+                    }" in devDependencies.`
                 );
                 delete pkg.config.devDependencies[name];
             } else if (

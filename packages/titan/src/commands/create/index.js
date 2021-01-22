@@ -1,4 +1,4 @@
-const chalk = require("chalk");
+const kleur = require("kleur");
 const starters = require("@starters/core");
 const fs = require("../../util/fs");
 const log = require("../../util/log");
@@ -34,7 +34,9 @@ const command = async () => {
 
     if (!pkg.titan.packages) {
         log.error(
-            chalk`Root configuration has no {white titan.packages} property.`
+            `Root configuration has no ${kleur
+                .white()
+                .bold(`titan.packages`)} property.`
         );
         process.exit(1);
     }
@@ -52,10 +54,13 @@ const command = async () => {
 
     if (!isPkgMapped) {
         log.warn(
-            chalk`Root configuration's {white.bold titan.packages} property does not include {white.bold ${path.relative(
-                rootPkgPath,
-                root
-            )}}.`
+            `Root configuration's ${kleur
+                .white()
+                .bold(
+                    `titan.packages`
+                )} property does not include ${kleur
+                .white()
+                .bold(path.relative(rootPkgPath, root))}.`
         );
     }
 
@@ -77,7 +82,7 @@ const command = async () => {
     if (fs.exists(target)) {
         if (args["--force"] && fs.isDir(target)) {
             log.debug(
-                chalk`Removing existing directory {white.bold ${target}}.`
+                `Removing existing directory ${kleur.white().bold(target)}.`
             );
             fs.rm(target);
         } else {
@@ -102,6 +107,8 @@ const command = async () => {
         );
     } catch (error) {
         log.error("Could not create package.");
+        log.error("Cleaning up.");
+        fs.rm(target);
         process.exit(1);
     }
 };

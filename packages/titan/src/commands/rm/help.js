@@ -1,16 +1,16 @@
-const chalk = require("chalk");
+const kleur = require("kleur");
 
 const help = () => {
-    const message = chalk`
-{bold DESCRIPTION}
+    const message = `
+${kleur.bold(`DESCRIPTION`)}
 
     Remove dependencies to packages.
 
-{bold USAGE}
+${kleur.bold(`USAGE`)}
 
-    {dim $} {bold titan rm} [options] deps
+    ${kleur.dim(`$`)} ${kleur.bold(`titan rm`)} [options] deps
 
-{bold OPTIONS}
+${kleur.bold(`OPTIONS`)}
 
     --help, -h                Show this help message
     --scope, -s               Set the scope regex to match against
@@ -18,22 +18,26 @@ const help = () => {
     --tagged, -t              Only run for packages that are tagged on HEAD
     --no-save, -S             Run npm with the "--no-save" option
 
-{bold EXAMPLE}
+${kleur.bold(`EXAMPLE`)}
 
-    {dim $ # Remove "react" and "redux" from all packages.}
-    {dim $} {bold titan rm} react redux
+    ${kleur.dim(`$ # Remove "react" and "redux" from all packages.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan rm`)} react redux
 
-    {dim $ # Remove "react" from all packages in the "@jakehamilton" namespace.}
-    {dim $} {bold titan rm} --scope="^@jakehamilton" react
+    ${kleur.dim(
+        `$ # Remove "react" from all packages in the "@jakehamilton" namespace.`
+    )}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan rm`)} --scope="^@jakehamilton" react
 
-    {dim $ # Remove "react" from all changed packages.}
-    {dim $} {bold titan rm} --changed react
+    ${kleur.dim(`$ # Remove "react" from all changed packages.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan rm`)} --changed react
 
-    {dim $ # Remove "react" from packages with releases.}
-    {dim $} {bold titan rm} --tagged react
+    ${kleur.dim(`$ # Remove "react" from packages with releases.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan rm`)} --tagged react
 
-    {dim $ # Remove "react" and "redux" as dependencies for all packages without updating package locks.}
-    {dim $} {bold titan add} --no-save react redux
+    ${kleur.dim(
+        `$ # Remove "react" and "redux" as dependencies for all packages without updating package locks.`
+    )}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan add`)} --no-save react redux
 `;
 
     console.log(message);

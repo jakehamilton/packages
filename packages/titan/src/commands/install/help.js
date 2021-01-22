@@ -1,16 +1,16 @@
-const chalk = require("chalk");
+const kleur = require("kleur");
 
 const help = () => {
-    const message = chalk`
-{bold DESCRIPTION}
+    const message = `
+${kleur.bold(`DESCRIPTION`)}
 
     Install and link dependencies.
 
-{bold USAGE}
+${kleur.bold(`USAGE`)}
 
-    {dim $} {bold titan install} [options]
+    ${kleur.dim(`$`)} ${kleur.bold(`titan install`)} [options]
 
-{bold OPTIONS}
+${kleur.bold(`OPTIONS`)}
 
     --help, -h                Show this help message
     --scope, -s               Set the scope regex to match against
@@ -18,22 +18,26 @@ const help = () => {
     --tagged, -t              Only run for packages that are tagged on HEAD
     --no-save, -S             Run npm with the "--no-save" option
 
-{bold EXAMPLE}
+${kleur.bold(`EXAMPLE`)}
 
-    {dim $ # Install and link all dependencies}
-    {dim $} {bold titan install}
+    ${kleur.dim(`$ # Install and link all dependencies`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan install`)}
 
-    {dim $ # Install dependencies for all packages in the "@jakehamilton" namespace.}
-    {dim $} {bold titan install} --scope="^@jakeahmilton"
+    ${kleur.dim(
+        `$ # Install dependencies for all packages in the "@jakehamilton" namespace.`
+    )}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan install`)} --scope="^@jakeahmilton"
 
-    {dim $ # Install dependencies for all changed packages.}
-    {dim $} {bold titan install} --changed
+    ${kleur.dim(`$ # Install dependencies for all changed packages.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan install`)} --changed
 
-    {dim $ # Install dependencies for packages with releases.}
-    {dim $} {bold titan install} --tagged
+    ${kleur.dim(`$ # Install dependencies for packages with releases.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan install`)} --tagged
 
-    {dim $ # Install dependencies but don't modify "package-lock.json" files.}
-    {dim $} {bold titan install} --no-save
+    ${kleur.dim(
+        `$ # Install dependencies but don't modify "package-lock.json" files.`
+    )}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan install`)} --no-save
 `;
 
     console.log(message);

@@ -1,38 +1,42 @@
-const chalk = require("chalk");
+const kleur = require("kleur");
 
 const help = () => {
-    const message = chalk`
-    {bold DESCRIPTION}
+    const message = `
+${kleur.bold(`DESCRIPTION`)}
 
-        Create a new package.
+    Create a new package.
 
-    {bold USAGE}
+${kleur.bold(`USAGE`)}
 
-        {dim $} {bold titan create} <name> [root] [options]
+    ${kleur.dim(`$`)} ${kleur.bold(`titan create`)} <name> [root] [options]
 
-    {bold OPTIONS}
+${kleur.bold(`OPTIONS`)}
 
-        --help                    Show this help message
-        --force, -f               Overwrite existing directory if it exists
-        --name, -n                Set the name used in package.json
-        --template, -t            The {white.bold starters} template to use
+    --help                    Show this help message
+    --force, -f               Overwrite existing directory if it exists
+    --name, -n                Set the name used in package.json
+    --template, -t            The {white.bold starters} template to use
 
-    {bold EXAMPLE}
+${kleur.bold(`EXAMPLE`)}
 
-        {dim $ # Create a package named "my-library".}
-        {dim $} {bold titan create} my-library
+    ${kleur.dim(`$ # Create a package named "my-library".`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan create`)} my-library
 
-        {dim $ # Create a package at "./cli/my-library".}
-        {dim $} {bold titan create} my-library ./cli
+    ${kleur.dim(`$ # Create a package at "./cli/my-library".`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan create`)} my-library ./cli
 
-        {dim $ # Create a new package at "./cli/my-library".}
-        {dim $} {bold titan create} --force my-library ./cli
+    ${kleur.dim(`$ # Create a new package at "./cli/my-library".`)}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan create`)} --force my-library ./cli
 
-        {dim $ # Create a private package.}
-        {dim $} {bold titan create} --private my-private-library
+    ${kleur.dim(`$ # Create a package named "@jakehamilton/my-package".`)}
+    ${kleur.dim(`$`)} ${kleur.bold(
+        `titan create`
+    )} my-package --name @jakehamilton/my-package
 
-        {dim $ # Create a JavaScript library from a template.}
-        {dim $} {bold titan create} my-library --template @starters/library
+    ${kleur.dim(`$ # Create a JavaScript library from a template.`)}
+    ${kleur.dim(`$`)} ${kleur.bold(
+        `titan create`
+    )} my-library --template @starters/library
 `;
 
     console.log(message);

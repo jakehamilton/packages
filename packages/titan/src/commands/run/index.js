@@ -1,4 +1,4 @@
-const chalk = require("chalk");
+const kleur = require("kleur");
 const log = require("../../util/log");
 const cmd = require("../../util/cmd");
 const npm = require("../../util/npm");
@@ -85,7 +85,7 @@ const command = () => {
                     command += `-- ${args["--"].join(" ")}`;
                 }
 
-                log.info(chalk`{white ${pkg.config.name}} ${command}`);
+                log.info(`${kleur.white().bold(pkg.config.name)} ${command}`);
                 const output = cmd.exec(command, {
                     cwd: pkg.path,
                     encoding: "utf8",
@@ -96,9 +96,13 @@ const command = () => {
 
                 for (const line of lines) {
                     if (line.trim() !== "") {
-                        log.info(chalk`{white ${pkg.config.name}} ${line}`);
+                        log.info(
+                            `${kleur.white().bold(pkg.config.name)} ${line}`
+                        );
                     }
                 }
+
+                process.stdout.write("\n");
             }
         });
     } else {
@@ -116,7 +120,7 @@ const command = () => {
                 command += `-- ${args["--"].join(" ")}`;
             }
 
-            log.info(chalk`{white ${pkg.config.name}} ${command}`);
+            log.info(`${kleur.white().bold(pkg.config.name)} ${command}`);
             const output = cmd.exec(command, {
                 cwd: pkg.path,
                 encoding: "utf8",
@@ -127,9 +131,11 @@ const command = () => {
 
             for (const line of lines) {
                 if (line.trim() !== "") {
-                    log.info(chalk`{white ${pkg.config.name}} ${line}`);
+                    log.info(`${kleur.white().bold(pkg.config.name)} ${line}`);
                 }
             }
+
+            process.stdout.write("\n");
         }
     }
 };

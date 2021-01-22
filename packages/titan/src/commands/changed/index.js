@@ -1,4 +1,4 @@
-const chalk = require("chalk");
+const kleur = require("kleur");
 const log = require("../../util/log");
 const npm = require("../../util/npm");
 const git = require("../../util/git");
@@ -21,11 +21,13 @@ const command = () => {
         for (const { release, changes, pkg } of changed) {
             if (release === null) {
                 log.info(
-                    chalk`New package {white.bold ${pkg.config.name}} was created.`
+                    `New package ${kleur
+                        .white()
+                        .bold(pkg.config.name)} was created.`
                 );
             } else {
                 log.info(
-                    chalk`Package {white.bold ${release.name}} has ${
+                    `Package ${kleur.white().bold(release.name)} has ${
                         changes.length
                     } change${changes.length === 1 ? "" : "s"} since version "${
                         release.version
