@@ -112,16 +112,16 @@ const getAllPackages = (cache = false) => {
 
 const withLinkedLocals = (pkgs, fn) => {
     for (const pkg of pkgs.values()) {
-        const dependencies = patchDependenciesWithLocals(pkgs, {
+        const dependencies = patchDependenciesWithLocals(pkg, pkgs, {
             ...(pkg.config.dependencies || {}),
         });
-        const devDependencies = patchDependenciesWithLocals(pkgs, {
+        const devDependencies = patchDependenciesWithLocals(pkg, pkgs, {
             ...(pkg.config.devDependencies || {}),
         });
-        const optionalDependencies = patchDependenciesWithLocals(pkgs, {
+        const optionalDependencies = patchDependenciesWithLocals(pkg, pkgs, {
             ...(pkg.config.optionalDependencies || {}),
         });
-        const peerDependencies = patchDependenciesWithLocals(pkgs, {
+        const peerDependencies = patchDependenciesWithLocals(pkg, pkgs, {
             ...(pkg.config.peerDependencies || {}),
         });
 
@@ -315,7 +315,7 @@ const publish = (pkg) => {
 };
 
 const ALIAS_PROTOCOL = "npm:";
-const patchDependenciesWithLocals = (pkgsMap, dependencies) => {
+const patchDependenciesWithLocals = (pkg, pkgsMap, dependencies) => {
     for (const [name, version] of Object.entries(dependencies)) {
         if (version.startsWith(ALIAS_PROTOCOL)) {
             const alias = parseNameWithVersion(
@@ -325,13 +325,19 @@ const patchDependenciesWithLocals = (pkgsMap, dependencies) => {
             if (pkgsMap.has(alias.name)) {
                 const local = pkgsMap.get(alias.name);
                 if (semver.satisfies(local.config.version, alias.version)) {
-                    dependencies[name] = `file:${local.path}`;
+                    dependencies[name] = `file:${path.relative(
+                        pkg.path,
+                        local.path
+                    )}`;
                 }
             }
         } else if (pkgsMap.has(name)) {
             const local = pkgsMap.get(name);
             if (semver.satisfies(local.config.version, version)) {
-                dependencies[name] = `file:${local.path}`;
+                dependencies[name] = `file:${path.relative(
+                    pkg.path,
+                    local.path
+                )}`;
             }
         }
     }
