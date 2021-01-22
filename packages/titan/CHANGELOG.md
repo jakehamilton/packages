@@ -1,5 +1,19 @@
 # Change Log
 
+## 5.2.0
+
+### Features
+
+- add option to pass no-save to npm
+
+- link dependencies with relative paths
+
+
+### Fixes
+
+- _(npm)_:  gracefully handle crash when pkgs are linked
+
+
 ## 5.1.1
 
 ### Other
