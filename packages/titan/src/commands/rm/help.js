@@ -16,6 +16,7 @@ const help = () => {
     --scope, -s               Set the scope regex to match against
     --changed, -c             Only run for packages that have changed
     --tagged, -t              Only run for packages that are tagged on HEAD
+    --no-save, -S             Run npm with the "--no-save" option
 
 {bold EXAMPLE}
 
@@ -30,6 +31,9 @@ const help = () => {
 
     {dim $ # Remove "react" from packages with releases.}
     {dim $} {bold titan rm} --tagged react
+
+    {dim $ # Remove "react" and "redux" as dependencies for all packages without updating package locks.}
+    {dim $} {bold titan add} --no-save react redux
 `;
 
     console.log(message);

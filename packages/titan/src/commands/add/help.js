@@ -19,6 +19,7 @@ const help = () => {
     --dev, -d                 Save to devDependencies
     --peer, -p                Save to peerDependencies
     --optional, -o            Save to optionalDependencies
+    --no-save, -S             Run npm with the "--no-save" option
 
 {bold EXAMPLE}
 
@@ -33,6 +34,9 @@ const help = () => {
 
     {dim $ # Add "react" as an optional dependency for packages with releases.}
     {dim $} {bold titan add} --tagged --optional react
+
+    {dim $ # Add "react" and "redux" as dependencies for all packages without updating package locks.}
+    {dim $} {bold titan add} --no-save react redux
 `;
 
     console.log(message);

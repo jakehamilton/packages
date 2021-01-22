@@ -22,6 +22,9 @@ const getArgs = () => ({
 
             "--optional": Boolean,
             "-o": "--optional",
+
+            "--no-save": Boolean,
+            "-S": "--no-save",
         },
         {
             permissive: false,
