@@ -139,10 +139,14 @@ const withLinkedLocals = (pkgs, fn) => {
         writePackageInfo(newPkg);
     }
 
-    fn();
-
-    for (const pkg of pkgs.values()) {
-        writePackageInfo(pkg);
+    try {
+        fn();
+    } catch (error) {
+        throw error;
+    } finally {
+        for (const pkg of pkgs.values()) {
+            writePackageInfo(pkg);
+        }
     }
 };
 
