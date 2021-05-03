@@ -6,36 +6,54 @@ const log = require("./log");
 
 let CACHE_MAP = null;
 
-const CACHE_DIR = path.resolve(npm.getProjectRoot(), ".titan");
-
-const CACHE_MAP_PATH = path.resolve(CACHE_DIR, "map.json");
-
 const getCacheMap = () => {
     if (CACHE_MAP) {
         return CACHE_MAP;
     }
 
-    if (!fs.exists(CACHE_DIR)) {
-        fs.mkdir(CACHE_DIR);
+    if (!fs.exists(path.resolve(npm.getProjectRoot(), ".titan"))) {
+        fs.mkdir(path.resolve(npm.getProjectRoot(), ".titan"));
     }
 
-    if (fs.exists(CACHE_MAP_PATH)) {
+    if (fs.exists(path.resolve(npm.getProjectRoot(), ".titan", "map.json"))) {
         try {
             CACHE_MAP = JSON.parse(
-                fs.read(CACHE_MAP_PATH, {
-                    encoding: "utf8",
-                })
+                fs.read(
+                    path.resolve(
+                        path.resolve(npm.getProjectRoot(), ".titan"),
+                        "map.json"
+                    ),
+                    {
+                        encoding: "utf8",
+                    }
+                )
             );
         } catch (error) {
-            log.error(`Could not parse cache map at "${CACHE_MAP_PATH}".`);
+            log.error(
+                `Could not parse cache map at "${path.resolve(
+                    path.resolve(npm.getProjectRoot(), ".titan"),
+                    "map.json"
+                )}".`
+            );
             CACHE_MAP = {};
         }
     } else {
-        fs.touch(CACHE_MAP_PATH);
+        fs.touch(
+            path.resolve(
+                path.resolve(npm.getProjectRoot(), ".titan"),
+                "map.json"
+            )
+        );
 
         CACHE_MAP = {};
 
-        fs.write(CACHE_MAP_PATH, JSON.stringify(CACHE_MAP, null, 2));
+        fs.write(
+            path.resolve(
+                path.resolve(npm.getProjectRoot(), ".titan"),
+                "map.json"
+            ),
+            JSON.stringify(CACHE_MAP, null, 2)
+        );
     }
 
     return CACHE_MAP;
@@ -46,7 +64,10 @@ const writeCacheMap = () => {
         log.fatal("Cache map is null.");
         process.exit(1);
     }
-    fs.write(CACHE_MAP_PATH, JSON.stringify(CACHE_MAP, null, 2));
+    fs.write(
+        path.resolve(npm.getProjectRoot(), ".titan", "map.json"),
+        JSON.stringify(CACHE_MAP, null, 2)
+    );
 };
 
 const updateCacheMap = (cacheStatus) => {

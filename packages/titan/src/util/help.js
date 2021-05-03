@@ -14,10 +14,12 @@ ${kleur.bold(`COMMANDS`)}
 
     init                      Create a new monorepo project
     create                    Create a new package
-    bootstrap                 Install and link dependencies
+    install                   Install and link dependencies
     version                   Generate release versions
     publish                   Publish released packages
+    changed                   List changed packages since the last release.
     exec                      Execute commands on packages
+    run                       Run a shell command in each package
 
 ${kleur.bold(`OPTIONS`)}
 
@@ -34,8 +36,8 @@ ${kleur.bold(`EXAMPLE`)}
     ${kleur.dim(`$`)} ${kleur.bold(`titan rm`)} --help
     ${kleur.dim(`$`)} ${kleur.bold(`titan version`)} --help
     ${kleur.dim(`$`)} ${kleur.bold(`titan publish`)} --help
-    ${kleur.dim(`$`)} ${kleur.bold(`titan exec`)} --help
     ${kleur.dim(`$`)} ${kleur.bold(`titan changed`)} --help
+    ${kleur.dim(`$`)} ${kleur.bold(`titan exec`)} --help
     ${kleur.dim(`$`)} ${kleur.bold(`titan run`)} --help
 
     ${kleur.dim(`$ # Run Titan with verbose logging.`)}
@@ -45,6 +47,12 @@ ${kleur.bold(`EXAMPLE`)}
 
     ${kleur.dim(`$ # Run Titan with no logging.`)}
     ${kleur.dim(`$`)} LOG_LEVEL=SILENT ${kleur.bold(`titan`)}
+
+    ${kleur.dim(`$ # Run Titan with timestamps.`)}
+    ${kleur.dim(`$`)} LOG_TIMESTAMP=TRUE ${kleur.bold(`titan`)}
+
+    ${kleur.dim(`$ # Filter logs from Titan (based on log prefix).`)}
+    ${kleur.dim(`$`)} DEBUG="^some-regex$" ${kleur.bold(`titan`)}
 `;
 
     console.log(message);
