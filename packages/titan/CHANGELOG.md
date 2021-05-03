@@ -1,5 +1,14 @@
 # Change Log
 
+## 5.5.2
+
+### Other
+
+- add information about titan configuration
+
+- add documentation
+
+
 ## 5.5.1
 
 ### Fixes
