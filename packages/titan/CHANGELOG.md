@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.5.0
+
+### Features
+
+- add parallelization support to install command
+
+
 ## 5.4.0
 
 ### Features
