@@ -5,17 +5,21 @@ const help = require("./util/help");
 const commands = require("./commands");
 
 const main = async () => {
+    log.trace("Init.");
+    log.trace("Parsing root arguments.");
     const args = arg(rootArgs, {
         permissive: true,
     });
 
     if (args["--help"] && args._.length === 0) {
+        log.trace("Printing root help message.");
         help();
         process.exit(0);
     }
 
     if (args._.length === 0) {
-        log.error("No command specified.");
+        log.fatal("No command specified.");
+        log.trace("Printing root help message due to error.");
         help();
         process.exit(1);
     }
@@ -23,16 +27,17 @@ const main = async () => {
     const command = args._[0];
 
     if (command in commands) {
+        log.trace(`Executing command "${command}".`);
         await commands[command]();
     } else {
-        log.error(`Unknown command "${command}".`);
+        log.fatal(`Unknown command "${command}".`);
         process.exit(1);
     }
 };
 
 main().catch((error) => {
-    log.error(error.message || error);
+    log.fatal(error.message || error);
     for (const line of error.stack.split("\n").slice(1)) {
-        log.error(`${line}`);
+        log.fatal(`${line}`);
     }
 });

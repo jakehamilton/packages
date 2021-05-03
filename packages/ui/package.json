@@ -14,6 +14,12 @@
     "main": "dist/ui.js",
     "module": "dist/ui.modern.module.js",
     "unpkg": "dist/ui.umd.js",
+    "titan": {
+        "artifacts": [
+            "./dist",
+            "./src"
+        ]
+    },
     "publishConfig": {
         "access": "public"
     },

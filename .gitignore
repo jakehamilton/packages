@@ -118,3 +118,4 @@ dist
 # Misc
 tmp
 .DS_Store
+.titan

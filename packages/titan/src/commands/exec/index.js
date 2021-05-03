@@ -3,21 +3,29 @@ const log = require("../../util/log");
 const cmd = require("../../util/cmd");
 const npm = require("../../util/npm");
 const git = require("../../util/git");
+const task = require("../../util/task");
+const colors = require("../../util/colors");
 const help = require("./help");
 const getArgs = require("./args");
 
-const command = () => {
+const command = async () => {
+    log.trace("Parsing arguments.");
     const args = getArgs();
 
     if (args["--help"]) {
+        log.trace("Printing help message.");
         help();
         process.exit(0);
     }
 
     if (args["--"].length === 0) {
-        log.error("No command specified.");
+        log.fatal("No command specified.");
+        log.trace("Printing help message due to error.");
+        help();
         process.exit(1);
     }
+
+    const command = args["--"].join(" ");
 
     const changed = [];
 
@@ -63,53 +71,245 @@ const command = () => {
         process.exit(0);
     }
 
-    if (args["--ordered"]) {
-        npm.traverseOrdered(matchingPkgs, (pkg) => {
-            log.info(
-                `${kleur.white().bold(pkg.config.name)} ${args["--"].join(" ")}`
-            );
-            const output = cmd.exec(args["--"].join(" "), {
-                cwd: pkg.path,
-                encoding: "utf8",
-                stdio: "pipe",
-            });
+    await task.execute(
+        matchingPkgs,
+        { ordered: args["--ordered"], cache: args["--cache"] },
+        (pkg, options, color, signal) =>
+            new Promise(async (resolve, reject) => {
+                const proc = cmd.spawnAsync(
+                    args["--"][0],
+                    args["--"].slice(1),
+                    {
+                        cwd: pkg.path,
+                        encoding: "utf8",
+                        stdio: "pipe",
+                    }
+                );
 
-            const lines = output.split("\n");
+                log.info(
+                    `${color().bold(
+                        `${pkg.config.name} executing "${command}" in "${pkg.path}".`
+                    )}`
+                );
 
-            for (const line of lines) {
-                if (line.trim() !== "") {
-                    log.info(
-                        `${kleur.white().bold(pkg.config.name)} > ${line}`
-                    );
-                }
-            }
+                signal.addEventListener("abort", () => {
+                    proc.kill("SIGKILL");
+                });
 
-            process.stdout.write("\n");
-        });
-    } else {
-        for (const pkg of matchingPkgs) {
-            log.info(
-                `${kleur.white().bold(pkg.config.name)} ${args["--"].join(" ")}`
-            );
-            const output = cmd.exec(args["--"].join(" "), {
-                cwd: pkg.path,
-                encoding: "utf8",
-                stdio: "pipe",
-            });
+                proc.stdout.on("data", (data) => {
+                    for (const line of data.toString().split("\n")) {
+                        if (line.trim() !== "") {
+                            log.info(
+                                `${color(`${pkg.config.name} >`)} ${line}`
+                            );
+                        }
+                    }
+                });
 
-            const lines = output.split("\n");
+                proc.stderr.on("data", (data) => {
+                    for (const line of data.toString().split("\n")) {
+                        if (line.trim() !== "") {
+                            log.error(
+                                `${color(`${pkg.config.name} >`)} ${line}`
+                            );
+                        }
+                    }
+                });
 
-            for (const line of lines) {
-                if (line.trim() !== "") {
-                    log.info(
-                        `${kleur.white().bold(pkg.config.name)} > ${line}`
-                    );
-                }
-            }
+                proc.on("close", (code) => {
+                    proc.stdin.end();
 
-            process.stdout.write("\n");
-        }
-    }
+                    if (code === null) {
+                        log.fatal(
+                            `${color(
+                                `${pkg.config.name} killed due to another task failing.`
+                            )}`
+                        );
+
+                        return reject(
+                            `${pkg.config.name} killed due to another task failing.`
+                        );
+                    } else if (code !== 0) {
+                        log.fatal(
+                            `${color(
+                                `${
+                                    pkg.config.name
+                                } command exited with code "${kleur
+                                    .white()
+                                    .bold(code)}".`
+                            )}`
+                        );
+
+                        return reject(
+                            `${pkg.config.name} command exited with code "${code}".`
+                        );
+                    }
+
+                    resolve();
+                });
+            })
+    );
+
+    // if (args["--ordered"]) {
+    //     await task.execute(
+    //         matchingPkgs,
+    //         { ordered: true, cached:  },
+    //         (pkg, options, color, signal) =>
+    //             new Promise(async (resolve, reject) => {
+    //                 const proc = cmd.spawnAsync(
+    //                     args["--"][0],
+    //                     args["--"].slice(1),
+    //                     {
+    //                         cwd: pkg.path,
+    //                         encoding: "utf8",
+    //                         stdio: "pipe",
+    //                     }
+    //                 );
+
+    //                 log.info(
+    //                     `${color().bold(
+    //                         `${pkg.config.name} executing "${command}" in "${pkg.path}".`
+    //                     )}`
+    //                 );
+
+    //                 signal.addEventListener("abort", () => {
+    //                     proc.kill("SIGKILL");
+    //                 });
+
+    //                 proc.stdout.on("data", (data) => {
+    //                     for (const line of data.toString().split("\n")) {
+    //                         if (line.trim() !== "") {
+    //                             log.info(
+    //                                 `${color(`${pkg.config.name} > ${line}`)}`
+    //                             );
+    //                         }
+    //                     }
+    //                 });
+
+    //                 proc.stderr.on("data", (data) => {
+    //                     for (const line of data.toString().split("\n")) {
+    //                         if (line.trim() !== "") {
+    //                             log.error(
+    //                                 `${color(`${pkg.config.name} > ${line}`)}`
+    //                             );
+    //                         }
+    //                     }
+    //                 });
+
+    //                 proc.on("close", (code) => {
+    //                     proc.stdin.end();
+
+    //                     if (code === null) {
+    //                         log.fatal(
+    //                             `${color(
+    //                                 `${pkg.config.name} killed due to another task failing.`
+    //                             )}`
+    //                         );
+
+    //                         return reject(
+    //                             `${pkg.config.name} killed due to another task failing.`
+    //                         );
+    //                     } else if (code !== 0) {
+    //                         log.fatal(
+    //                             `${color(
+    //                                 `${
+    //                                     pkg.config.name
+    //                                 } command exited with code "${kleur
+    //                                     .white()
+    //                                     .bold(code)}".`
+    //                             )}`
+    //                         );
+
+    //                         return reject(
+    //                             `${pkg.config.name} command exited with code "${code}".`
+    //                         );
+    //                     }
+
+    //                     resolve();
+    //                 });
+    //             })
+    //     );
+    // } else {
+    //     await task.execute(
+    //         matchingPkgs,
+    //         (pkg, options, color, signal) =>
+    //             new Promise(async (resolve, reject) => {
+    //                 const proc = cmd.spawnAsync(
+    //                     args["--"][0],
+    //                     args["--"].slice(1),
+    //                     {
+    //                         cwd: pkg.path,
+    //                         encoding: "utf8",
+    //                         stdio: "pipe",
+    //                     }
+    //                 );
+
+    //                 log.info(
+    //                     `${color().bold(
+    //                         `${pkg.config.name} executing "${command}" in "${pkg.path}".`
+    //                     )}`
+    //                 );
+
+    //                 signal.addEventListener("abort", () => {
+    //                     proc.kill("SIGTERM");
+    //                 });
+
+    //                 proc.stdout.on("data", (data) => {
+    //                     for (const line of data.toString().split("\n")) {
+    //                         if (line.trim() !== "") {
+    //                             log.info(
+    //                                 `${color(`${pkg.config.name} > ${line}`)}`
+    //                             );
+    //                         }
+    //                     }
+    //                 });
+
+    //                 proc.stderr.on("data", (data) => {
+    //                     for (const line of data.toString().split("\n")) {
+    //                         if (line.trim() !== "") {
+    //                             log.error(
+    //                                 `${color(`${pkg.config.name} > ${line}`)}`
+    //                             );
+    //                         }
+    //                     }
+    //                 });
+
+    //                 proc.on("close", (code) => {
+    //                     proc.stdin.end();
+
+    //                     if (code === null) {
+    //                         log.fatal(
+    //                             `${color(
+    //                                 `${pkg.config.name} killed due to another task failing.`
+    //                             )}`
+    //                         );
+
+    //                         return reject(
+    //                             `${pkg.config.name} killed due to another task failing.`
+    //                         );
+    //                     } else if (code !== 0) {
+    //                         log.fatal(
+    //                             `${color(
+    //                                 `${
+    //                                     pkg.config.name
+    //                                 } command exited with code "${kleur
+    //                                     .white()
+    //                                     .bold(code)}".`
+    //                             )}`
+    //                         );
+
+    //                         return reject(
+    //                             `${pkg.config.name} command exited with code "${code}".`
+    //                         );
+    //                     }
+
+    //                     resolve();
+    //                 });
+    //             })
+    //     );
+
+    //     return;
+    // }
 };
 
 module.exports = command;

@@ -17,6 +17,7 @@ ${kleur.bold(`OPTIONS`)}
     --changed, -c             Only run for packages that have changed
     --tagged, -t              Only run for packages that are tagged on HEAD
     --ordered, -o             Run command for packages in order of dependencies
+    --cache, -C               Only execute command for packages that aren't cached
 
 ${kleur.bold(`EXAMPLE`)}
 
@@ -36,6 +37,11 @@ ${kleur.bold(`EXAMPLE`)}
 
     ${kleur.dim(`$ # Build all packages in order of dependencies.`)}
     ${kleur.dim(`$`)} ${kleur.bold(`titan exec`)} --ordered -- npm run build
+
+    ${kleur.dim(
+        `$ # Build only packages that have been modified since the last build`
+    )}
+    ${kleur.dim(`$`)} ${kleur.bold(`titan exec`)} --cache -- npm run build
 `;
 
     console.log(message);

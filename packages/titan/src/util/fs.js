@@ -1,6 +1,7 @@
 const fs = require("fs");
 const rimraf = require("rimraf");
 const mkdirp = require("mkdirp");
+const { promisify } = require("util");
 
 const exists = (path) => {
     return fs.existsSync(path);
@@ -19,6 +20,8 @@ const readDir = (path, options) => {
     const result = fs.readdirSync(path, options);
     return result;
 };
+
+const readDirAsync = promisify(fs.readdir);
 
 const rm = (path) => {
     rimraf.sync(path);
@@ -40,6 +43,10 @@ const link = (from, to, type = "dir") => {
     fs.symlinkSync(from, to, type);
 };
 
+const stat = promisify(fs.stat);
+
+const readFile = promisify(fs.readFile);
+
 module.exports = {
     ...fs,
     rm,
@@ -51,4 +58,7 @@ module.exports = {
     write,
     touch,
     link,
+    stat,
+    readFile,
+    readDirAsync,
 };

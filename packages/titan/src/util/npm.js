@@ -349,6 +349,36 @@ const patchDependenciesWithLocals = (pkg, pkgsMap, dependencies) => {
     return dependencies;
 };
 
+const pkgsToDependencyMap = (pkgs, known = new Map()) => {
+    for (const pkg of pkgs) {
+        if (known.has(pkg.config.name)) {
+            continue;
+        }
+
+        const locals = [
+            ...getLocalDependencies(pkg, getAllPackages(true)).values(),
+        ];
+
+        const localKnown = new Map();
+
+        if (locals.length > 0) {
+            pkgsToDependencyMap(locals, localKnown);
+        }
+
+        for (const [key, value] of localKnown) {
+            known.set(key, value);
+        }
+
+        known.set(pkg.config.name, {
+            pkg,
+            dependencies: localKnown,
+            useCache: false,
+        });
+    }
+
+    return known;
+};
+
 const traverseOrdered = async (pkgs, cb, known = new Map()) => {
     for (const pkg of pkgs) {
         if (known.has(pkg.config.name)) {
@@ -374,6 +404,7 @@ module.exports = {
     getProjectRootConfig,
     getAllPackages,
     getLocalDependencies,
+    pkgsToDependencyMap,
     withLinkedLocals,
     detectCycles,
     writePackageInfo,
