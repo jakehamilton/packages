@@ -4,7 +4,6 @@ const cmd = require("../../util/cmd");
 const npm = require("../../util/npm");
 const git = require("../../util/git");
 const task = require("../../util/task");
-const colors = require("../../util/colors");
 const help = require("./help");
 const getArgs = require("./args");
 

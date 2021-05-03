@@ -3,10 +3,11 @@ const log = require("../../util/log");
 const cmd = require("../../util/cmd");
 const npm = require("../../util/npm");
 const git = require("../../util/git");
+const task = require("../../util/task");
 const help = require("./help");
 const getArgs = require("./args");
 
-const command = () => {
+const command = async () => {
     const args = getArgs();
 
     if (args["--help"]) {
@@ -72,72 +73,97 @@ const command = () => {
         process.exit(0);
     }
 
-    if (args["--ordered"]) {
-        npm.traverseOrdered(matchingPkgs, (pkg) => {
-            if (!pkg.config.scripts || !pkg.config.scripts[name]) {
-                log.debug(
-                    `No script "${name}" found in package "${pkg.config.name}".`
-                );
-            } else {
+    await task.execute(
+        matchingPkgs,
+        { ordered: args["--ordered"], cache: args["--cache"] },
+        (pkg, options, color, signal) =>
+            new Promise(async (resolve, reject) => {
+                if (!pkg.config.scripts || !pkg.config.scripts[name]) {
+                    log.debug(
+                        `No script "${name}" found in package "${pkg.config.name}".`
+                    );
+                    return;
+                }
+
                 let command = `npm run ${name}`;
 
                 if (args["--"].length > 0) {
                     command += `-- ${args["--"].join(" ")}`;
                 }
 
-                log.info(`${kleur.white().bold(pkg.config.name)} ${command}`);
-                const output = cmd.exec(command, {
-                    cwd: pkg.path,
-                    encoding: "utf8",
-                    stdio: "pipe",
+                const proc = cmd.spawnAsync(
+                    command.split(" ")[0],
+                    command.split(" ").slice(1),
+                    {
+                        cwd: pkg.path,
+                        encoding: "utf8",
+                        stdio: "pipe",
+                    }
+                );
+
+                log.info(
+                    `${color().bold(
+                        `${pkg.config.name} executing "${command}" in "${pkg.path}".`
+                    )}`
+                );
+
+                signal.addEventListener("abort", () => {
+                    proc.kill("SIGKILL");
                 });
 
-                const lines = output.split("\n");
+                proc.stdout.on("data", (data) => {
+                    for (const line of data.toString().split("\n")) {
+                        if (line.trim() !== "") {
+                            log.info(
+                                `${color(`${pkg.config.name} >`)} ${line}`
+                            );
+                        }
+                    }
+                });
 
-                for (const line of lines) {
-                    if (line.trim() !== "") {
-                        log.info(
-                            `${kleur.white().bold(pkg.config.name)} ${line}`
+                proc.stderr.on("data", (data) => {
+                    for (const line of data.toString().split("\n")) {
+                        if (line.trim() !== "") {
+                            log.error(
+                                `${color(`${pkg.config.name} >`)} ${line}`
+                            );
+                        }
+                    }
+                });
+
+                proc.on("close", (code) => {
+                    proc.stdin.end();
+
+                    if (code === null) {
+                        log.fatal(
+                            `${color(
+                                `${pkg.config.name} killed due to another task failing.`
+                            )}`
+                        );
+
+                        return reject(
+                            `${pkg.config.name} killed due to another task failing.`
+                        );
+                    } else if (code !== 0) {
+                        log.fatal(
+                            `${color(
+                                `${
+                                    pkg.config.name
+                                } command exited with code "${kleur
+                                    .white()
+                                    .bold(code)}".`
+                            )}`
+                        );
+
+                        return reject(
+                            `${pkg.config.name} command exited with code "${code}".`
                         );
                     }
-                }
 
-                process.stdout.write("\n");
-            }
-        });
-    } else {
-        for (const pkg of matchingPkgs) {
-            if (!pkg.config.scripts || !pkg.config.scripts[name]) {
-                log.debug(
-                    `No script "${name}" found in package "${pkg.config.name}".`
-                );
-                continue;
-            }
-
-            let command = `npm run ${name}`;
-
-            if (args["--"].length > 0) {
-                command += `-- ${args["--"].join(" ")}`;
-            }
-
-            log.info(`${kleur.white().bold(pkg.config.name)} ${command}`);
-            const output = cmd.exec(command, {
-                cwd: pkg.path,
-                encoding: "utf8",
-                stdio: "pipe",
-            });
-
-            const lines = output.split("\n");
-
-            for (const line of lines) {
-                if (line.trim() !== "") {
-                    log.info(`${kleur.white().bold(pkg.config.name)} ${line}`);
-                }
-            }
-
-            process.stdout.write("\n");
-        }
-    }
+                    resolve();
+                });
+            })
+    );
 };
 
 module.exports = command;
