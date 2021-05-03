@@ -477,3 +477,61 @@ This will print out a result like this:
 [Titan][INFO] Executing dry run.
 [Titan][INFO] Publish package "my-cool-library" at version "1.1.0".
 ```
+
+## Package Configuration
+
+Titan uses a special `titan` property in `package.json` files to let
+you configure certain use cases.
+
+### Titan Projects
+
+For a directory to be a Titan project, it must have a `package.json` file
+with `titan` configuration on it:
+
+```json
+{
+    "titan": {
+        "packages": ["./packages"]
+    }
+}
+```
+
+In a project's configuration, you can specify an array of directories
+that contain packages. The default value used above tells Titan that
+our code lives in folders under a directory named `packages`. So if
+we created a new library, it would be located in
+`./packages/my-cool-library`.
+
+You can specify multiple directories here to support any organizational
+structure you need for your project. For example, if you wanted to split
+your packages into separate directories named `cli`, `core`, and `lib`:
+
+```json
+{
+    "titan": {
+        "packages": ["./cli", "./core", "./lib"]
+    }
+}
+```
+
+### Titan Packages
+
+For individual packages, you can configure titan features in the same
+way:
+
+```json
+{
+    "titan": {
+        "artifacts": ["./dist"]
+    }
+}
+```
+
+Individual packages can configure `artifacts` which Titan inspects when
+using the `run` or `exec` commands with the `--cache` option. This can
+be a great way to speed up development by avoiding building packages
+that haven't changed. Under the hood Titan hashes files at the paths
+given in the `artifacts` array. This information is then referenced each
+time Titan needs to run a task on packages. If the package's artifacts
+have not changed, Titan will skip the package and move on to the next
+one.
