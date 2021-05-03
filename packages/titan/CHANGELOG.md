@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.5.1
+
+### Fixes
+
+- _(cache)_: delay fetching project root
+
+
 ## 5.5.0
 
 ### Features
