@@ -1,6 +1,8 @@
 const log = require("../../util/log");
 const npm = require("../../util/npm");
 const git = require("../../util/git");
+const cmd = require("../../util/cmd");
+const task = require("../../util/task");
 const help = require("./help");
 const getArgs = require("./args");
 
@@ -94,22 +96,100 @@ const command = () => {
     }, new Map());
 
     log.info("Installing packages.");
-    npm.withLinkedLocals(pkgs, () => {
-        for (const { pkg, transitive } of locals.values()) {
-            if (transitive) {
-                log.info(
-                    `Installing dependencies for transitive dependency "${pkg.config.name}".`
-                );
-            } else {
-                log.info(`Installing dependencies for "${pkg.config.name}".`);
-            }
+    const localPkgs = [...locals.values()].map(({ pkg }) => pkg);
+    const map = npm.pkgsToDependencyMap(localPkgs);
 
-            if (args["--no-save"]) {
-                npm.install(pkg.path, ["--no-save"]);
-            } else {
-                npm.install(pkg.path);
-            }
-        }
+    npm.withLinkedLocals(pkgs, async () => {
+        await task.executeOrdered(
+            map,
+            { ordered: true, cache: false },
+            (pkg, options, color, signal) =>
+                new Promise(async (resolve, reject) => {
+                    try {
+                        log.info(
+                            `${color().bold(
+                                `${pkg.config.name} installing dependencies.`
+                            )}`
+                        );
+
+                        const proc = cmd.spawnAsync(
+                            "npm",
+                            args["--no-save"]
+                                ? ["install", "--no-save"]
+                                : ["install"],
+                            {
+                                cwd: pkg.path,
+                                encoding: "utf8",
+                                stdio: "pipe",
+                            }
+                        );
+
+                        proc.stdout.on("data", (data) => {
+                            for (const line of data.toString().split("\n")) {
+                                if (line.trim() !== "") {
+                                    log.info(
+                                        `${color(
+                                            `${pkg.config.name} >`
+                                        )} ${line}`
+                                    );
+                                }
+                            }
+                        });
+
+                        proc.stderr.on("data", (data) => {
+                            for (const line of data.toString().split("\n")) {
+                                if (line.trim() !== "") {
+                                    log.error(
+                                        `${color(
+                                            `${pkg.config.name} >`
+                                        )} ${line}`
+                                    );
+                                }
+                            }
+                        });
+
+                        signal.addEventListener("abort", () => {
+                            proc.kill("SIGKILL");
+                        });
+
+                        proc.on("close", (code) => {
+                            proc.stdin.end();
+
+                            if (code === null) {
+                                log.fatal(
+                                    `${color(
+                                        `${pkg.config.name} killed due to another task failing.`
+                                    )}`
+                                );
+
+                                return reject(
+                                    `${pkg.config.name} killed due to another task failing.`
+                                );
+                            } else if (code !== 0) {
+                                log.fatal(
+                                    `${color(
+                                        `${
+                                            pkg.config.name
+                                        } command exited with code "${kleur
+                                            .white()
+                                            .bold(code)}".`
+                                    )}`
+                                );
+
+                                return reject(
+                                    `${pkg.config.name} command exited with code "${code}".`
+                                );
+                            }
+
+                            resolve();
+                        });
+                    } catch (error) {
+                        reject(
+                            `Error installing dependencies for package "${pkg.config.name}".`
+                        );
+                    }
+                })
+        );
     });
 };
 

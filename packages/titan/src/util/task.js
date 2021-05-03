@@ -20,6 +20,7 @@ const runTasks = async (map, options, signal, cb, onError) => {
 
     return await Promise.all(
         itemsToBuild.map(async (item) => {
+            map.delete(item.pkg.config.name);
             const color = colors.unique();
 
             if (options.cache) {
@@ -39,8 +40,6 @@ const runTasks = async (map, options, signal, cb, onError) => {
 
                 await promise;
 
-                map.delete(item.pkg.config.name);
-
                 for (const otherItem of map.values()) {
                     if (otherItem.dependencies.has(item.pkg.config.name)) {
                         otherItem.dependencies.delete(item.pkg.config.name);
@@ -59,21 +58,20 @@ const runTasks = async (map, options, signal, cb, onError) => {
 
                 return await runTasks(map, options, signal, cb, onError);
             } catch (error) {
+                log.fatal(error);
                 onError(error);
             }
         })
     );
 };
 
-const executeOrdered = async (pkgs, options, cb) => {
+const executeOrdered = async (map, options, cb) => {
     if (cb === undefined && typeof options === "function") {
         cb = options;
         options = {};
     } else if (typeof cb === undefined) {
         throw new Error(`No callback provided to "task.executeUnordered".`);
     }
-
-    const map = pkgsToDependencyMap(pkgs);
 
     const controller = new AbortController();
 
@@ -141,7 +139,7 @@ const execute = async (pkgs, options, cb) => {
     const { ordered = false } = options;
 
     if (ordered) {
-        await executeOrdered(pkgs, options, cb);
+        await executeOrdered(pkgsToDependencyMap(pkgs), options, cb);
     } else {
         await executeUnordered(pkgs, options, cb);
     }
