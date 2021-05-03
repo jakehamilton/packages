@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.4.3
+
+### Chores
+
+- _(npm)_: bump package locks
+
+
 ## 1.4.2
 
 ### Fixes

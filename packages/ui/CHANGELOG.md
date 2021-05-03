@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.11.0
+
+### Features
+
+- parallel exec and cache support
+
+
+### Chores
+
+- _(npm)_: bump package locks
+
+
 ## 1.10.4
 
 ### Fixes
