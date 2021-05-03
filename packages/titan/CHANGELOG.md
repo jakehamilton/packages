@@ -1,5 +1,14 @@
 # Change Log
 
+## 5.4.0
+
+### Features
+
+- add parallelization and cache to run command
+
+- parallel exec and cache support
+
+
 ## 5.3.0
 
 ### Features
