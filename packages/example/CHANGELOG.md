@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.4.0
+
+### Features
+
+- add parallelization support to install command
+
+
 ## 1.3.1
 
 ### Chores
