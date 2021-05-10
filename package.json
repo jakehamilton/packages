@@ -4,8 +4,8 @@
     "scripts": {
         "bootstrap": "titan install --no-save",
         "bootstrap:changed": "titan install --changed --no-save",
-        "build": "titan run build",
-        "build:changed": "titan run build --changed",
+        "build": "titan run build --ordered",
+        "build:changed": "titan run build --ordered --changed",
         "test": "titan run test",
         "test:changed": "titan run test --changed",
         "version": "titan version",
