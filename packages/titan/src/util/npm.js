@@ -169,6 +169,7 @@ const getLocalDependencies = (
     pkg,
     pkgs,
     recursive = false,
+    ensure = true,
     known = new Map()
 ) => {
     const locals = new Map();
@@ -189,7 +190,9 @@ const getLocalDependencies = (
         }
     }
 
-    ensureLocals(pkg, locals);
+    if (ensure) {
+        ensureLocals(pkg, locals);
+    }
 
     if (recursive) {
         const currentLocals = [...locals.values()];
@@ -201,6 +204,7 @@ const getLocalDependencies = (
             const transitiveLocals = getLocalDependencies(
                 local,
                 pkgs,
+                true,
                 true,
                 locals
             );
@@ -356,7 +360,12 @@ const pkgsToDependencyMap = (pkgs, known = new Map()) => {
         }
 
         const locals = [
-            ...getLocalDependencies(pkg, getAllPackages(true)).values(),
+            ...getLocalDependencies(
+                pkg,
+                getAllPackages(true),
+                false,
+                false
+            ).values(),
         ];
 
         const localKnown = new Map();

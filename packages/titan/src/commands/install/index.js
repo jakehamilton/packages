@@ -1,3 +1,4 @@
+const kleur = require("kleur");
 const log = require("../../util/log");
 const npm = require("../../util/npm");
 const git = require("../../util/git");
