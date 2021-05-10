@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.5.3
+
+### Fixes
+
+- mdo not ensure module location for scripts
+
+
 ## 5.5.2
 
 ### Other
