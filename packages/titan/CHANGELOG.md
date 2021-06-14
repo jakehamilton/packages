@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.5.4
+
+### Fixes
+
+- _(deps)_: upgrade starters core
+
+
 ## 5.5.3
 
 ### Fixes
