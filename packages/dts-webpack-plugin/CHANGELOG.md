@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.4.4
+
+### Fixes
+
+- exit with error code if tasks fail
+
+
 ## 1.4.3
 
 ### Chores

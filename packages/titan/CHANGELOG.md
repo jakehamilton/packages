@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.5.5
+
+### Fixes
+
+- exit with error code if tasks fail
+
+
 ## 5.5.4
 
 ### Fixes

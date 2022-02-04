@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.11.1
+
+### Fixes
+
+- exit with error code if tasks fail
+
+
 ## 1.11.0
 
 ### Features
