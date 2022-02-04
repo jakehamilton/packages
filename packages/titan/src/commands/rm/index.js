@@ -6,7 +6,7 @@ const git = require("../../util/git");
 const help = require("./help");
 const getArgs = require("./args");
 
-const command = () => {
+const command = async () => {
     const args = getArgs();
 
     if (args["--help"]) {
@@ -135,7 +135,7 @@ const command = () => {
         }
     }
 
-    npm.withLinkedLocals(pkgs, () => {
+    await npm.withLinkedLocals(pkgs, () => {
         log.info("Installing dependencies.");
         for (const pkg of matchingPkgs) {
             if (args["--no-save"]) {

@@ -110,7 +110,7 @@ const getAllPackages = (cache = false) => {
     return pkgs;
 };
 
-const withLinkedLocals = (pkgs, fn) => {
+const withLinkedLocals = async (pkgs, fn) => {
     for (const pkg of pkgs.values()) {
         const dependencies = patchDependenciesWithLocals(pkg, pkgs, {
             ...(pkg.config.dependencies || {}),
@@ -140,7 +140,7 @@ const withLinkedLocals = (pkgs, fn) => {
     }
 
     try {
-        fn();
+        await fn();
     } catch (error) {
         throw error;
     } finally {

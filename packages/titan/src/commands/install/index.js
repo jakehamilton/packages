@@ -7,7 +7,7 @@ const task = require("../../util/task");
 const help = require("./help");
 const getArgs = require("./args");
 
-const command = () => {
+const command = async () => {
     const args = getArgs();
 
     if (args["--help"]) {
@@ -100,7 +100,9 @@ const command = () => {
     const localPkgs = [...locals.values()].map(({ pkg }) => pkg);
     const map = npm.pkgsToDependencyMap(localPkgs);
 
-    npm.withLinkedLocals(pkgs, async () => {
+    let failed = false;
+
+    await npm.withLinkedLocals(pkgs, async () => {
         await task.executeOrdered(
             map,
             { ordered: true, cache: false },
@@ -151,6 +153,8 @@ const command = () => {
 
                         signal.addEventListener("abort", () => {
                             proc.kill("SIGKILL");
+
+                            failed = true;
                         });
 
                         proc.on("close", (code) => {
@@ -162,6 +166,8 @@ const command = () => {
                                         `${pkg.config.name} killed due to another task failing.`
                                     )}`
                                 );
+
+                                failed = true;
 
                                 return reject(
                                     `${pkg.config.name} killed due to another task failing.`
@@ -176,6 +182,8 @@ const command = () => {
                                             .bold(code)}".`
                                     )}`
                                 );
+
+                                failed = true;
 
                                 return reject(
                                     `${pkg.config.name} command exited with code "${code}".`
@@ -192,6 +200,10 @@ const command = () => {
                 })
         );
     });
+
+    if (failed) {
+        process.exit(1);
+    }
 };
 
 module.exports = command;

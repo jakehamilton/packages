@@ -70,6 +70,8 @@ const command = async () => {
         process.exit(0);
     }
 
+    let failed = false;
+
     await task.execute(
         matchingPkgs,
         { ordered: args["--ordered"], cache: args["--cache"] },
@@ -93,6 +95,8 @@ const command = async () => {
 
                 signal.addEventListener("abort", () => {
                     proc.kill("SIGKILL");
+
+                    failed = true;
                 });
 
                 proc.stdout.on("data", (data) => {
@@ -125,6 +129,8 @@ const command = async () => {
                             )}`
                         );
 
+                        failed = true;
+
                         return reject(
                             `${pkg.config.name} killed due to another task failing.`
                         );
@@ -139,6 +145,8 @@ const command = async () => {
                             )}`
                         );
 
+                        failed = true;
+
                         return reject(
                             `${pkg.config.name} command exited with code "${code}".`
                         );
@@ -149,166 +157,9 @@ const command = async () => {
             })
     );
 
-    // if (args["--ordered"]) {
-    //     await task.execute(
-    //         matchingPkgs,
-    //         { ordered: true, cached:  },
-    //         (pkg, options, color, signal) =>
-    //             new Promise(async (resolve, reject) => {
-    //                 const proc = cmd.spawnAsync(
-    //                     args["--"][0],
-    //                     args["--"].slice(1),
-    //                     {
-    //                         cwd: pkg.path,
-    //                         encoding: "utf8",
-    //                         stdio: "pipe",
-    //                     }
-    //                 );
-
-    //                 log.info(
-    //                     `${color().bold(
-    //                         `${pkg.config.name} executing "${command}" in "${pkg.path}".`
-    //                     )}`
-    //                 );
-
-    //                 signal.addEventListener("abort", () => {
-    //                     proc.kill("SIGKILL");
-    //                 });
-
-    //                 proc.stdout.on("data", (data) => {
-    //                     for (const line of data.toString().split("\n")) {
-    //                         if (line.trim() !== "") {
-    //                             log.info(
-    //                                 `${color(`${pkg.config.name} > ${line}`)}`
-    //                             );
-    //                         }
-    //                     }
-    //                 });
-
-    //                 proc.stderr.on("data", (data) => {
-    //                     for (const line of data.toString().split("\n")) {
-    //                         if (line.trim() !== "") {
-    //                             log.error(
-    //                                 `${color(`${pkg.config.name} > ${line}`)}`
-    //                             );
-    //                         }
-    //                     }
-    //                 });
-
-    //                 proc.on("close", (code) => {
-    //                     proc.stdin.end();
-
-    //                     if (code === null) {
-    //                         log.fatal(
-    //                             `${color(
-    //                                 `${pkg.config.name} killed due to another task failing.`
-    //                             )}`
-    //                         );
-
-    //                         return reject(
-    //                             `${pkg.config.name} killed due to another task failing.`
-    //                         );
-    //                     } else if (code !== 0) {
-    //                         log.fatal(
-    //                             `${color(
-    //                                 `${
-    //                                     pkg.config.name
-    //                                 } command exited with code "${kleur
-    //                                     .white()
-    //                                     .bold(code)}".`
-    //                             )}`
-    //                         );
-
-    //                         return reject(
-    //                             `${pkg.config.name} command exited with code "${code}".`
-    //                         );
-    //                     }
-
-    //                     resolve();
-    //                 });
-    //             })
-    //     );
-    // } else {
-    //     await task.execute(
-    //         matchingPkgs,
-    //         (pkg, options, color, signal) =>
-    //             new Promise(async (resolve, reject) => {
-    //                 const proc = cmd.spawnAsync(
-    //                     args["--"][0],
-    //                     args["--"].slice(1),
-    //                     {
-    //                         cwd: pkg.path,
-    //                         encoding: "utf8",
-    //                         stdio: "pipe",
-    //                     }
-    //                 );
-
-    //                 log.info(
-    //                     `${color().bold(
-    //                         `${pkg.config.name} executing "${command}" in "${pkg.path}".`
-    //                     )}`
-    //                 );
-
-    //                 signal.addEventListener("abort", () => {
-    //                     proc.kill("SIGTERM");
-    //                 });
-
-    //                 proc.stdout.on("data", (data) => {
-    //                     for (const line of data.toString().split("\n")) {
-    //                         if (line.trim() !== "") {
-    //                             log.info(
-    //                                 `${color(`${pkg.config.name} > ${line}`)}`
-    //                             );
-    //                         }
-    //                     }
-    //                 });
-
-    //                 proc.stderr.on("data", (data) => {
-    //                     for (const line of data.toString().split("\n")) {
-    //                         if (line.trim() !== "") {
-    //                             log.error(
-    //                                 `${color(`${pkg.config.name} > ${line}`)}`
-    //                             );
-    //                         }
-    //                     }
-    //                 });
-
-    //                 proc.on("close", (code) => {
-    //                     proc.stdin.end();
-
-    //                     if (code === null) {
-    //                         log.fatal(
-    //                             `${color(
-    //                                 `${pkg.config.name} killed due to another task failing.`
-    //                             )}`
-    //                         );
-
-    //                         return reject(
-    //                             `${pkg.config.name} killed due to another task failing.`
-    //                         );
-    //                     } else if (code !== 0) {
-    //                         log.fatal(
-    //                             `${color(
-    //                                 `${
-    //                                     pkg.config.name
-    //                                 } command exited with code "${kleur
-    //                                     .white()
-    //                                     .bold(code)}".`
-    //                             )}`
-    //                         );
-
-    //                         return reject(
-    //                             `${pkg.config.name} command exited with code "${code}".`
-    //                         );
-    //                     }
-
-    //                     resolve();
-    //                 });
-    //             })
-    //     );
-
-    //     return;
-    // }
+    if (failed) {
+        process.exit(1);
+    }
 };
 
 module.exports = command;

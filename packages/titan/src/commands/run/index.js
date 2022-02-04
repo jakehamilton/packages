@@ -73,6 +73,8 @@ const command = async () => {
         process.exit(0);
     }
 
+    let failed = false;
+
     await task.execute(
         matchingPkgs,
         { ordered: args["--ordered"], cache: args["--cache"] },
@@ -109,6 +111,8 @@ const command = async () => {
 
                 signal.addEventListener("abort", () => {
                     proc.kill("SIGKILL");
+
+                    failed = true;
                 });
 
                 proc.stdout.on("data", (data) => {
@@ -141,6 +145,8 @@ const command = async () => {
                             )}`
                         );
 
+                        failed = true;
+
                         return reject(
                             `${pkg.config.name} killed due to another task failing.`
                         );
@@ -155,6 +161,8 @@ const command = async () => {
                             )}`
                         );
 
+                        failed = true;
+
                         return reject(
                             `${pkg.config.name} command exited with code "${code}".`
                         );
@@ -164,6 +172,10 @@ const command = async () => {
                 });
             })
     );
+
+    if (failed) {
+        process.exit(1);
+    }
 };
 
 module.exports = command;

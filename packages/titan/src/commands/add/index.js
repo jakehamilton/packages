@@ -6,7 +6,7 @@ const cmd = require("../../util/cmd");
 const help = require("./help");
 const getArgs = require("./args");
 
-const command = () => {
+const command = async () => {
     const args = getArgs();
 
     if (args["--help"]) {
@@ -238,7 +238,7 @@ const command = () => {
         process.exit(1);
     }
 
-    npm.withLinkedLocals(pkgs, () => {
+    await npm.withLinkedLocals(pkgs, () => {
         log.info("Installing dependencies.");
         for (const pkg of matchingPkgs) {
             if (args["--no-save"]) {
