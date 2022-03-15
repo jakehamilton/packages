@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.6.0
+
+### Features
+
+- better version resolution, logs, and docs
+
+
 ## 5.5.5
 
 ### Fixes
