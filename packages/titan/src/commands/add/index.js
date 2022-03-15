@@ -166,24 +166,23 @@ const command = async () => {
 
                 if (version === "latest") {
                     try {
-                        const versions = JSON.parse(
-                            cmd.exec(`npm view ${name} versions --json`, {
+                        const version = JSON.parse(
+                            cmd.exec(`npm view ${name} version --json`, {
                                 encoding: "utf8",
                             })
                         );
 
-                        if (versions.length === 0) {
-                            log.error(
-                                `No versions found for package "${name}". Defaulting to "latest".`
+                        if (!version) {
+                            log.warn(
+                                `No version found for package "${name}". Defaulting to "latest".`
                             );
                         } else {
-                            resolvedVersion = `^${
-                                versions[versions.length - 1]
-                            }`;
+                            log.debug(`Resolved package "${name}" with version "${version}".`);
+                            resolvedVersion = `^${version}`;
                         }
                     } catch (error) {
-                        log.error(
-                            `Could not fetch versions from npm for package "${name}". Defaulting to "latest".`
+                        log.warn(
+                            `Could not fetch version from npm for package "${name}". Defaulting to "latest".`
                         );
                     }
                 }

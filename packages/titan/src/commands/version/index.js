@@ -56,6 +56,8 @@ const command = () => {
             `Setting new version "${upgrade.newVersion}" for package "${upgrade.name}".`
         );
 
+        npm.upgradeLocalDependents(pkgs, upgrade);
+
         upgrade.pkg.config.version = upgrade.newVersion;
 
         if (!args["--dry-run"]) {

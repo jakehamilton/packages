@@ -44,7 +44,7 @@ const command = async () => {
             log.info("Removing existing directory.");
             fs.rm(root);
         } else {
-            log.error(
+            log.fatal(
                 `Directory already exists. Use --force to automatically remove it.`
             );
             process.exit(1);

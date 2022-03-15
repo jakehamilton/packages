@@ -25,9 +25,11 @@ COMMANDS
     init                      Create a new monorepo project
     create                    Create a new package
     install                   Install and link dependencies
+    add                       Add one or more dependencies
+    rm                        Remove one or more dependencies
     version                   Generate release versions
     publish                   Publish released packages
-    changed                   List changed packages since the last release.
+    changed                   List changed packages since the last release
     exec                      Execute commands on packages
     run                       Run a shell command in each package
 
@@ -41,7 +43,7 @@ EXAMPLE
     $ # Get help for commands.
     $ titan init --help
     $ titan create --help
-    $ titan bootstrap --help
+    $ titan install --help
     $ titan add --help
     $ titan rm --help
     $ titan version --help

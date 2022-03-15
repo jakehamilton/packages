@@ -112,7 +112,7 @@ const command = async () => {
                 proc.stderr.on("data", (data) => {
                     for (const line of data.toString().split("\n")) {
                         if (line.trim() !== "") {
-                            log.error(
+                            log.warn(
                                 `${color(`${pkg.config.name} >`)} ${line}`
                             );
                         }

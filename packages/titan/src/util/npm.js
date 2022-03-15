@@ -261,7 +261,7 @@ const writePackageInfo = (pkg) => {
             JSON.stringify(pkg.config, null, 4) + "\n"
         );
     } else {
-        log.error(
+        log.fatal(
             `Could not write package "${pkg.config.name}" to "${path.resolve(
                 pkg.path,
                 "package.json"
@@ -408,6 +408,48 @@ const traverseOrdered = async (pkgs, cb, known = new Map()) => {
     }
 };
 
+const upgradeLocalDependents = (pkgs, upgrade) => {
+    const { name } = upgrade.pkg.config;
+
+    for (const pkg of pkgs.values()) {
+        if (
+            pkg.config.dependencies && pkg.config.dependencies[name]
+        ) {
+            pkg.config.dependencies[name] =
+                (pkg.config.dependencies[name].startsWith("^")
+                    ? "^" : "")
+                + upgrade.newVersion;
+        }
+
+        if (
+            pkg.config.devDependencies && pkg.config.devDependencies[name]
+        ) {
+            pkg.config.devDependencies[name] =
+                (pkg.config.devDependencies[name].startsWith("^")
+                    ? "^" : "")
+                + upgrade.newVersion;
+        }
+
+        if (
+            pkg.config.optionalDependencies && pkg.config.optionalDependencies[name]
+        ) {
+            pkg.config.optionalDependencies[name] =
+                (pkg.config.optionalDependencies[name].startsWith("^")
+                    ? "^" : "")
+                + upgrade.newVersion;
+        }
+
+        if (
+            pkg.config.peerDependencies && pkg.config.peerDependencies[name]
+        ) {
+            pkg.config.peerDependencies[name] =
+                (pkg.config.peerDependencies[name].startsWith("^")
+                    ? "^" : "")
+                + upgrade.newVersion;
+        }
+    }
+};
+
 module.exports = {
     getProjectRoot,
     getProjectRootConfig,
@@ -422,4 +464,5 @@ module.exports = {
     install,
     publish,
     traverseOrdered,
+    upgradeLocalDependents
 };

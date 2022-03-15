@@ -15,9 +15,11 @@ ${kleur.bold(`COMMANDS`)}
     init                      Create a new monorepo project
     create                    Create a new package
     install                   Install and link dependencies
+    add                       Add one or more dependencies
+    rm                        Remove one or more dependencies
     version                   Generate release versions
     publish                   Publish released packages
-    changed                   List changed packages since the last release.
+    changed                   List changed packages since the last release
     exec                      Execute commands on packages
     run                       Run a shell command in each package
 
@@ -31,7 +33,7 @@ ${kleur.bold(`EXAMPLE`)}
     ${kleur.dim(`$ # Get help for commands.`)}
     ${kleur.dim(`$`)} ${kleur.bold(`titan init`)} --help
     ${kleur.dim(`$`)} ${kleur.bold(`titan create`)} --help
-    ${kleur.dim(`$`)} ${kleur.bold(`titan bootstrap`)} --help
+    ${kleur.dim(`$`)} ${kleur.bold(`titan install`)} --help
     ${kleur.dim(`$`)} ${kleur.bold(`titan add`)} --help
     ${kleur.dim(`$`)} ${kleur.bold(`titan rm`)} --help
     ${kleur.dim(`$`)} ${kleur.bold(`titan version`)} --help
