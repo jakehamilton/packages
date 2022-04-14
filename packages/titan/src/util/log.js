@@ -6,6 +6,7 @@ const {
     LogLevel,
 } = require("@littlethings/log");
 const rootArgs = require("./args");
+const kleur = require("kleur");
 
 const args = arg(rootArgs, {
     permissive: true,

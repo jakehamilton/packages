@@ -84,6 +84,14 @@ const command = async () => {
                         cwd: pkg.path,
                         encoding: "utf8",
                         stdio: "pipe",
+                        env: {
+                            ...process.env,
+                            FORCE_COLOR:
+                                process.env.LOG_ICONS === "true"
+                                    ? "1"
+                                    : process.env.FORCE_COLOR ||
+                                      (process.stdout.isTTY ? "1" : "0"),
+                        },
                     }
                 );
 

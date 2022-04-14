@@ -40,4 +40,6 @@ main().catch((error) => {
     for (const line of error.stack.split("\n").slice(1)) {
         log.fatal(`${line}`);
     }
+
+    process.exit(1);
 });
