@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.7.0
+
+### Features
+
+- add littlelog v3
+
+
 ## 5.6.0
 
 ### Features
