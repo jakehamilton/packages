@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.4.2
+
+### Chores
+
+- bump dependencies
+
+
 ## 1.4.1
 
 ### Fixes

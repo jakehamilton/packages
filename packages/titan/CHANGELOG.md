@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.8.0
+
+### Features
+
+- enable color in spawned processes if enabled in main process
+
+
 ## 5.7.0
 
 ### Features
