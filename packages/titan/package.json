@@ -36,7 +36,7 @@
         "@types/node": "^14.11.1"
     },
     "dependencies": {
-        "@littlethings/log": "^2.5.0",
+        "@littlethings/log": "^3.0.1",
         "@littlethings/test": "^1.2.1",
         "@starters/core": "^1.7.2",
         "abort-controller": "^3.0.0",
