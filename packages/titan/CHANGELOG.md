@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.9.0
+
+### Features
+
+- bump downstream deps when versioning
+
+
 ## 5.8.0
 
 ### Features
