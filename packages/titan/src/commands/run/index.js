@@ -73,11 +73,20 @@ const command = async () => {
         process.exit(0);
     }
 
+    if (args["--with-deps"]) {
+        const downstream = npm.getDownstreamPackages(matchingPkgs);
+
+        matchingPkgs.push(...downstream.values());
+    }
+
     let failed = false;
 
     await task.execute(
         matchingPkgs,
-        { ordered: args["--ordered"], cache: args["--cache"] },
+        {
+            ordered: args["--ordered"] || args["--with-deps"],
+            cache: args["--cache"],
+        },
         (pkg, options, color, signal) =>
             new Promise(async (resolve, reject) => {
                 if (!pkg.config.scripts || !pkg.config.scripts[name]) {

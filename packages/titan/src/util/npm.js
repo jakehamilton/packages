@@ -412,42 +412,175 @@ const upgradeLocalDependents = (pkgs, upgrade) => {
     const { name } = upgrade.pkg.config;
 
     for (const pkg of pkgs.values()) {
-        if (
-            pkg.config.dependencies && pkg.config.dependencies[name]
-        ) {
+        if (pkg.config.dependencies && pkg.config.dependencies[name]) {
             pkg.config.dependencies[name] =
-                (pkg.config.dependencies[name].startsWith("^")
-                    ? "^" : "")
-                + upgrade.newVersion;
+                (pkg.config.dependencies[name].startsWith("^") ? "^" : "") +
+                upgrade.newVersion;
         }
 
-        if (
-            pkg.config.devDependencies && pkg.config.devDependencies[name]
-        ) {
+        if (pkg.config.devDependencies && pkg.config.devDependencies[name]) {
             pkg.config.devDependencies[name] =
-                (pkg.config.devDependencies[name].startsWith("^")
-                    ? "^" : "")
-                + upgrade.newVersion;
+                (pkg.config.devDependencies[name].startsWith("^") ? "^" : "") +
+                upgrade.newVersion;
         }
 
         if (
-            pkg.config.optionalDependencies && pkg.config.optionalDependencies[name]
+            pkg.config.optionalDependencies &&
+            pkg.config.optionalDependencies[name]
         ) {
             pkg.config.optionalDependencies[name] =
                 (pkg.config.optionalDependencies[name].startsWith("^")
-                    ? "^" : "")
-                + upgrade.newVersion;
+                    ? "^"
+                    : "") + upgrade.newVersion;
         }
 
-        if (
-            pkg.config.peerDependencies && pkg.config.peerDependencies[name]
-        ) {
+        if (pkg.config.peerDependencies && pkg.config.peerDependencies[name]) {
             pkg.config.peerDependencies[name] =
-                (pkg.config.peerDependencies[name].startsWith("^")
-                    ? "^" : "")
-                + upgrade.newVersion;
+                (pkg.config.peerDependencies[name].startsWith("^") ? "^" : "") +
+                upgrade.newVersion;
         }
     }
+};
+
+const getAllDependencies = (pkg) => {
+    const deps = {};
+    const { config } = pkg;
+
+    if (config.dependencies) {
+        Object.assign(deps, config.dependencies);
+    }
+
+    if (config.optionalDependencies) {
+        Object.assign(deps, config.optionalDependencies);
+    }
+
+    if (config.peerDependencies) {
+        Object.assign(deps, config.peerDependencies);
+    }
+
+    if (config.devDependencies) {
+        Object.assign(deps, config.devDependencies);
+    }
+
+    return deps;
+};
+
+const getDownstreamPackages = (upstreamPkgs, downstreamPkgs = new Map()) => {
+    const all = getAllPackages(true);
+
+    for (const pkg of all.values()) {
+        for (const upstreamPkg of upstreamPkgs) {
+            const deps = getAllDependencies(pkg);
+
+            if (
+                !downstreamPkgs.has(pkg.config.name) &&
+                deps[upstreamPkg.config.name]
+            ) {
+                downstreamPkgs.set(pkg.config.name, pkg);
+
+                getDownstreamPackages([pkg], downstreamPkgs);
+            }
+        }
+    }
+
+    return downstreamPkgs;
+};
+
+const pkgsArrayToMap = (pkgs) => {
+    const map = new Map();
+
+    for (const pkg of pkgs) {
+        map.set(pkg.config.name, pkg);
+    }
+
+    return map;
+};
+
+const upgradeDownstreamPackages = (pkgs) => {
+    const upstreamPkgs = pkgsArrayToMap(pkgs);
+    const downstreamPkgs = getDownstreamPackages(pkgs);
+
+    for (const pkg of downstreamPkgs.values()) {
+        const { config } = pkg;
+
+        const isUpstream = upstreamPkgs.has(config.name);
+
+        if (isUpstream) {
+            log.trace(
+                `Package "${config.name}" is both upstream and downstream of changes.`
+            );
+        } else {
+            const newVersion = semver.inc(config.version, "patch");
+            log.debug(
+                `Setting new version "${newVersion}" for downstream package "${config.name}".`
+            );
+            config.version = newVersion;
+        }
+    }
+
+    const getPackage = (name) => {
+        if (upstreamPkgs.has(name)) {
+            return upstreamPkgs.get(name);
+        } else if (downstreamPkgs.has(name)) {
+            return downstreamPkgs.get(name);
+        }
+    };
+
+    for (const pkg of downstreamPkgs.values()) {
+        const { config } = pkg;
+
+        if (config.dependencies) {
+            for (const [name, version] of Object.entries(config.dependencies)) {
+                const upstreamPkg = getPackage(name);
+
+                if (upstreamPkg) {
+                    config.dependencies[name] = upstreamPkg.config.version;
+                }
+            }
+        }
+
+        if (config.peerDependencies) {
+            for (const [name, version] of Object.entries(
+                config.peerDependencies
+            )) {
+                const upstreamPkg = getPackage(name);
+
+                if (upstreamPkg) {
+                    config.peerDependencies[name] = upstreamPkg.config.version;
+                }
+            }
+        }
+
+        if (config.optionalDependencies) {
+            for (const [name, version] of Object.entries(
+                config.optionalDependencies
+            )) {
+                const upstreamPkg = getPackage(name);
+
+                if (upstreamPkg) {
+                    config.optionalDependencies[name] =
+                        upstreamPkg.config.version;
+                }
+            }
+        }
+
+        if (config.devDependencies) {
+            for (const [name, version] of Object.entries(
+                config.devDependencies
+            )) {
+                const upstreamPkg = getPackage(name);
+
+                if (upstreamPkg) {
+                    config.devDependencies[name] = upstreamPkg.config.version;
+                }
+            }
+        }
+    }
+
+    return {
+        upstream: upstreamPkgs,
+        downstream: downstreamPkgs,
+    };
 };
 
 module.exports = {
@@ -464,5 +597,8 @@ module.exports = {
     install,
     publish,
     traverseOrdered,
-    upgradeLocalDependents
+    upgradeLocalDependents,
+    getAllDependencies,
+    getDownstreamPackages,
+    upgradeDownstreamPackages,
 };

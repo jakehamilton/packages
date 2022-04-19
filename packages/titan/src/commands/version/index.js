@@ -52,7 +52,7 @@ const command = () => {
     }
 
     for (const upgrade of upgrades) {
-        log.trace(
+        log.debug(
             `Setting new version "${upgrade.newVersion}" for package "${upgrade.name}".`
         );
 
@@ -79,6 +79,10 @@ const command = () => {
         }
     }
 
+    const updatedPkgs = [...upgrades.map((upgrade) => upgrade.pkg), ...newPkgs];
+
+    const { upstream, downstream } = npm.upgradeDownstreamPackages(updatedPkgs);
+
     const updatedFiles = [
         ...upgrades.map((upgrade) =>
             path.resolve(upgrade.pkg.path, "package.json")
@@ -86,7 +90,21 @@ const command = () => {
         ...newPkgs.map((pkg) => path.resolve(pkg.path, "package.json")),
     ];
 
-    const updatedPkgs = [...upgrades.map((upgrade) => upgrade.pkg), ...newPkgs];
+    for (const pkg of upstream.values()) {
+        if (!args["--dry-run"]) {
+            npm.writePackageInfo(pkg);
+
+            updatedFiles.push(path.resolve(pkg.path, "package.json"));
+        }
+    }
+
+    for (const pkg of downstream.values()) {
+        if (!args["--dry-run"]) {
+            npm.writePackageInfo(pkg);
+
+            updatedFiles.push(path.resolve(pkg.path, "package.json"));
+        }
+    }
 
     if (args["--dry-run"]) {
         for (const pkg of updatedPkgs) {
@@ -101,7 +119,12 @@ const command = () => {
 
             if (fs.exists(file)) {
                 const contents = fs.read(file, { encoding: "utf8" });
-                const newContents = changelog.patch(contents, upgrade);
+
+                const note = downstream.has(upgrade.name)
+                    ? "Updated local dependencies."
+                    : undefined;
+
+                const newContents = changelog.patch(contents, upgrade, note);
 
                 fs.write(file, newContents);
                 git.add([file]);
@@ -126,17 +149,73 @@ const command = () => {
             git.add([file]);
         }
 
+        for (const pkg of downstream.values()) {
+            const isUpgrade = Boolean(
+                upgrades.find((upgrade) => upgrade.pkg === pkg)
+            );
+            const isNew = Boolean(newPkgs.find((newPkg) => newPkg === pkg));
+
+            if (!isUpgrade && !isNew) {
+                const file = path.resolve(pkg.path, "CHANGELOG.md");
+                const contents = fs.read(file, { encoding: "utf8" });
+                const newContents = changelog.patch(
+                    contents,
+                    {
+                        name: pkg.config.name,
+                        version: pkg.config.version,
+                        newVersion: pkg.config.version,
+                        pkg,
+                        commits: [],
+                        bump: "patch",
+                    },
+                    "Updated local dependencies."
+                );
+
+                fs.write(file, newContents);
+                git.add([file]);
+            }
+        }
+
         log.info("Adding modified files to git.");
         git.add(updatedFiles);
 
         log.info("Creating release commit.");
+        const commitStart = performance.now();
         git.commit("chore(release): publish", ["--allow-empty"]);
+        const commitEnd = performance.now();
 
-        log.info("Tagging releases.");
+        log.info("Tagging releases...");
+        const tagStart = performance.now();
         for (const pkg of updatedPkgs) {
             const name = `${pkg.config.name}@${pkg.config.version}`;
+            log.debug(`Tagging release "${name}".`);
             git.tag.create(name, `titan-release:${name}`);
         }
+
+        for (const pkg of downstream.values()) {
+            const isUpgrade = Boolean(
+                upgrades.find((upgrade) => upgrade.pkg === pkg)
+            );
+            const isNew = Boolean(newPkgs.find((newPkg) => newPkg === pkg));
+
+            if (!isUpgrade && !isNew) {
+                const name = `${pkg.config.name}@${pkg.config.version}`;
+                log.debug(`Tagging downstream release "${name}".`);
+                git.tag.create(name, `titan-release:${name}`);
+            }
+        }
+        const tagEnd = performance.now();
+
+        log.trace(
+            `Commit completed in ${((commitEnd - commitStart) / 1000).toFixed(
+                5
+            )}s.`
+        );
+        log.trace(
+            `Tag completed in ${((tagEnd - tagStart) / 1000).toFixed(5)}s.`
+        );
+
+        log.info("Done tagging releases.");
     }
 };
 

@@ -15,13 +15,13 @@ const getCacheMap = () => {
         fs.mkdir(path.resolve(npm.getProjectRoot(), ".titan"));
     }
 
-    if (fs.exists(path.resolve(npm.getProjectRoot(), ".titan", "map.json"))) {
+    if (fs.exists(path.resolve(npm.getProjectRoot(), ".titan", "cache.json"))) {
         try {
             CACHE_MAP = JSON.parse(
                 fs.read(
                     path.resolve(
                         path.resolve(npm.getProjectRoot(), ".titan"),
-                        "map.json"
+                        "cache.json"
                     ),
                     {
                         encoding: "utf8",
@@ -32,7 +32,7 @@ const getCacheMap = () => {
             log.error(
                 `Could not parse cache map at "${path.resolve(
                     path.resolve(npm.getProjectRoot(), ".titan"),
-                    "map.json"
+                    "cache.json"
                 )}".`
             );
             CACHE_MAP = {};
@@ -41,7 +41,7 @@ const getCacheMap = () => {
         fs.touch(
             path.resolve(
                 path.resolve(npm.getProjectRoot(), ".titan"),
-                "map.json"
+                "cache.json"
             )
         );
 
@@ -50,7 +50,7 @@ const getCacheMap = () => {
         fs.write(
             path.resolve(
                 path.resolve(npm.getProjectRoot(), ".titan"),
-                "map.json"
+                "cache.json"
             ),
             JSON.stringify(CACHE_MAP, null, 2)
         );
@@ -65,7 +65,7 @@ const writeCacheMap = () => {
         process.exit(1);
     }
     fs.write(
-        path.resolve(npm.getProjectRoot(), ".titan", "map.json"),
+        path.resolve(npm.getProjectRoot(), ".titan", "cache.json"),
         JSON.stringify(CACHE_MAP, null, 2)
     );
 };

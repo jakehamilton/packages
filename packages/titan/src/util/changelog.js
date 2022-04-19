@@ -1,6 +1,14 @@
 const CHANGELOG_HEADER = "# Change Log\n";
 const CHANGELOG_HEADER_LINES = CHANGELOG_HEADER.split("\n").length;
 
+const renderNote = (note) => {
+    if (note.trim() === "") return "";
+
+    return `### Notes
+
+${note}`;
+};
+
 const renderChanges = (title, changes) => {
     if (changes.length === 0) {
         return "";
@@ -14,8 +22,7 @@ const renderChanges = (title, changes) => {
 
     return `### ${title}
 
-${contents.join("\n\n")}
-`;
+${contents.join("\n\n")}`;
 };
 
 const changes = (upgrade, note = "") => {
@@ -72,11 +79,11 @@ const changes = (upgrade, note = "") => {
     }
 
     const contents = [
-        note,
         renderChanges("Features", features),
         renderChanges("Fixes", fixes),
         renderChanges("Chores", chores),
         renderChanges("Other", others),
+        renderNote(note),
     ].filter((text) => text !== "");
 
     return contents.join("\n\n");
