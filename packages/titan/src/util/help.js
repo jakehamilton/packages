@@ -22,6 +22,7 @@ ${kleur.bold(`COMMANDS`)}
     changed                   List changed packages since the last release
     exec                      Execute commands on packages
     run                       Run a shell command in each package
+    update-metadata           Update package metadata
 
 ${kleur.bold(`OPTIONS`)}
 
@@ -41,6 +42,7 @@ ${kleur.bold(`EXAMPLE`)}
     ${kleur.dim(`$`)} ${kleur.bold(`titan changed`)} --help
     ${kleur.dim(`$`)} ${kleur.bold(`titan exec`)} --help
     ${kleur.dim(`$`)} ${kleur.bold(`titan run`)} --help
+    ${kleur.dim(`$`)} ${kleur.bold(`titan update-metadata`)} --help
 
     ${kleur.dim(`$ # Run Titan with verbose logging.`)}
     ${kleur.dim(`$`)} ${kleur.bold(`titan`)} -v
