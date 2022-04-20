@@ -9,4 +9,5 @@ module.exports = {
     changed: require("./changed"),
     run: require("./run"),
     rm: require("./rm"),
+    "update-metadata": require("./update-metadata"),
 };
