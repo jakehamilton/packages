@@ -98,6 +98,13 @@ const command = async () => {
 
     log.info("Installing packages.");
     const localPkgs = [...locals.values()].map(({ pkg }) => pkg);
+
+    if (args["--with-deps"]) {
+        const downstream = npm.getDownstreamPackages(localPkgs);
+
+        localPkgs.push(...downstream.values());
+    }
+
     const map = npm.pkgsToDependencyMap(localPkgs);
 
     let failed = false;

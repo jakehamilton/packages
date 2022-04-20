@@ -17,6 +17,7 @@ ${kleur.bold(`OPTIONS`)}
     --changed, -c             Only run for packages that have changed
     --tagged, -t              Only run for packages that are tagged on HEAD
     --no-save, -S             Run npm with the "--no-save" option
+    --with-deps, -d           Also run for packages that depend on the target
 
 ${kleur.bold(`EXAMPLE`)}
 
@@ -38,6 +39,13 @@ ${kleur.bold(`EXAMPLE`)}
         `$ # Install dependencies but don't modify "package-lock.json" files.`
     )}
     ${kleur.dim(`$`)} ${kleur.bold(`titan install`)} --no-save
+
+    ${kleur.dim(
+        `$ # Install dependencies for "my-package" and all packages that depend on it.`
+    )}
+    ${kleur.dim(`$`)} ${kleur.bold(
+        `titan install`
+    )} --with-deps --scope my-package
 `;
 
     console.log(message);

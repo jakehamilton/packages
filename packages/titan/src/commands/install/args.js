@@ -16,6 +16,9 @@ const getArgs = () =>
 
         "--no-save": Boolean,
         "-S": "--no-save",
+
+        "--with-deps": Boolean,
+        "-d": "--with-deps",
     });
 
 module.exports = getArgs;
