@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.10.0
+
+### Features
+
+- add support for updating package metadata
+
+
 ## 5.9.0
 
 ### Features
