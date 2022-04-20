@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.11.0
+
+### Features
+
+- add --with-deps support to install command
+
+
 ## 5.10.1
 
 ### Fixes
