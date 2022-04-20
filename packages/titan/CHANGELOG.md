@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.10.1
+
+### Fixes
+
+- _(docs)_: add entry for update-metadata in root help prompt
+
+
 ## 5.10.0
 
 ### Features
