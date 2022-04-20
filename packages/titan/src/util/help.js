@@ -4,7 +4,7 @@ const help = () => {
     const message = `
 ${kleur.bold(`DESCRIPTION`)}
 
-    Manage monorepo projects.
+    A little tool for big (monorepo) projects.
 
 ${kleur.bold(`USAGE`)}
 

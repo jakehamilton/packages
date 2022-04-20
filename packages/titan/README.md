@@ -1,6 +1,6 @@
 # @jakehamilton/titan
 
-> Manage monorepo projects.
+> A little tool for big (monorepo) projects.
 
 ## Installation
 
@@ -16,6 +16,10 @@ titan --help
 ```
 
 ```
+DESCRIPTION
+
+    A little tool for big (monorepo) projects.
+
 USAGE
 
     $ titan <command> [options]
@@ -32,6 +36,7 @@ COMMANDS
     changed                   List changed packages since the last release
     exec                      Execute commands on packages
     run                       Run a shell command in each package
+    update-metadata           Update package metadata
 
 OPTIONS
 
@@ -51,6 +56,7 @@ EXAMPLE
     $ titan changed --help
     $ titan exec --help
     $ titan run --help
+    $ titan update-metadata --help
 
     $ # Run Titan with verbose logging.
     $ titan -v
@@ -94,6 +100,10 @@ titan init --help
 ```
 
 ```
+DESCRIPTION
+
+    Create a new project managed by Titan.
+
 USAGE
 
     $ titan init [options] <name>
@@ -145,6 +155,10 @@ titan create --help
 ```
 
 ```
+DESCRIPTION
+
+    Create a new package.
+
 USAGE
 
     $ titan create <name> [root] [options]
@@ -195,6 +209,10 @@ titan add --help
 ```
 
 ```
+DESCRIPTION
+
+    Add dependencies to packages.
+
 USAGE
 
     $ titan add [options] deps
@@ -255,6 +273,10 @@ titan run --help
 ```
 
 ```
+DESCRIPTION
+
+    Run a shell command in each package.
+
 USAGE
 
     $ titan run <name> [options] -- [script-options]
@@ -267,6 +289,7 @@ OPTIONS
     --tagged, -t              Only run for packages that are tagged on HEAD
     --ordered, -o             Run scripts for packages in order of dependencies
     --cache, -C               Only run for packages that aren't cached
+    --with-deps, -d           Also run for packages that depend on the target (implies --ordered)
 
 EXAMPLE
 
@@ -287,6 +310,9 @@ EXAMPLE
 
     $ # Build only packages that have been modified since the last build.
     $ titan run build --cache
+
+    $ # Build changed packages and packages that depend on them.
+    $ titan run build --with-deps --changed
 ```
 
 Let's run the `build` npm script for our packages.
@@ -307,6 +333,10 @@ titan exec --help
 ```
 
 ```
+DESCRIPTION
+
+    Run a shell command in each package.
+
 USAGE
 
     $ titan exec [options] -- <command>
@@ -319,6 +349,7 @@ OPTIONS
     --tagged, -t              Only run for packages that are tagged on HEAD
     --ordered, -o             Run command for packages in order of dependencies
     --cache, -C               Only execute command for packages that aren't cached
+    --with-deps, -d           Also run for packages that depend on the target (implies --ordered)
 
 EXAMPLE
 
@@ -337,8 +368,9 @@ EXAMPLE
     $ # Build all packages in order of dependencies.
     $ titan exec --ordered -- npm run build
 
-    $ # Build only packages that have been modified since the last build
-    $ titan exec --cache -- npm run build
+
+    $ # Build changed packages and packages that depend on them.
+    $ titan exec --with-deps --changed -- npm run build
 ```
 
 Let's run `ls` on our packages to see the built files inside each
@@ -366,6 +398,10 @@ titan version --help
 ```
 
 ```
+DESCRIPTION
+
+    Version packages.
+
 USAGE
 
     $ titan publish [options]
@@ -393,6 +429,10 @@ titan changed --help
 ```
 
 ```
+DESCRIPTION
+
+    List changed packages since the last release.
+
 USAGE
 
     $ titan changed
@@ -438,6 +478,10 @@ titan publish --help
 ```
 
 ```
+DESCRIPTION
+
+    Publish packages that have release tags.
+
 USAGE
 
     $ titan publish [options]
@@ -524,7 +568,7 @@ way:
 ```json
 {
     "titan": {
-        "artifacts": ["./dist"]
+        "artifacts": ["./src", "./assets"]
     }
 }
 ```
