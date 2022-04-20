@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.11.1
+
+### Other
+
+- update help docs and tagline
+
+
 ## 5.11.0
 
 ### Features

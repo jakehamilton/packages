@@ -1,6 +1,6 @@
 {
     "name": "@jakehamilton/titan",
-    "version": "5.11.0",
+    "version": "5.11.1",
     "description": "A little tool for big (monorepo) projects.",
     "keywords": [
         "monorepo",
