@@ -1,5 +1,11 @@
 # Change Log
 
+## 5.11.2
+
+### Chores
+
+- bump littlelog
+
 ## 5.11.1
 
 ### Other
