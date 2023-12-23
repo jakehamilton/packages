@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.11.3
+
+### Chores
+
+- update dependencies
+
+
 ## 5.11.2
 
 ### Chores
