@@ -9,7 +9,6 @@ const foreground = [
     "red",
     "green",
     "gray",
-    "black",
 ];
 
 const background = [
