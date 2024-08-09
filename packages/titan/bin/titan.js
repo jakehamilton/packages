@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 try {
-    require("@jakehamilton/titan");
+    require("../src/index.js");
 } catch (error) {
     console.error(error);
     console.error(error.stack);

@@ -1,3 +1,4 @@
+const pkg = require("../package.json");
 const arg = require("arg");
 const log = require("./util/log");
 const rootArgs = require("./util/args");
@@ -16,6 +17,11 @@ const main = async () => {
         help();
         process.exit(0);
     }
+
+		if (args["--version"]) {
+			log.info({ version: pkg.version });
+			process.exit(0);
+		}
 
     if (args._.length === 0) {
         log.fatal("No command specified.");

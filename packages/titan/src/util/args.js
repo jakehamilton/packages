@@ -6,6 +6,9 @@ const args = {
 
     "--verbose": arg.COUNT,
     "-v": "--verbose",
+
+		"--version": Boolean,
+		"-V": "--version",
 };
 
 module.exports = args;

@@ -35,12 +35,12 @@ const unique = () => {
 
     uniqueForeground++;
 
-    if (uniqueForeground > foreground.length) {
+    if (uniqueForeground > foreground.length - 1) {
         uniqueBackground++;
         uniqueForeground = 0;
     }
 
-    if (uniqueBackground > background.length) {
+    if (uniqueBackground > background.length - 1) {
         uniqueBackground = 0;
         uniqueForeground = 0;
     }
