@@ -1,5 +1,17 @@
 # Change Log
 
+## 5.11.4
+
+### Fixes
+
+- unique color off-by-one, add version flag
+
+
+### Other
+
+- do not use black as foreground
+
+
 ## 5.11.3
 
 ### Chores
