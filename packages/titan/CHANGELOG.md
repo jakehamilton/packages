@@ -1,5 +1,12 @@
 # Change Log
 
+## 5.11.5
+
+### Chores
+
+- upgrade littlelog
+
+
 ## 5.11.4
 
 ### Fixes
